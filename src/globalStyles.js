@@ -124,6 +124,16 @@ const globalStyles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
   },
+  modal: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    width: '95%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    zIndex: 10, 
+    padding: 20,
+  },
 });
 
 export default globalStyles;
