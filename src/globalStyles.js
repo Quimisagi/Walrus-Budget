@@ -38,10 +38,21 @@ const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
+  categoryIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
   column: {
     flex: 1,
     margin: 5,
     padding: 10,
+  },
+  container:{
+    padding: 15,
   },
   input: {
     height: 40,
@@ -89,7 +100,6 @@ const globalStyles = StyleSheet.create({
   },
   inputFieldB: {
     textAlign: 'center',
-    borderColor: 'blue',
     borderWidth: 0.5,
     marginBottom: 10,
     padding: 8,

@@ -51,6 +51,17 @@ const CategoryForm = () => {
     }
     await AllocateCategory();
   }
+    const processNumber = (text) => {
+    if (text[0] === "$") {
+      text = text.slice(1);
+    }
+    if (isNaN(parseFloat(text))) {
+      setAmount(0);
+    } else {
+      setAmount(parseFloat(text));
+    }
+  };
+
 
   useEffect(() => {
     if(editMode){
@@ -63,16 +74,27 @@ const CategoryForm = () => {
     , []);
 
   return (
-    <View>
-      <Text>Add Category</Text>
-      <Text>{category.name}</Text>
-      <Text>Amount:</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.h3}>Selected category:</Text>
+      <View style={globalStyles.centered}>
+        {category.icon ? (
+          <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
+            {category.icon}
+          </View>
+        ) : null
+        }
+        <Text style={globalStyles.label}>{category.name}</Text>
+      </View>
+      <View style={[ globalStyles.hr, {margin: 10}]} />
+      <Text style={globalStyles.label}>Amount:</Text>
       <TextInput
-        style={globalStyles.input}
+        style={globalStyles.inputFieldB}
         keyboardType="numeric"
-        value={amount.toString()}
-        onChangeText={(text) => isNaN(parseFloat(text)) ? setAmount(0) : setAmount(parseFloat(text))}
+        placeholder="$0.00"
+        value={"$" + amount.toString()}
+        onChangeText={(text) => processNumber(text)}
       />
+
       <Button
         title="save_category"
         onPress={() => sendData()}

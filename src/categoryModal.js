@@ -39,12 +39,12 @@ const CategoryModal = ({ isVisible, onClose, setCategory, categories, filterSele
           <View style={globalStyles.hr} />
           {filteredCategories !== undefined ? (
             filteredCategories.map((category, index) => (
-              <View>
-                <View style={{flexDirection: 'row'}} key={index}>
+              <View key={index}>
+                <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity style={{width: '100%'}} onPress={() => setCategory(category)}> 
                     <View style={globalStyles.row}>
                       {category.icon ? (
-                        <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
+                        <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
                           {category.icon}
                         </View>
                       ) : null
@@ -71,14 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     margin: 5,
-  },
-  categoryIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
   },
   backgroundPanel:{
     flex: 1,
