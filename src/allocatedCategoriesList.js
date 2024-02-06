@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import defaultCategories from '../defaultCategories';
 import globalStyles from './globalStyles';
 import { router } from 'expo-router';
@@ -13,7 +13,7 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
   const { activeBudget, budgets, setBudgets } = useGlobal();
 
   const goToDetails = (categoryId) => {
-    router.push({ pathname: '/details', params: { budgetId: activeBudget.id, categoryId: categoryId,}});
+    router.push({ pathname: '/allocatedCategoryDetails', params: { budgetId: activeBudget.id, categoryId: categoryId,}});
   }
   const goToEdit = (index, categoryId) => {
     console.log(index);

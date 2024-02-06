@@ -3,13 +3,11 @@ import { useNavigation } from 'expo-router';
 import { Text, Button, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useGlobal } from '../_layout';
 import { deleteAllData, getData, storeData } from '../../src/storage';
-import { Link } from 'expo-router';
 import globalStyles from '../../src/globalStyles';
 import CategoryModal from '../../src/categoryModal';
 import { router } from 'expo-router';
 import AllocatedCategoriesList from '../../src/allocatedCategoriesList';
 import TransactionList from '../../src/transactionsList';
-import BudgetsList from '../../src/budgetsList';
 import { Ionicons } from '@expo/vector-icons';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
@@ -24,7 +22,6 @@ export default function Home() {
   const [balance, setBalance] = useState(0);
 
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isBudgetsModalVisible, setBudgetsModalVisible] = useState(false);
 
   const [index, setIndex] = useState(0);
   const routes = [
@@ -108,7 +105,7 @@ export default function Home() {
         ) : (
           <View style={{ flex: 1 }}>
             <View style={[ globalStyles.row, globalStyles.centered ]}>
-              <TouchableOpacity onPress={()=>setBudgetsModalVisible(true)}>
+              <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
                 <View style={globalStyles.row}>
                   <Text style={globalStyles.h2}>{activeBudget.name}</Text>
                   <Ionicons name="caret-down" size={24} color="black" />
@@ -154,20 +151,12 @@ export default function Home() {
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
-                <Link style={globalStyles.text} href={"transactionsForm"}>
-                  <Text style={globalStyles.h3}>Create a new transaction</Text>
-                </Link>
                 <CategoryModal
                   isVisible={isModalVisible}
                   onClose={() => setModalVisible(false)}
                   setCategory={(category) => toAddCategory(category)}
                   categories={activeBudget.allocatedCategories}
                   filterSelected={false}
-                />
-                <BudgetsList
-                  isVisible={isBudgetsModalVisible}
-                  onSetActiveBudgetId={(budget) => updateActiveBudget(budget)}
-                  onClose={() => setBudgetsModalVisible(false)}
                 />
                 <TabView
                   style={{ height: 300 }}

@@ -50,7 +50,6 @@ const BudgetForm = ({}) => {
     }
   };
   const createBudget = async () => {
-    console.log(uuidv4());
     try {
       let newBudget = {
         id                  : uuidv4(),

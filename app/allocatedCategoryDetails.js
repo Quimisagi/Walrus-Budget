@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
-import {useGlobal} from "../_layout";
+import {useGlobal} from "./_layout";
 import {View, Text} from "react-native";
-import globalStyles from "../../src/globalStyles";
+import globalStyles from "../src/globalStyles";
 
 const AllocatedCategoryDetails = () => {
   
