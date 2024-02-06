@@ -82,7 +82,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("Transactions: ", transactions);
     if(activeBudget){
       let filtered = transactions.filter(transaction => transaction.budgetId === activeBudget.id);
       setFilteredTransactions(filtered);
@@ -155,7 +154,6 @@ export default function Home() {
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
-                <Button onPress={() => setModalVisible(true)} title="add_category" />
                 <Link style={globalStyles.text} href={"transactionsForm"}>
                   <Text style={globalStyles.h3}>Create a new transaction</Text>
                 </Link>
