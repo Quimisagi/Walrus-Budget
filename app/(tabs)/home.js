@@ -35,7 +35,7 @@ export default function Home() {
   const AllocatedCategories = () => (
     <AllocatedCategoriesList
       allocatedCategories={activeBudget.allocatedCategories}
-      transactions={filteredTransactions}
+      openModal={() => setModalVisible(true)}
     />
   )
 
@@ -155,9 +155,6 @@ export default function Home() {
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
-                <Link style={globalStyles.text} href={"budgetForm"}>
-                  <Text style={globalStyles.h3}>Create a new budget</Text>
-                </Link>
                 <Button onPress={() => setModalVisible(true)} title="add_category" />
                 <Link style={globalStyles.text} href={"transactionsForm"}>
                   <Text style={globalStyles.h3}>Create a new transaction</Text>

@@ -6,10 +6,9 @@ import globalStyles from './globalStyles';
 import { router } from 'expo-router';
 import { useGlobal } from '../app/_layout';
 import { getData, storeData } from "./storage"; 
+import { Ionicons } from '@expo/vector-icons';
 
-
-
-const AllocatedCategoriesList = ({allocatedCategories, transactions}) => {
+const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
   const [categories, setCateogires] = useState([]);
   const { activeBudget, budgets, setBudgets } = useGlobal();
 
@@ -47,6 +46,14 @@ const AllocatedCategoriesList = ({allocatedCategories, transactions}) => {
     , [allocatedCategories]);
   return (
     <View>
+      <View>
+        <TouchableOpacity style={globalStyles.buttonA} onPress={openModal}>
+          <View style={globalStyles.row}>
+            <Ionicons style={globalStyles.buttonAText} name="add-circle-outline" size={12}/>
+            <Text style={globalStyles.buttonAText}>Add category</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       { categories ? (
         categories.map((category, index) => (
           <View style={[ styles.categoryContainer, {backgroundColor: category.color} ]} key={index}>
