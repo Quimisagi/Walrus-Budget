@@ -158,6 +158,20 @@ const TransactionsForm = ({}) => {
           <Text style={[styles.btnText, selection === 1 ? { color: "white" } : null]}>Income</Text>
         </TouchableOpacity>
       </View>
+      <Text style={globalStyles.label}>Category:</Text>
+      {category ? (
+        <View>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.textStyle}>{category.name}</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Text> Select category </Text>
+      )}
+      <View style={globalStyles.hr} />
       <Text styles={globalStyles.label}>Notes:</Text>
       <TextInput
         style={globalStyles.inputField}
@@ -168,29 +182,22 @@ const TransactionsForm = ({}) => {
         <View style={globalStyles.column}>
           <Text style={globalStyles.label}>Date</Text>
           <TouchableOpacity style={globalStyles.inputField} onPress={showDatepicker}>
-            <View style={[globalStyles.dateLabel, globalStyles.row ]}>
+            <View style={[globalStyles.row ]}>
               <AntDesign name="calendar" size={16} color="black" />
-              <Text style={{marginLeft: 5}}>{date}</Text>
+              <Text style={[globalStyles.dateLabel, {marginLeft: 5} ]}>{date}</Text>
             </View>
           </TouchableOpacity>
         </View>
         <View style={globalStyles.column}>
           <Text style={globalStyles.label}>Time:</Text>
           <TouchableOpacity style={globalStyles.inputField} onPress={showTimepicker}>
-            <View style={globalStyles.dateLabel}>
+            <View style={globalStyles.row}>
               <AntDesign name="clockcircleo" size={16} color="black" />
-              <Text style={{marginLeft: 5}}>{time}</Text>
+              <Text style={[globalStyles.dateLabel, {marginLeft: 5} ]}>{time}</Text>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-      <Text>Category:</Text>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>{category.name}</Text>
-      </Pressable>
 
       <CategoryModal 
         isVisible={isModalVisible} 
@@ -233,7 +240,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#6B7280'
+    borderBottomColor: '#6B7280',
+    marginBottom: 10,
   },
   btn: {
     flex: 1,
