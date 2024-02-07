@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { useState } from 'react';
-import { View, Modal, StyleSheet, TouchableOpacity, Text, TextInput, Button, Pressable } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, TextInput, Button, Pressable } from "react-native";
 import { getData, storeData } from "../src/storage"; 
 import { useGlobal } from './_layout';
 import CategoryModal from '../src/categoryModal';
@@ -8,6 +8,8 @@ import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { v4 as uuidv4 } from 'uuid';
 import defaultCategories from '../defaultCategories';
+import globalStyles from '../src/globalStyles';
+import { AntDesign } from '@expo/vector-icons';
 
 const TransactionType = {
   EXPENSE: -1,
@@ -24,6 +26,8 @@ const TransactionsForm = ({}) => {
   const [time, setTime] = useState(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
   const [category, setCategory] = useState({});
   const [transactionType, setTransactionType] = useState(TransactionType.EXPENSE);
+
+  const [selection, setSelection] = useState(-1);
 
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -88,8 +92,18 @@ const TransactionsForm = ({}) => {
     await storeData('transactions', JSON.stringify(arrayTemp));
     setTransactions(arrayTemp);
     router.back();
-
   }
+  const processNumber = (text) => {
+    if (text[0] === "$") {
+      text = text.slice(1);
+    }
+    if (isNaN(parseFloat(text))) {
+      setAmount(0);
+    } else {
+      setAmount(parseFloat(text));
+    }
+  };
+
 
   const sendData = () => {
     let newTransaction = {
@@ -126,33 +140,50 @@ const TransactionsForm = ({}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Amountaaa:</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.label}>Amount:</Text>
       <TextInput
-        style={styles.input}
+        style={globalStyles.inputFieldB}
         keyboardType="numeric"
-        value={amount.toString()}
-        onChangeText={(text) => isNaN(parseFloat(text)) ? setAmount(0) : setAmount(parseFloat(text))}
+        placeholder="$0.00"
+        value={"$" + amount.toString()}
+        onChangeText={(text) => processNumber(text)}
       />
-
-      <Text>Notes:</Text>
+      <Text style={globalStyles.label}>Transaction Type:</Text>
+      <View style={styles.btnGroup}>
+        <TouchableOpacity style={[styles.btn, selection === -1 ? { backgroundColor: "#6B7280" } : null]} onPress={() => setSelection(-1)}>
+          <Text style={[styles.btnText, selection === -1 ? { color: "white" } : null]}>Expense</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.btn, selection === 1 ? { backgroundColor: "#6B7280" } : null]} onPress={() => setSelection(1)}>
+          <Text style={[styles.btnText, selection === 1 ? { color: "white" } : null]}>Income</Text>
+        </TouchableOpacity>
+      </View>
+      <Text styles={globalStyles.label}>Notes:</Text>
       <TextInput
-        style={styles.input}
+        style={globalStyles.inputField}
         value={notes}
         onChangeText={(text) => setNotes(text)}
       />
-
-      <Text>Date (MM/DD/YYYY):</Text>
-      <Button
-        title="Select Date"
-        onPress={showDatepicker}
-      />
-
-      <Text>Time:</Text>
-      <Button
-        title="Select Time"
-        onPress={showTimepicker}
-      />
+      <View style={globalStyles.row}>
+        <View style={globalStyles.column}>
+          <Text style={globalStyles.label}>Date</Text>
+          <TouchableOpacity style={globalStyles.inputField} onPress={showDatepicker}>
+            <View style={[globalStyles.dateLabel, globalStyles.row ]}>
+              <AntDesign name="calendar" size={16} color="black" />
+              <Text style={{marginLeft: 5}}>{date}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={globalStyles.column}>
+          <Text style={globalStyles.label}>Time:</Text>
+          <TouchableOpacity style={globalStyles.inputField} onPress={showTimepicker}>
+            <View style={globalStyles.dateLabel}>
+              <AntDesign name="clockcircleo" size={16} color="black" />
+              <Text style={{marginLeft: 5}}>{time}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
       <Text>Category:</Text>
       <Pressable
         style={[styles.button, styles.buttonOpen]}
@@ -180,11 +211,6 @@ const TransactionsForm = ({}) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
   input: {
     height: 40,
     width: 200,
@@ -203,6 +229,23 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 12,
   },
+  btnGroup: {
+    flexDirection: 'row',
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: '#6B7280'
+  },
+  btn: {
+    flex: 1,
+    borderRightWidth: 0.25,
+    borderLeftWidth: 0.25,
+    borderColor: '#6B7280'
+  },
+  btnText: {
+    textAlign: 'center',
+    paddingVertical: 16,
+    fontSize: 14
+  }
 });
 
 export default TransactionsForm;
