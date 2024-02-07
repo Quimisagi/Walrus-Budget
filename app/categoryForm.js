@@ -1,15 +1,17 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import defaultCategories from '../defaultCategories';
 import globalStyles from '../src/globalStyles';
 import { useGlobal } from './_layout';
 import { storeData } from '../src/storage';
+import { AntDesign } from '@expo/vector-icons';
 
 const CategoryForm = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
+  const navigation = useNavigation();
   const { categoryId, editMode, index} = params;
 
   const [category, setCategory] = useState({});
@@ -62,7 +64,6 @@ const CategoryForm = () => {
     }
   };
 
-
   useEffect(() => {
     if(editMode){
       let categoryToEdit = activeBudget.allocatedCategories[index];
@@ -72,6 +73,19 @@ const CategoryForm = () => {
     setCategory(category);
   }
     , []);
+
+    useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ margin: 15 }}
+          onPress={sendData}
+        >
+          <AntDesign name="check" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={globalStyles.container}>
@@ -93,11 +107,6 @@ const CategoryForm = () => {
         placeholder="$0.00"
         value={"$" + amount.toString()}
         onChangeText={(text) => processNumber(text)}
-      />
-
-      <Button
-        title="save_category"
-        onPress={() => sendData()}
       />
     </View>
   );

@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, TextInput, Button, Pressable } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text, TextInput, Pressable } from "react-native";
 import { getData, storeData } from "../src/storage"; 
 import { useGlobal } from './_layout';
 import CategoryModal from '../src/categoryModal';
@@ -18,6 +18,7 @@ const TransactionType = {
 
 const TransactionsForm = ({}) => {
   const params = useLocalSearchParams();
+  const navigation = useNavigation();
 
   const [amount, setAmount] = useState(0); 
   const [notes, setNotes] = useState('');
@@ -139,6 +140,19 @@ const TransactionsForm = ({}) => {
     }
   }, []);
 
+    useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ margin: 15 }}
+          onPress={sendData}
+        >
+          <AntDesign name="check" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Amount:</Text>
@@ -205,13 +219,6 @@ const TransactionsForm = ({}) => {
         setCategory={(category) => selectCategory (category)}
         categories={activeBudget.allocatedCategories}
         filterSelected={true}
-      />
-      <Button
-        title="Create Transaction"
-        disabled={Object.keys(category).length === 0}
-        onPress={() => {
-          sendData();
-        }}
       />
     </View>
   );

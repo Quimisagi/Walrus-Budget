@@ -56,10 +56,18 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
       </View>
       { categories ? (
         categories.map((category, index) => (
-          <View style={[ styles.categoryContainer, {backgroundColor: category.color} ]} key={index}>
+          <View style={styles.categoryContainer} key={index}>
             <TouchableOpacity style={globalStyles.row} onPress={() => goToDetails(category.id)}>
-              <View style={[globalStyles.column, styles.categoryName ]}>
-                <Text style={globalStyles.h3}>{index} {category.name}</Text>
+              <View style={globalStyles.column}>
+                <View style={globalStyles.row}>
+                  {category.icon ? (
+                    <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
+                      {category.icon}
+                    </View>
+                  ) : null
+                  }
+                  <Text style={globalStyles.h3}>{category.name}</Text>
+                </View>
               </View>
               <View style={styles.column}>
                 <Text>{category.amount}</Text>
@@ -83,6 +91,7 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
 const styles = StyleSheet.create({
   categoryContainer: {
     padding: 10,
+    backgroundColor: '#EAEAEA',
   },
   categoryName: {
     flex: 1,

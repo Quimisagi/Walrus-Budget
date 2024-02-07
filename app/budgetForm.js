@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import { storeData, getData } from '../src/storage';
 import 'react-native-get-random-values';
@@ -12,7 +12,9 @@ import { AntDesign } from '@expo/vector-icons';
 
 const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
 
-const BudgetForm = ({}) => {
+const BudgetForm = () => {
+  const navigation = useNavigation();
+
   const [begginingBalance, setBegginingBalance] = useState(0);
   let currentDate = new Date();
   const [date, setDate] = useState(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
@@ -113,6 +115,19 @@ const BudgetForm = ({}) => {
   }
     , []);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ margin: 15 }}
+          onPress={sendData}
+        >
+          <AntDesign name="check" size={24} color="black" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text style={globalStyles.inputFieldLabel}>Date:</Text>
@@ -145,9 +160,6 @@ const BudgetForm = ({}) => {
         value={"$" + begginingBalance.toString()}
         onChangeText={(text) => processNumber(text)}
       />
-      <TouchableOpacity style={globalStyles.actionButton} onPress={sendData}>
-        <Text style={globalStyles.actionButtonText}>Submit</Text>
-      </TouchableOpacity>
     </View>
   );
 };
