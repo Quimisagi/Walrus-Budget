@@ -152,21 +152,16 @@ export default function Home() {
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
+                <AllocatedCategoriesList
+                  allocatedCategories={activeBudget.allocatedCategories}
+                  openModal={() => setModalVisible(true)}
+                />
                 <CategoryModal
                   isVisible={isModalVisible}
                   onClose={() => setModalVisible(false)}
                   setCategory={(category) => toAddCategory(category)}
                   categories={activeBudget.allocatedCategories}
                   filterSelected={false}
-                />
-                <TabView
-                  style={{ height: 300 }}
-                  navigationState={{ index: index, routes: routes }}
-                  renderScene={SceneMap({
-                    allocatedCategories: AllocatedCategories,
-                    transactions: Transactions
-                  })}
-                  onIndexChange={(index) => setIndex(index)}
                 />
               </View>
             </ScrollView>

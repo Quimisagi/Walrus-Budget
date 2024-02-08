@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-const ICON_SIZE = 24; 
+const ICON_SIZE = 30; 
 
 const defaultCategories = [
   {

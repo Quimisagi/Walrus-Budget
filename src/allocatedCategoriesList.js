@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import defaultCategories from '../defaultCategories';
 import globalStyles from './globalStyles';
 import { router } from 'expo-router';
@@ -45,53 +45,54 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
   }
     , [allocatedCategories]);
   return (
-    <View>
-      <View>
-        <TouchableOpacity style={globalStyles.buttonA} onPress={openModal}>
-          <View style={globalStyles.row}>
-            <Ionicons style={globalStyles.buttonAText} name="add-circle-outline" size={12}/>
-            <Text style={globalStyles.buttonAText}>Add category</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      { categories ? (
-        categories.map((category, index) => (
-          <View style={styles.categoryContainer} key={index}>
-            <TouchableOpacity style={globalStyles.row} onPress={() => goToDetails(category.id)}>
-              <View style={globalStyles.column}>
-                <View style={globalStyles.row}>
-                  {category.icon ? (
-                    <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
-                      {category.icon}
-                    </View>
-                  ) : null
-                  }
-                  <Text style={globalStyles.h3}>{category.name}</Text>
+    <View style={styles.categoriesContainer}>
+      <View> 
+        <Text style={globalStyles.h2} >Categories</Text>
+        <View>
+          <ScrollView horizontal={true}>
+            <TouchableOpacity onPress={openModal}>
+              <View style={styles.categoryContainer}>
+                <View style={styles.dottedCategoryContainer}>
+                <Ionicons name="add-sharp" size={40} color={'#bcc1ca'}/>
                 </View>
+              <Text style={globalStyles.centered}>Add</Text>
               </View>
-              <View style={styles.column}>
-                <Text>{category.amount}</Text>
-                <TouchableOpacity onPress={() => goToEdit(index, category.id)}>
-                  <View style={[styles.button, { backgroundColor: '#000' }]} />
+    </TouchableOpacity>
+            { categories ? (
+              categories.map((category, index) => (
+                <TouchableOpacity style={styles.categoryContainer} key={index}>
+                  <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
+                    {category.icon}
+                  </View>
+                  <Text style={globalStyles.centered}>100%</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => deleteCategory(index)}>
-                  <View style={[styles.button, { backgroundColor: '#E31' }]} />
-                </TouchableOpacity>
+              ))) : (<Text>No allocated categories</Text>)
+            }
+          </ScrollView>
+        </View>
 
-              </View>
-              <View style={globalStyles.hr}/>
-            </TouchableOpacity>
-          </View>
-        ))) : (<Text>No allocated categories</Text>)
-      }
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   categoryContainer: {
-    padding: 10,
-    backgroundColor: '#EAEAEA',
+    padding: 5,
+  },
+  categoriesContainer: {
+    flexDirection: 'row',
+    padding: 10
+  },
+  dottedCategoryContainer:{
+    width: 60,
+    height: 60,
+    borderRadius: 30, 
+    borderWidth: 3,
+    borderColor: '#bcc1ca',
+    borderStyle: 'dotted',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   categoryName: {
     flex: 1,

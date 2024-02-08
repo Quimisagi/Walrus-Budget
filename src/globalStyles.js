@@ -4,32 +4,33 @@ import * as Font from 'expo-font';
 
 Font.loadAsync({
   'PlusJakarta': require('./fonts/PlusJakartaSans.ttf'),
+  'Poppins': require('./fonts/Poppins-SemiBold.ttf'),
 });
 
 const globalStyles = StyleSheet.create({
   h1: {
     fontSize: 24,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     fontWeight: 'bold',
     marginBottom: 20,
   },
   h2: {
-    fontSize: 20,
-    fontFamily: 'Outfit',
-    fontWeight: 'bold',
+    fontSize: 17,
+    fontFamily: 'Poppins',
+    marginTop: 20,
     marginBottom: 20,
   },
   h3: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'PlusJakarta',
   },
   text: {
     fontSize: 16,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
   },
   label: {
     fontSize: 16,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     marginBottom: 5,
   },
   input: {
@@ -42,12 +43,11 @@ const globalStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   categoryIcon: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
   },
   column: {
     flex: 1,
@@ -66,9 +66,13 @@ const globalStyles = StyleSheet.create({
     margin: 12,
   },
   hr: {
-    borderBottomColor: 'gray',
+    borderBottomColor: '#bcc1ca',
     borderBottomWidth: 1,
+    width: '90%',
+    marginTop: 10,
     marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   centered: {
     justifyContent: "center",
@@ -84,7 +88,7 @@ const globalStyles = StyleSheet.create({
   },
   inputFieldLabel: {
     fontSize: 16,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     marginBottom: 5,
   },
   inputField: {
@@ -94,11 +98,11 @@ const globalStyles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     fontSize: 16,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
   },
   dateLabel:{
     fontSize: 16,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     paddingTop: 4,
   },
   inputFieldB: {
@@ -108,7 +112,7 @@ const globalStyles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     fontSize: 32,
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
   },
   buttonA: {
     alignItems: 'center',
@@ -120,7 +124,7 @@ const globalStyles = StyleSheet.create({
     width: '95%',
   },
   buttonAText: {
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     color: '#379ae6',
     fontSize: 16,
   },
@@ -133,7 +137,7 @@ const globalStyles = StyleSheet.create({
     borderRadius: 10,
   },
   actionButtonText: {
-    fontFamily: 'Outfit',
+    fontFamily: 'PlusJakarta',
     color: '#ffffff',
     fontSize: 16,
   },
