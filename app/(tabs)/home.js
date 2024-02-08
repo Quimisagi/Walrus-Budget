@@ -8,8 +8,15 @@ import CategoryModal from '../../src/categoryModal';
 import { router } from 'expo-router';
 import AllocatedCategoriesList from '../../src/allocatedCategoriesList';
 import TransactionList from '../../src/transactionsList';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { TabView, SceneMap } from 'react-native-tab-view';
+
+import * as Font from 'expo-font';
+
+Font.loadAsync({
+  'PlusJakarta': require('../../src/fonts/PlusJakartaSans.ttf'),
+});
+
 
 export default function Home() {
   const navigation = useNavigation();
@@ -117,37 +124,31 @@ export default function Home() {
                 <View style={globalStyles.row}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.h3}>beggining_balance_label</Text>
+                      <Text style={globalStyles.h3}>Balance:</Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.text}> ${activeBudget.begginingBalance}</Text>
+                      <Text style={styles.balance}> ${balance}</Text>
                     </View>
                   </View>
                 </View>
                 <View style={globalStyles.row}>
-                  <View style={globalStyles.column}>
-                    <View style={[ globalStyles.row, globalStyles.centered ]}>
-                      <Text style={globalStyles.text}>${expenses} </Text>
+                  <View style={[ globalStyles.column, globalStyles.centered ]}>
+                    <View style={globalStyles.row}>
+                      <Text style={styles.totalExpenses}>${expenses}</Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.centered}>expenses_label:</Text>
+                      <Text style={globalStyles.h3}>Expenses</Text>
                     </View>
+                    <Feather style={styles.totalExpenses} name="arrow-up-right"/>
                   </View>
-                  <View style={globalStyles.column}>
-                    <View style={[ globalStyles.row, globalStyles.centered ]}>
-                      <Text style={globalStyles.text}>${balance}</Text>
+                  <View style={[ globalStyles.column, globalStyles.centered ]}>
+                    <View style={globalStyles.row}>
+                      <Text style={styles.totalIncome}>${income}</Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.centered}>balance_label:</Text>
+                      <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Income</Text>
                     </View>
-                  </View>
-                  <View style={globalStyles.column}>
-                    <View style={[ globalStyles.row, globalStyles.centered ]}>
-                      <Text style={globalStyles.text}>${income}</Text>
-                    </View>
-                    <View style={globalStyles.row}>
-                      <Text style={globalStyles.centered}>income_label:</Text>
-                    </View>
+                    <Feather style={styles.totalIncome} name="arrow-down-left"/>
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
@@ -201,4 +202,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  balance: {
+    fontSize: 48,
+    fontFamily: 'PlusJakarta',
+  },
+  totalExpenses: {
+    fontSize: 18,
+    fontFamily: 'PlusJakarta',
+    color: 'red',
+  },
+  totalIncome: {
+    fontSize: 18,
+    fontFamily: 'PlusJakarta',
+    color: 'green',
+  }
 });

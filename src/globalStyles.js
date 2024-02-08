@@ -1,5 +1,10 @@
 import {StyleSheet} from 'react-native';
-import './fonts/Outfit-VariableFont_wght.ttf';
+import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
+
+Font.loadAsync({
+  'PlusJakarta': require('./fonts/PlusJakartaSans.ttf'),
+});
 
 const globalStyles = StyleSheet.create({
   h1: {
@@ -16,8 +21,7 @@ const globalStyles = StyleSheet.create({
   },
   h3: {
     fontSize: 16,
-    fontFamily: 'Outfit',
-    marginBottom: 20,
+    fontFamily: 'PlusJakarta',
   },
   text: {
     fontSize: 16,
@@ -36,7 +40,6 @@ const globalStyles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    marginBottom: 10,
   },
   categoryIcon: {
     width: 40,
