@@ -36,17 +36,6 @@ export default function Home() {
     { key: 'transactions', title: 'Transactions' },
   ];
 
-  const AllocatedCategories = () => (
-    <AllocatedCategoriesList
-      allocatedCategories={activeBudget.allocatedCategories}
-      openModal={() => setModalVisible(true)}
-    />
-  )
-
-  const Transactions = () => (
-    <TransactionList filteredTransactions={filteredTransactions}/>
-  )
-
   const calculateBalance = (balance, transactions) => {
     transactions.forEach(transaction => {
       balance += transaction.amount * transaction.transactionType;
@@ -156,6 +145,8 @@ export default function Home() {
                   allocatedCategories={activeBudget.allocatedCategories}
                   openModal={() => setModalVisible(true)}
                 />
+                <TransactionList filteredTransactions={filteredTransactions}/>
+
                 <CategoryModal
                   isVisible={isModalVisible}
                   onClose={() => setModalVisible(false)}

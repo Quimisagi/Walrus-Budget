@@ -31,6 +31,7 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
     activeBudget.allocatedCategories = allocatedCategoriesTemp;
   }
   useEffect(() => {
+    console.log(allocatedCategories);
     setCateogires([]);
     if(allocatedCategories){
       let categoriesTemp = [];

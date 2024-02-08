@@ -36,7 +36,7 @@ const TransactionList = ({filteredTransactions}) => {
     , [filteredTransactions]);
   return (
     <View>
-      <Text>Transactions:</Text>
+      <Text style={globalStyles.h2}>Transactions</Text>
       {transactionsWithCategories.map((transaction, index) => (
         <View style={globalStyles.row} key={index}>
           <View style={globalStyles.column}>

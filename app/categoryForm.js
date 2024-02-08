@@ -20,9 +20,10 @@ const CategoryForm = () => {
   const { activeBudget, setActiveBudget, budgets, setBudgets } = useGlobal();
 
   const AllocateCategory = async () => {
+    console.log("Amount: ", amount);
     const newAllocatedCategory = {
       amount: amount,
-      categoryId: category.id
+      categoryId: categoryId,
     }
     const budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
     if (budgetIndex !== -1) {
@@ -58,9 +59,9 @@ const CategoryForm = () => {
       text = text.slice(1);
     }
     if (isNaN(parseFloat(text))) {
-      setAmount(0);
+      return 0;
     } else {
-      setAmount(parseFloat(text));
+      return parseFloat(text);
     }
   };
 
@@ -85,7 +86,7 @@ const CategoryForm = () => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, amount]);
 
   return (
     <View style={globalStyles.container}>
@@ -106,7 +107,7 @@ const CategoryForm = () => {
         keyboardType="numeric"
         placeholder="$0.00"
         value={"$" + amount.toString()}
-        onChangeText={(text) => processNumber(text)}
+        onChangeText={(text) => setAmount(processNumber(text))}
       />
     </View>
   );
