@@ -151,7 +151,7 @@ const TransactionsForm = ({}) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, amount, notes, date, time, category, transactionType]);
 
   return (
     <View style={globalStyles.container}>

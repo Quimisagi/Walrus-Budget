@@ -6,6 +6,7 @@ import globalStyles from '../src/globalStyles';
 import { router } from "expo-router";
 import { useGlobal } from '../app/_layout';
 import { getData, storeData } from "./storage"; 
+import { Feather } from '@expo/vector-icons';
 
 
 const TransactionList = ({filteredTransactions}) => {
@@ -37,26 +38,34 @@ const TransactionList = ({filteredTransactions}) => {
   return (
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>
-      {transactionsWithCategories.map((transaction, index) => (
-        <View style={globalStyles.row} key={index}>
-          <View style={globalStyles.column}>
-            {transaction.category ? (transaction.category.icon) : (<Text>no icon</Text>)}
-            <Text>{transaction.notes}</Text>
+        {transactionsWithCategories.map((transaction, index) => (
+        <View style={styles.transactionContainer} key={index}>
+          <View style={globalStyles.row}>
+            <View style={[ globalStyles.column, { flex: 1} ]}>
+              {transaction.category ? 
+                <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color, transform: [{scale: 0.85}]}]}>
+                  {transaction.category.icon}
+                </View>
+                : (<Text>no icon</Text>)}
+            </View>
+            <View style={[ globalStyles.column, { flex: 2 } ]}>
+              {transaction.category ? 
+                <Text style={globalStyles.h3}>{transaction.category.name}</Text> : <Text style={[globalStyles.h3, { color: '#bcc1ca' }]}>(No category)</Text>}
+              {transaction.notes ? 
+                <Text style={globalStyles.h3}>{transaction.notes}</Text> : <Text style={[globalStyles.h3, { color: '#bcc1ca' }]}>(No description)</Text>}
+              <View style={globalStyles.row}>
+                <Text>{transaction.date} </Text>
+                <Text> {transaction.time}</Text>
+              </View>
+            </View>
+            <View style={[ globalStyles.column, { flex: 1 } ]}>
+              <View style={[ globalStyles.row, { alignContent: 'flex-end'} ]}>
+                <Text style={globalStyles.expense}>-${transaction.amount}</Text>
+              </View>
+            </View>
           </View>
-          <View style={globalStyles.column}>
-            <Text>{transaction.amount}</Text>
-            <Text>{transaction.date}</Text>
-          </View>
-          <Text>{transaction.transactionType}</Text>
-          <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
-            <View style={[styles.button, { backgroundColor: '#000' }]} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteTransaction(transaction.id)}>
-            <View style={[styles.button, { backgroundColor: '#E31' }]} />
-          </TouchableOpacity>
-
         </View>
-      ))}
+        ))}
     </View>
   );
 }
@@ -67,6 +76,12 @@ const styles = StyleSheet.create({
     height: 30, 
     borderRadius: 8,
   },
+  transactionContainer: {
+    marginTop: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10
+  },
+
 });
 
 export default TransactionList;

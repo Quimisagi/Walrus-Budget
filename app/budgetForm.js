@@ -126,7 +126,7 @@ const BudgetForm = () => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, begginingBalance, name, date]);
 
   return (
     <View style={styles.container}>

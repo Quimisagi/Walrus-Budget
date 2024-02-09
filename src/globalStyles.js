@@ -151,6 +151,16 @@ const globalStyles = StyleSheet.create({
     zIndex: 10, 
     padding: 20,
   },
+  expense: {
+    color: 'red',
+    fontSize: 14,
+    fontFamily: 'PlusJakarta',
+  },
+  income: {
+    color: 'green',
+    fontSize: 14,
+    fontFamily: 'PlusJakarta',
+  },
 });
 
 export default globalStyles;

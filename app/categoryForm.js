@@ -20,7 +20,6 @@ const CategoryForm = () => {
   const { activeBudget, setActiveBudget, budgets, setBudgets } = useGlobal();
 
   const AllocateCategory = async () => {
-    console.log("Amount: ", amount);
     const newAllocatedCategory = {
       amount: amount,
       categoryId: categoryId,
