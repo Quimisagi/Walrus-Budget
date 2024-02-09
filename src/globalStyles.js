@@ -28,6 +28,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'PlusJakarta',
   },
+  secondaryText: {
+    fontSize: 12,
+    fontFamily: 'PlusJakarta',
+    color: '#9095a0',
+  },
   label: {
     fontSize: 16,
     fontFamily: 'PlusJakarta',

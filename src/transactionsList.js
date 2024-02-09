@@ -48,18 +48,20 @@ const TransactionList = ({filteredTransactions}) => {
                 </View>
                 : (<Text>no icon</Text>)}
             </View>
-            <View style={[ globalStyles.column, { flex: 2 } ]}>
+            <View style={[ globalStyles.column, { flex: 4 } ]}>
               {transaction.category ? 
-                <Text style={globalStyles.h3}>{transaction.category.name}</Text> : <Text style={[globalStyles.h3, { color: '#bcc1ca' }]}>(No category)</Text>}
+                <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
+                <Text style={globalStyles.secondaryText}>(No category)</Text>}
               {transaction.notes ? 
-                <Text style={globalStyles.h3}>{transaction.notes}</Text> : <Text style={[globalStyles.h3, { color: '#bcc1ca' }]}>(No description)</Text>}
+                <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
               <View style={globalStyles.row}>
                 <Text>{transaction.date} </Text>
                 <Text> {transaction.time}</Text>
               </View>
             </View>
-            <View style={[ globalStyles.column, { flex: 1 } ]}>
-              <View style={[ globalStyles.row, { alignContent: 'flex-end'} ]}>
+            <View style={[ globalStyles.column, { flex: 2 } ]}>
+              <View style={[ globalStyles.row, styles.prueba ]}>
                 <Text style={globalStyles.expense}>-${transaction.amount}</Text>
               </View>
             </View>
@@ -81,6 +83,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10
   },
+  prueba: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 
 });
 
