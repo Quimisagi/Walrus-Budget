@@ -44,6 +44,10 @@ const globalStyles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
   },
+  balance: {
+    fontSize: 48,
+    fontFamily: 'PlusJakarta',
+  },
   row: {
     flexDirection: 'row',
   },

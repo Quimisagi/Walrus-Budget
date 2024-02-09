@@ -54,14 +54,18 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
             <TouchableOpacity onPress={openModal}>
               <View style={styles.categoryContainer}>
                 <View style={styles.dottedCategoryContainer}>
-                <Ionicons name="add-sharp" size={40} color={'#bcc1ca'}/>
+                  <Ionicons name="add-sharp" size={40} color={'#bcc1ca'}/>
                 </View>
-              <Text style={globalStyles.centered}>Add</Text>
+                <Text style={globalStyles.centered}>Add</Text>
               </View>
-    </TouchableOpacity>
+            </TouchableOpacity>
             { categories ? (
               categories.map((category, index) => (
-                <TouchableOpacity style={styles.categoryContainer} key={index}>
+                <TouchableOpacity 
+                  style={styles.categoryContainer}
+                  key={index}
+                  onPress={() => goToDetails(category.categoryId)}
+                >
                   <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
                     {category.icon}
                   </View>

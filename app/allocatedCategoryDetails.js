@@ -4,6 +4,7 @@ import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "./_layout";
 import {View, Text} from "react-native";
 import globalStyles from "../src/globalStyles";
+import defaultCategories from "../defaultCategories";
 
 const AllocatedCategoryDetails = () => {
   
@@ -19,10 +20,14 @@ const AllocatedCategoryDetails = () => {
   const [category, setCategory] = useState({})
 
   useEffect(() => {
-    const categoryTemp = activeBudget.allocatedCategories.find(category => category.id === categoryId);
+    let categoryTemp = activeBudget.allocatedCategories.find(category => category.categoryId === parseInt(categoryId));
+    const defaultCategory = defaultCategories.find(category => category.id === parseInt(categoryId));
+    categoryTemp = Object.assign({}, categoryTemp, defaultCategory);
     setCategory(categoryTemp);
+    console.log("Transactions?", transactions)
     if(transactions){
-      const temp = transactions.filter(transaction => transaction.categoryId === categoryId && transaction.budgetId === budgetId);
+      const temp = transactions.filter(transaction => transaction.categoryId === parseInt(categoryId) && transaction.budgetId === budgetId);
+      console.log(temp);
       setFilteredTransactions(temp);
     }
   }, []
@@ -30,9 +35,15 @@ const AllocatedCategoryDetails = () => {
 
   return (
     <View>
-      {category ? (
-        <Text>category.name</Text>
-      ) : null }
+      <View style={globalStyles.row}>
+        <View style={[ globalStyles.categoryIcon, {backgroundColor: category.color} ]}>
+          {category.icon}
+        </View>
+        <Text style={globalStyles.h1}>{category.name}</Text>
+      </View>
+      <View style={globalStyles.row}>
+        <Text style={globalStyles.balance}>${category.amount}</Text>
+      </View>
       {filteredTransactions.map((transaction) => (
         <View key={transaction.id}>
           <View style={globalStyles.row}>

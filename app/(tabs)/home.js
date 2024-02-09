@@ -116,7 +116,7 @@ export default function Home() {
                       <Text style={globalStyles.h3}>Balance:</Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <Text style={styles.balance}> ${balance}</Text>
+                      <Text style={globalStyles.balance}> ${balance}</Text>
                     </View>
                   </View>
                 </View>

@@ -22,7 +22,7 @@ const CategoryForm = () => {
   const AllocateCategory = async () => {
     const newAllocatedCategory = {
       amount: amount,
-      categoryId: categoryId,
+      categoryId: parseInt( categoryId ),
     }
     const budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
     if (budgetIndex !== -1) {
@@ -69,7 +69,7 @@ const CategoryForm = () => {
       let categoryToEdit = activeBudget.allocatedCategories[index];
       setAmount(categoryToEdit.amount);
     }
-    let category = defaultCategories.find(category => category.id === categoryId);
+    let category = defaultCategories.find(category => category.id === parseInt( categoryId ));
     setCategory(category);
   }
     , []);
