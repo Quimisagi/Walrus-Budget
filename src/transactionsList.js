@@ -39,7 +39,7 @@ const TransactionList = ({filteredTransactions}) => {
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>
         {transactionsWithCategories.map((transaction, index) => (
-        <View style={styles.transactionContainer} key={index}>
+        <View style={globalStyles.transactionContainer} key={index}>
           <View style={globalStyles.row}>
             <View style={[ globalStyles.column, { flex: 1} ]}>
               {transaction.category ? 
@@ -77,11 +77,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30, 
     borderRadius: 8,
-  },
-  transactionContainer: {
-    marginTop: 5,
-    backgroundColor: '#fff',
-    borderRadius: 10
   },
   prueba: {
     flex: 1,

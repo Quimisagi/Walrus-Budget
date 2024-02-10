@@ -24,6 +24,10 @@ const globalStyles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'PlusJakarta',
   },
+  amount: {
+    fontSize: 18,
+    fontFamily: 'PlusJakarta',
+  },
   text: {
     fontSize: 16,
     fontFamily: 'PlusJakarta',
@@ -32,6 +36,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'PlusJakarta',
     color: '#9095a0',
+  },
+    transactionContainer: {
+    marginTop: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10
   },
   label: {
     fontSize: 16,
