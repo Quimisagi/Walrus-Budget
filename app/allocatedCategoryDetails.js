@@ -8,7 +8,6 @@ import defaultCategories from "../defaultCategories";
 import { StyleSheet } from "react-native";
 import { Feather } from '@expo/vector-icons';
 
-
 const AllocatedCategoryDetails = () => {
   
   const router = useRouter();
@@ -23,6 +22,11 @@ const AllocatedCategoryDetails = () => {
   const [category, setCategory] = useState({})
 
   const [spent, setSpent] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+
+  const calculatePercentage = (spent, budgeted) => {
+    return Math.round((spent / budgeted) * 100);
+  }
 
   useEffect(() => {
     let categoryTemp = activeBudget.allocatedCategories.find(category => category.categoryId === parseInt(categoryId));
@@ -39,6 +43,10 @@ const AllocatedCategoryDetails = () => {
   }, []
   ) 
 
+  useEffect(() => {
+    setPercentage(calculatePercentage(spent, category.amount));
+  }, [spent, category.amount]);
+
   return (
     <View style={styles.container}>
       <View style={globalStyles.row}>
@@ -48,23 +56,30 @@ const AllocatedCategoryDetails = () => {
           </View>
         </View>
         <View style={[ globalStyles.column, { flex: 5} ]}>
-          <Text style={globalStyles.h1}>{category.name}</Text>
+          <Text>{percentage}% spent</Text>
+          <View style={styles.progressBar}> 
+            {percentage >= 100 ? 
+              <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
+              <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
+            }
+          </View>
+          <View style={globalStyles.row}>
+            <View style={globalStyles.column}>
+              <Text style={globalStyles.h3}>${spent}</Text>
+              <Text style={globalStyles.text}>Spent</Text>
+            </View>
+            <View style={globalStyles.column}>
+              <Text style={globalStyles.h3}>${category.amount - spent}</Text>
+              <Text style={globalStyles.text}>Remaining</Text>
+            </View>
+          </View>
         </View>
       </View>
-      <View style={globalStyles.row}>
-        <View style={globalStyles.column}>
-          <Text style={globalStyles.h3}>Spent</Text>
-          <Text style={globalStyles.amount}>${spent}</Text>
-        </View>
-        <View style={globalStyles.column}>
-          <Text style={globalStyles.h3}>Budgeted</Text>
-          <Text style={globalStyles.amount}>${category.amount}</Text>
-        </View>
-        <View style={globalStyles.column}>
-          <Text style={globalStyles.h3}>Remaining</Text>
-          <Text style={globalStyles.amount}>${category.amount - spent}</Text>
-        </View>
+      <View style={globalStyles.centered}>
+        <Text style={globalStyles.label}>Budgeted</Text>
+        <Text style={globalStyles.balance}>${category.amount}</Text>
       </View>
+      <View style={globalStyles.hr}/>
       {filteredTransactions.map((transaction) => (
         <View style={globalStyles.transactionContainer} key={transaction.id}>
           <View style={globalStyles.row}>
@@ -94,6 +109,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
   },
+  progressBar: {
+    height: 6.5,
+    width: '100%',
+    borderRadius: 10,
+    backgroundColor: '#f2f',
+  },
+  totalBar: {
+    height: 6.5,
+    borderRadius: 10,
+    zIndex: 10,
+  }
 });
 
 

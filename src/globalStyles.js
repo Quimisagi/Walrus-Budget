@@ -29,7 +29,7 @@ const globalStyles = StyleSheet.create({
     fontFamily: 'PlusJakarta',
   },
   text: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: 'PlusJakarta',
   },
   secondaryText: {
