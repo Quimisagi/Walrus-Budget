@@ -14,32 +14,22 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
   const [categories, setCateogires] = useState([]);
   const { activeBudget, budgets, setBudgets } = useGlobal();
 
-  const goToDetails = (categoryId) => {
-    router.push({ pathname: '/allocatedCategoryDetails', params: { budgetId: activeBudget.id, categoryId: categoryId,}});
+  const goToDetails = (category) => {
+    router.push({ pathname: '/allocatedCategoryDetails', params: { id: category.id,  budgetId: activeBudget.id, categoryId: category.categoryId,}});
   }
   const goToEdit = (index, categoryId) => {
     console.log(index);
     router.push({ pathname: '/addCategory', params: { categoryId: categoryId, editMode: true, index: index} });
   }
 
-  const deleteCategory = async (index) => {
-    let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
-    allocatedCategoriesTemp.splice(index, 1);
-    let budgetsCopy = [...budgets];
-    let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
-    budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
-    await storeData('budgets', JSON.stringify(budgetsCopy));
-    setBudgets(budgetsCopy);
-    activeBudget.allocatedCategories = allocatedCategoriesTemp;
-  }
   useEffect(() => {
-    console.log(allocatedCategories);
     setCateogires([]);
     if(allocatedCategories){
       let categoriesTemp = [];
       allocatedCategories.map(allocatedCategory => {
         const categoryData = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
         const category = Object.assign({}, allocatedCategory, categoryData)
+        category.id = allocatedCategory.id;
         categoriesTemp = [...categoriesTemp, category];
       }
       );
@@ -65,7 +55,7 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
               categories.map((category, index) => (
                 <TouchableOpacity 
                   key={index}
-                  onPress={() => goToDetails(category.categoryId)}
+                  onPress={() => goToDetails(category)}
                 >
                   <CircularProgress
                     percentage={35}

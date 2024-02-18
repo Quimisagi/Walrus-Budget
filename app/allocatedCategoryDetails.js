@@ -1,13 +1,17 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "../utils/globalProvider";
-import {View, Text} from "react-native";
+import {View, Text, TouchableOpacity, TextInput } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import defaultCategories from "../utils/defaultCategories";
 import { StyleSheet } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import { calculatePercentage } from "../utils/numberUtils";
+import { AntDesign } from '@expo/vector-icons';
+import { processMoneyValue } from "../utils/numberUtils";
+import { storeData } from "../utils/storage"; 
+
 
 const AllocatedCategoryDetails = () => {
   
@@ -15,15 +19,46 @@ const AllocatedCategoryDetails = () => {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
-  const { transactions, activeBudget } = useGlobal();
+  const { budgets, setBudgets, transactions, activeBudget } = useGlobal();
 
-  const {budgetId, categoryId} = params;
+  const {id, budgetId, categoryId} = params;
 
   const [filteredTransactions, setFilteredTransactions] = useState([])
   const [category, setCategory] = useState({})
 
   const [spent, setSpent] = useState(0);
   const [percentage, setPercentage] = useState(0);
+
+  const [editMode, setEditMode] = useState(false);
+  const [amount, setAmount] = useState(0);
+
+  const deleteCategory = async () => {
+    let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
+    let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
+    allocatedCategoriesTemp.splice(categoryIndex, 1);
+    let budgetsCopy = [...budgets];
+    let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
+    budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
+    await storeData('budgets', JSON.stringify(budgetsCopy));
+    setBudgets(budgetsCopy);
+    await storeData('activeBudget', JSON.stringify(activeBudget));
+    activeBudget.allocatedCategories = allocatedCategoriesTemp;
+    router.back();
+  }
+
+  const editCategoryAmount = async () => {
+    let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
+    let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
+    allocatedCategoriesTemp[categoryIndex].amount = amount;
+    let budgetsCopy = [...budgets];
+    let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
+    budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
+    await storeData('budgets', JSON.stringify(budgetsCopy));
+    setBudgets(budgetsCopy);
+    await storeData('activeBudget', JSON.stringify(activeBudget));
+    activeBudget.allocatedCategories = allocatedCategoriesTemp;
+    setEditMode(false);
+  }
 
   useEffect(() => {
     let categoryTemp = activeBudget.allocatedCategories.find(category => category.categoryId === parseInt(categoryId));
@@ -37,19 +72,33 @@ const AllocatedCategoryDetails = () => {
       temp.map(transaction => spentTemp += transaction.amount);
       setSpent(spentTemp);
     }
-  }, []
+  }, [budgets]
   ) 
 
   useEffect(() => {
     setPercentage(calculatePercentage(spent, category.amount));
-  }, [spent, category.amount]);
+  }, [spent, amount]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ margin: 15 }}
+          onPress={deleteCategory}
+        >
+          <AntDesign name="check" size={24} color="red" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
 
   return (
     <View style={styles.container}>
       <View style={globalStyles.row}>
         <View style={[ globalStyles.column, {flex: 1} ]}>
           <View style={[ globalStyles.categoryIcon, globalStyles.centered, {backgroundColor: category.color, transform: [{scale: 1.3}]} ]}>
-          {category.icon}
+            {category.icon}
           </View>
         </View>
         <View style={[ globalStyles.column, { flex: 4} ]}>
@@ -75,8 +124,32 @@ const AllocatedCategoryDetails = () => {
         </View>
       </View>
       <View style={globalStyles.centered}>
-        <Text style={globalStyles.label}>Budgeted</Text>
-        <Text style={globalStyles.balance}>${category.amount}</Text>
+        <Text style={globalStyles.text}>Budgeted</Text>
+        {editMode ? (
+          <View style={globalStyles.row}>
+            <TextInput
+              style={[ globalStyles.inputField, {width: '80%', alignContent: 'center'} ]}
+              keyboardType="numeric"
+              placeholder="$0.00"
+              value={"$" + amount.toString()}
+              onChangeText={(text) => setAmount(processMoneyValue(text))}
+            />
+            <TouchableOpacity onPress={() => editCategoryAmount()}>
+              <AntDesign style={{marginLeft: 5}} name="check" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setEditMode(false)}>
+              <AntDesign style={{marginLeft: 5}} name="cancel" size={24} color="black" />
+            </TouchableOpacity>
+
+          </View>
+        ) : (
+          <View style={globalStyles.row}>
+            <Text style={globalStyles.h3}>${category.amount}</Text>
+            <TouchableOpacity onPress={() => { setEditMode(true); setAmount(category.amount)}}>
+              <Feather style={{marginLeft: 5}} name="edit"/>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
       <View style={globalStyles.hr}/>
       {filteredTransactions.map((transaction) => (

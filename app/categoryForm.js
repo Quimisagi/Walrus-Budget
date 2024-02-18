@@ -8,6 +8,8 @@ import { useGlobal } from '../utils/globalProvider';
 import { storeData } from '../utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const CategoryForm = () => {
   const router = useRouter();
@@ -22,8 +24,9 @@ const CategoryForm = () => {
 
   const AllocateCategory = async () => {
     const newAllocatedCategory = {
-      amount: amount,
-      categoryId: parseInt( categoryId ),
+      id         : uuidv4(),
+      amount     : amount,
+      categoryId : parseInt( categoryId ),
     }
     const budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
     if (budgetIndex !== -1) {
@@ -44,7 +47,7 @@ const CategoryForm = () => {
       let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
       allocatedCategoriesTemp[index].amount = amount;
       let budgetsCopy = [...budgets];
-      let budgetIndex = budgets.findIndex(budget => budget.id === activeBudgetId);
+      let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
       budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
       await storeData('budgets', JSON.stringify(budgetsCopy));
       setBudgets(budgetsCopy);
