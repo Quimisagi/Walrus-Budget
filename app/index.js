@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Stack, useNavigation, router } from 'expo-router';
 import { Text, Button, View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { useGlobal } from './_layout';
-import { deleteAllData, getData, storeData } from '../src/storage';
+import { useGlobal } from '../utils/globalProvider';
+import { deleteAllData, getData, storeData } from '../utils/storage';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();

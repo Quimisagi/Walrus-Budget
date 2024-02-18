@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
-import { storeData, getData } from '../src/storage';
+import { storeData, getData } from '../utils/storage';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import globalStyles from '../src/globalStyles';
-import { useGlobal } from './_layout';
+import globalStyles from '../utils/globalStyles';
+import { useGlobal } from '../utils/globalProvider';
 import MonthPicker from 'react-native-month-year-picker';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { AntDesign } from '@expo/vector-icons';
+import { processMoneyValue } from '../utils/numberUtils';
 
 
 const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
@@ -90,17 +91,6 @@ const BudgetForm = () => {
     createBudget();
   };
 
-  const processNumber = (text) => {
-    if (text[0] === "$") {
-      text = text.slice(1);
-    }
-    if (isNaN(parseFloat(text))) {
-      setBegginingBalance(0);
-    } else {
-      setBegginingBalance(parseFloat(text));
-    }
-  };
-
   useEffect(() => {
     displayDateInFormat(date);
     if (editMode) {
@@ -158,7 +148,7 @@ const BudgetForm = () => {
         keyboardType="numeric"
         placeholder="$0.00"
         value={"$" + begginingBalance.toString()}
-        onChangeText={(text) => processNumber(text)}
+        onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
       />
     </View>
   );

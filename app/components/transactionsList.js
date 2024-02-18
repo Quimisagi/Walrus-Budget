@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
-import defaultCategories from '../defaultCategories';
-import globalStyles from '../src/globalStyles';
+import defaultCategories from '../../utils/defaultCategories';
+import globalStyles from '../../utils/globalStyles';
 import { router } from "expo-router";
-import { useGlobal } from '../app/_layout';
-import { getData, storeData } from "./storage"; 
+import { useGlobal } from '../../utils/globalProvider';
+import { getData, storeData } from "../../utils/storage"; 
 import { Feather } from '@expo/vector-icons';
 
 

@@ -3,8 +3,8 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 Font.loadAsync({
-  'PlusJakarta': require('./fonts/PlusJakartaSans.ttf'),
-  'Poppins': require('./fonts/Poppins-SemiBold.ttf'),
+  'PlusJakarta': require('../assets/fonts/PlusJakartaSans.ttf'),
+  'Poppins': require('../assets/fonts/Poppins-SemiBold.ttf'),
 });
 
 const globalStyles = StyleSheet.create({

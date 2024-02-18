@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
-import globalStyles from '../src/globalStyles';
+import globalStyles from '../utils/globalStyles';
 import { useRouter} from "expo-router";
-import { getData, storeData } from "../src/storage"; 
-import { useGlobal } from './_layout';
+import { getData, storeData } from "../utils/storage"; 
+import { useGlobal } from '../utils/globalProvider';
 
 const BudgetsList = () => {
 

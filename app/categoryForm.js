@@ -2,11 +2,12 @@ import React from 'react';
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
-import defaultCategories from '../defaultCategories';
-import globalStyles from '../src/globalStyles';
-import { useGlobal } from './_layout';
-import { storeData } from '../src/storage';
+import defaultCategories from '../utils/defaultCategories';
+import globalStyles from '../utils/globalStyles';
+import { useGlobal } from '../utils/globalProvider';
+import { storeData } from '../utils/storage';
 import { AntDesign } from '@expo/vector-icons';
+import { processMoneyValue } from '../utils/numberUtils';
 
 const CategoryForm = () => {
   const router = useRouter();
@@ -53,16 +54,6 @@ const CategoryForm = () => {
     }
     await AllocateCategory();
   }
-    const processNumber = (text) => {
-    if (text[0] === "$") {
-      text = text.slice(1);
-    }
-    if (isNaN(parseFloat(text))) {
-      return 0;
-    } else {
-      return parseFloat(text);
-    }
-  };
 
   useEffect(() => {
     if(editMode){
@@ -106,7 +97,7 @@ const CategoryForm = () => {
         keyboardType="numeric"
         placeholder="$0.00"
         value={"$" + amount.toString()}
-        onChangeText={(text) => setAmount(processNumber(text))}
+        onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
     </View>
   );

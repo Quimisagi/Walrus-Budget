@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import defaultCategories from '../defaultCategories';
-import globalStyles from '../src/globalStyles';
+import defaultCategories from '../../utils/defaultCategories';
+import globalStyles from '../../utils/globalStyles';
 import Modal from "react-native-modal";
 
 const CategoryModal = ({ isVisible, onClose, setCategory, categories, filterSelected = false }) =>{

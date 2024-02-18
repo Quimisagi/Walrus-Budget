@@ -1,15 +1,16 @@
 import React, {useEffect, useLayoutEffect} from 'react';
 import { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, Pressable } from "react-native";
-import { getData, storeData } from "../src/storage"; 
-import { useGlobal } from './_layout';
-import CategoryModal from '../src/categoryModal';
+import { getData, storeData } from "../utils/storage"; 
+import { useGlobal } from '../utils/globalProvider';
+import CategoryModal from './components/categoryModal';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { v4 as uuidv4 } from 'uuid';
-import defaultCategories from '../defaultCategories';
-import globalStyles from '../src/globalStyles';
+import defaultCategories from '../utils/defaultCategories';
+import globalStyles from '../utils/globalStyles';
 import { AntDesign } from '@expo/vector-icons';
+import { processMoneyValue } from '../utils/numberUtils';
 
 const TransactionType = {
   EXPENSE: -1,
@@ -94,17 +95,6 @@ const TransactionsForm = ({}) => {
     setTransactions(arrayTemp);
     router.back();
   }
-  const processNumber = (text) => {
-    if (text[0] === "$") {
-      text = text.slice(1);
-    }
-    if (isNaN(parseFloat(text))) {
-      setAmount(0);
-    } else {
-      setAmount(parseFloat(text));
-    }
-  };
-
 
   const sendData = () => {
     let newTransaction = {
@@ -161,7 +151,7 @@ const TransactionsForm = ({}) => {
         keyboardType="numeric"
         placeholder="$0.00"
         value={"$" + amount.toString()}
-        onChangeText={(text) => processNumber(text)}
+        onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
       <Text style={globalStyles.label}>Transaction Type:</Text>
       <View style={styles.btnGroup}>

@@ -1,12 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
-import {useGlobal} from "./_layout";
+import {useGlobal} from "../utils/globalProvider";
 import {View, Text} from "react-native";
-import globalStyles from "../src/globalStyles";
-import defaultCategories from "../defaultCategories";
+import globalStyles from "../utils/globalStyles";
+import defaultCategories from "../utils/defaultCategories";
 import { StyleSheet } from "react-native";
 import { Feather } from '@expo/vector-icons';
+import { calculatePercentage } from "../utils/numberUtils";
 
 const AllocatedCategoryDetails = () => {
   
@@ -23,10 +24,6 @@ const AllocatedCategoryDetails = () => {
 
   const [spent, setSpent] = useState(0);
   const [percentage, setPercentage] = useState(0);
-
-  const calculatePercentage = (spent, budgeted) => {
-    return Math.round((spent / budgeted) * 100);
-  }
 
   useEffect(() => {
     let categoryTemp = activeBudget.allocatedCategories.find(category => category.categoryId === parseInt(categoryId));
@@ -89,7 +86,9 @@ const AllocatedCategoryDetails = () => {
               <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
             </View>
             <View style={[ globalStyles.column, { flex: 4 }]}>
-              <Text style={globalStyles.h3}>{transaction.notes}</Text>
+              {transaction.notes ? 
+                <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
               <View style={globalStyles.row}>
                 <Text>{transaction.date}</Text>
                 <Text> {transaction.time}</Text>

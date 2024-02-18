@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from 'expo-router';
 import { Text, Button, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { useGlobal } from '../_layout';
-import { deleteAllData, getData, storeData } from '../../src/storage';
-import globalStyles from '../../src/globalStyles';
-import CategoryModal from '../../src/categoryModal';
+import { useGlobal } from '../../utils/globalProvider';
+import { deleteAllData, getData, storeData } from '../../utils/storage';
+import globalStyles from '../../utils/globalStyles';
+import CategoryModal from '../components/categoryModal';
 import { router } from 'expo-router';
-import AllocatedCategoriesList from '../../src/allocatedCategoriesList';
-import TransactionList from '../../src/transactionsList';
+import AllocatedCategoriesList from '../components/allocatedCategoriesList';
+import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { TabView, SceneMap } from 'react-native-tab-view';
 
 import * as Font from 'expo-font';
 
@@ -145,8 +144,9 @@ export default function Home() {
                   allocatedCategories={activeBudget.allocatedCategories}
                   openModal={() => setModalVisible(true)}
                 />
-                <TransactionList filteredTransactions={filteredTransactions}/>
-
+                <TransactionList
+                  filteredTransactions={filteredTransactions}
+                />
                 <CategoryModal
                   isVisible={isModalVisible}
                   onClose={() => setModalVisible(false)}

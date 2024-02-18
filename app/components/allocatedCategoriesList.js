@@ -1,12 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import defaultCategories from '../defaultCategories';
-import globalStyles from './globalStyles';
+import defaultCategories from '../../utils/defaultCategories';
+import globalStyles from '../../utils/globalStyles';
 import { router } from 'expo-router';
-import { useGlobal } from '../app/_layout';
-import { getData, storeData } from "./storage"; 
+import { useGlobal } from '../../utils/globalProvider';
+import { getData, storeData } from "../../utils/storage"; 
 import { Ionicons } from '@expo/vector-icons';
+import CircularProgress from '../../utils/circularProgress'; 
+import { calculatePercentage } from '../../utils/numberUtils'
 
 const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
   const [categories, setCateogires] = useState([]);
@@ -62,13 +64,17 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
             { categories ? (
               categories.map((category, index) => (
                 <TouchableOpacity 
-                  style={styles.categoryContainer}
                   key={index}
                   onPress={() => goToDetails(category.categoryId)}
                 >
-                  <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
+                  <CircularProgress
+                    percentage={35}
+                    color={category.color}
+                  >
+                  <View>
                     {category.icon}
                   </View>
+                  </CircularProgress>
                   <Text style={globalStyles.centered}>100%</Text>
                 </TouchableOpacity>
               ))) : (<Text>No allocated categories</Text>)
