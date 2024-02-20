@@ -103,7 +103,7 @@ const TransactionsForm = ({}) => {
       notes                : notes,
       date                 : date,
       time                 : time,
-      categoryId           : category.id,
+      categoryId           : category.categoryId,
       budgetId             : activeBudget.id,
       transactionType      : transactionType
     };
@@ -124,7 +124,9 @@ const TransactionsForm = ({}) => {
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
         let category = defaultCategories.find(category => category.id === transactionTemp.categoryId)
+        category.categoryId = transactionTemp.categoryId;
         setCategory(category);
+        console.log("Category: ", category)
         setTransactionType(transactionTemp.transactionType);
       }
     }

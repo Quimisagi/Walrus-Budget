@@ -15,7 +15,7 @@ const TransactionList = ({filteredTransactions}) => {
   const {transactions, setTransactions} = useGlobal();
 
   const toEditTransaction = (transaction) => {
-    router.push({ pathname: '/transactionsForm', params: { transactionId: transaction.id }});
+    router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
   }
   const deleteTransaction = async (transactionId) => {
     let index = transactions.findIndex(transaction => transaction.id === transactionId);
@@ -26,6 +26,7 @@ const TransactionList = ({filteredTransactions}) => {
 
   }
   useEffect(() => {
+    console.log(filteredTransactions);
     if (filteredTransactions){
       const transactionsTemp = filteredTransactions.map(transaction => {
         const category = defaultCategories.find(category => category.id === transaction.categoryId);
@@ -39,34 +40,36 @@ const TransactionList = ({filteredTransactions}) => {
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>
         {transactionsWithCategories.map((transaction, index) => (
-        <View style={globalStyles.transactionContainer} key={index}>
-          <View style={globalStyles.row}>
-            <View style={[ globalStyles.column, { flex: 1} ]}>
-              {transaction.category ? 
-                <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color, transform: [{scale: 0.85}]}]}>
-                  {transaction.category.icon}
-                </View>
-                : (<Text>no icon</Text>)}
-            </View>
-            <View style={[ globalStyles.column, { flex: 4 } ]}>
-              {transaction.category ? 
-                <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
-                <Text style={globalStyles.secondaryText}>(No category)</Text>}
-              {transaction.notes ? 
-                <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+          <TouchableOpacity key={index} onPress={() => toEditTransaction(transaction)}>
+            <View style={globalStyles.transactionContainer}>
               <View style={globalStyles.row}>
-                <Text>{transaction.date} </Text>
-                <Text> {transaction.time}</Text>
+                <View style={[ globalStyles.column, { flex: 1} ]}>
+                  {transaction.category ? 
+                    <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color, transform: [{scale: 0.85}]}]}>
+                      {transaction.category.icon}
+                    </View>
+                    : (<Text>no icon</Text>)}
+                </View>
+                <View style={[ globalStyles.column, { flex: 4 } ]}>
+                  {transaction.category ? 
+                    <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
+                    <Text style={globalStyles.secondaryText}>(No category)</Text>}
+                  {transaction.notes ? 
+                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                  <View style={globalStyles.row}>
+                    <Text>{transaction.date} </Text>
+                    <Text> {transaction.time}</Text>
+                  </View>
+                </View>
+                <View style={[ globalStyles.column, { flex: 2 } ]}>
+                  <View style={[ globalStyles.row, styles.prueba ]}>
+                    <Text style={globalStyles.expense}>-${transaction.amount}</Text>
+                  </View>
+                </View>
               </View>
             </View>
-            <View style={[ globalStyles.column, { flex: 2 } ]}>
-              <View style={[ globalStyles.row, styles.prueba ]}>
-                <Text style={globalStyles.expense}>-${transaction.amount}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
+          </TouchableOpacity>
         ))}
     </View>
   );
