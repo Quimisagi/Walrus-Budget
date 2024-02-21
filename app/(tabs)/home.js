@@ -9,11 +9,13 @@ import { router } from 'expo-router';
 import AllocatedCategoriesList from '../components/allocatedCategoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather } from '@expo/vector-icons';
+import { setupCategories } from '../../utils/numberUtils';
+
 
 import * as Font from 'expo-font';
 
 Font.loadAsync({
-  'PlusJakarta': require('../../src/fonts/PlusJakartaSans.ttf'),
+  'PlusJakarta': require('../../assets/fonts/PlusJakartaSans.ttf'),
 });
 
 
@@ -80,6 +82,9 @@ export default function Home() {
       setExpenses(calculateExpenses(filtered));
       setIncome(calculateIncome(filtered));
       setBalance(calculateBalance(activeBudget.begginingBalance, filtered));
+      const categories = setupCategories(activeBudget.allocatedCategories, filtered);
+      activeBudget.allocatedCategories = categories;
+      setActiveBudget(activeBudget);
     } 
   }, [activeBudget, budgets, transactions]);
 
@@ -88,7 +93,7 @@ export default function Home() {
       <View style={styles.main}>
         {budgets.length === 0 ? (
           <View style={styles.noBudgetsPanel}>
-            <Image source={require('../../src/icons/money-bag.png')} />
+            <Image source={require('../../assets/icons/money-bag.png')} />
             <Text style={globalStyles.h2}>No budgets created</Text>
             <TouchableOpacity style={globalStyles.buttonA} onPress={() => router.push({pathname: "/budgetForm"})}>
               <View style={globalStyles.row}>
@@ -141,7 +146,6 @@ export default function Home() {
                 </View>
                 <View style={globalStyles.hr} />
                 <AllocatedCategoriesList
-                  allocatedCategories={activeBudget.allocatedCategories}
                   openModal={() => setModalVisible(true)}
                 />
                 <TransactionList

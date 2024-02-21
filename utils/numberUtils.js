@@ -13,3 +13,23 @@ export const calculatePercentage = (spent, budgeted) => {
   return Math.round((spent / budgeted) * 100);
 }
 
+export const calculateCategoryTotalSpent = (categoryId, transactions) => {
+  if (!transactions) return 0;
+  let totalSpent = 0;
+  transactions.map(transaction => {
+    if (transaction.categoryId === categoryId) {
+      totalSpent += transaction.amount;
+    }
+  });
+  return totalSpent;
+}
+
+export const setupCategories = (categories, transactions) => {
+  if(!categories) return;
+  categories.map(category => {
+    category.totalSpent = calculateCategoryTotalSpent(category.categoryId, transactions);
+  }
+  );
+  return categories;
+}
+

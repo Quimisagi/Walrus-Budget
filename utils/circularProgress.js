@@ -48,6 +48,7 @@ const CircularProgress = ({children, percentage, color}) => {
           cx={radius}
           cy={radius}
           strokeLinecap="round"
+          transform={`rotate(-90 ${radius} ${radius})`}
         />
         <View style={styles.center}>
           {children}

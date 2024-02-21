@@ -8,11 +8,11 @@ import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
 import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from '../../utils/circularProgress'; 
-import { calculatePercentage } from '../../utils/numberUtils'
+import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'
 
-const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
+const AllocatedCategoriesList = ({openModal}) => {
   const [categories, setCateogires] = useState([]);
-  const { activeBudget, budgets, setBudgets } = useGlobal();
+  const { activeBudget, transactions} = useGlobal();
 
   const goToDetails = (category) => {
     router.push({ pathname: '/allocatedCategoryDetails', params: { id: category.id,  budgetId: activeBudget.id, categoryId: category.categoryId,}});
@@ -24,19 +24,22 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
 
   useEffect(() => {
     setCateogires([]);
-    if(allocatedCategories){
+    if(activeBudget.allocatedCategories){
       let categoriesTemp = [];
-      allocatedCategories.map(allocatedCategory => {
+      activeBudget.allocatedCategories.map(allocatedCategory => {
         const categoryData = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
         const category = Object.assign({}, allocatedCategory, categoryData)
         category.id = allocatedCategory.id;
+        const totalSpent = calculateCategoryTotalSpent(category.categoryId, transactions);
+        category.totalSpent = totalSpent ? totalSpent : 0;
+        category.percentage = calculatePercentage(category.totalSpent, category.amount);
         categoriesTemp = [...categoriesTemp, category];
       }
       );
       setCateogires(categoriesTemp);
     }
   }
-    , [allocatedCategories]);
+    , [activeBudget, transactions]);
   return (
     <View style={styles.categoriesContainer}>
       <View> 
@@ -57,15 +60,34 @@ const AllocatedCategoriesList = ({allocatedCategories, openModal}) => {
                   key={index}
                   onPress={() => goToDetails(category)}
                 >
-                  <CircularProgress
-                    percentage={35}
-                    color={category.color}
-                  >
-                  <View>
-                    {category.icon}
-                  </View>
-                  </CircularProgress>
-                  <Text style={globalStyles.centered}>100%</Text>
+                  {category.percentage ? (
+                    <View>
+                      <CircularProgress
+                        percentage={category.percentage}
+                        color={category.color}
+                      >
+                        <View>
+                          {category.icon}
+                        </View>
+                      </CircularProgress>
+                      <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                    </View>
+
+                  ): (
+                    <View>
+                      <CircularProgress
+                        percentage={category.percentage}
+                        color={category.color}
+                      >
+                        <View>
+                          {category.icon}
+                        </View>
+                      </CircularProgress>
+                      <Text style={globalStyles.centered}>-</Text>
+
+                    </View>
+                  )
+                  }
                 </TouchableOpacity>
               ))) : (<Text>No allocated categories</Text>)
             }

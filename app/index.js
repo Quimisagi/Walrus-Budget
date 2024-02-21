@@ -4,6 +4,7 @@ import { Text, Button, View, ScrollView, StyleSheet, TouchableOpacity } from 're
 import * as SplashScreen from 'expo-splash-screen';
 import { useGlobal } from '../utils/globalProvider';
 import { deleteAllData, getData, storeData } from '../utils/storage';
+import { setupCategories } from '../utils/numberUtils';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -45,18 +46,19 @@ export default function Home() {
     );
     return income;
   }
+
+
   useEffect(() => {
     navigation.setOptions({headerShown: false});
     async function prepare() {
       try {
         let activeBudgetTemp = {};
-        let budgetsTemp = [];
         let transactionsTemp = [];
         await getData('activeBudget')
           .then(activeBudget => {
             if(activeBudget) setActiveBudget(JSON.parse(activeBudget));
             else setActiveBudget({});
-            activeBudgetTemp = activeBudget;
+            activeBudgetTemp = JSON.parse(activeBudget);
           })
           .catch(error => {
           });
