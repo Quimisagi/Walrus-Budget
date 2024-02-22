@@ -6,9 +6,8 @@ import {View, Text, TouchableOpacity, TextInput } from "react-native";
 import globalStyles from "../utils/globalStyles";
 import defaultCategories from "../utils/defaultCategories";
 import { StyleSheet } from "react-native";
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
 import { calculatePercentage } from "../utils/numberUtils";
-import { AntDesign } from '@expo/vector-icons';
 import { processMoneyValue } from "../utils/numberUtils";
 import { storeData } from "../utils/storage"; 
 
@@ -46,6 +45,11 @@ const AllocatedCategoryDetails = () => {
     router.back();
   }
 
+  const toEditTransaction = (transaction) => {
+    router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
+  }
+
+
   const editCategoryAmount = async () => {
     let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
     let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
@@ -77,24 +81,25 @@ const AllocatedCategoryDetails = () => {
 
   useEffect(() => {
     setPercentage(calculatePercentage(spent, category.amount));
-  }, [spent, amount]);
+  }, [spent, amount, category.amount]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: category.name,
       headerRight: () => (
         <TouchableOpacity
           style={{ margin: 15 }}
           onPress={deleteCategory}
         >
-          <AntDesign name="check" size={24} color="red" />
+          <Feather name="trash" size={20}/>
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, category]);
 
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <View style={globalStyles.row}>
         <View style={[ globalStyles.column, {flex: 1} ]}>
           <View style={[ globalStyles.categoryIcon, globalStyles.centered, {backgroundColor: category.color, transform: [{scale: 1.3}]} ]}>
@@ -102,25 +107,41 @@ const AllocatedCategoryDetails = () => {
           </View>
         </View>
         <View style={[ globalStyles.column, { flex: 4} ]}>
-          <View style={globalStyles.centered}>
-            <Text style={globalStyles.text}>{percentage}% spent</Text>
-          </View>
-          <View style={styles.progressBar}> 
-            {percentage >= 100 ? 
-              <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
-              <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
-            }
-          </View>
-          <View style={globalStyles.row}>
-            <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-              <Text style={globalStyles.h3}>${spent}</Text>
-              <Text style={globalStyles.text}>Spent</Text>
+          { category.amount === 0 ? (
+            <View style={globalStyles.row}>
+              <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
+                <Text style={globalStyles.h3}>${spent}</Text>
+                <Text style={globalStyles.text}>Spent</Text>
+              </View>
+              <View style={[ globalStyles.column, globalStyles.centered, {alignItems: 'flex-end'} ]}>
+                <Text style={globalStyles.h3}>-</Text>
+                <Text style={globalStyles.text}>Remaining</Text>
+              </View>
             </View>
-            <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
-              <Text style={globalStyles.h3}>${category.amount - spent}</Text>
-              <Text style={globalStyles.text}>Remaining</Text>
+          )
+          : (
+            <View>
+              <View style={globalStyles.centered}>
+                <Text style={globalStyles.text}>{percentage}% spent</Text>
+              </View>
+              <View style={styles.progressBar}> 
+                {percentage >= 100 ? 
+                  <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
+                  <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
+                }
+              </View>
+              <View style={globalStyles.row}>
+                <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
+                  <Text style={globalStyles.h3}>${spent}</Text>
+                  <Text style={globalStyles.text}>Spent</Text>
+                </View>
+                <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
+                  <Text style={globalStyles.h3}>${category.amount - spent}</Text>
+                  <Text style={globalStyles.text}>Remaining</Text>
+                </View>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
       <View style={globalStyles.centered}>
@@ -153,36 +174,37 @@ const AllocatedCategoryDetails = () => {
       </View>
       <View style={globalStyles.hr}/>
       {filteredTransactions.map((transaction) => (
-        <View style={globalStyles.transactionContainer} key={transaction.id}>
-          <View style={globalStyles.row}>
-            <View style={[ globalStyles.column, { flex: 1 } ]}>
-              <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
-            </View>
-            <View style={[ globalStyles.column, { flex: 4 }]}>
-              {transaction.notes ? 
-                <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-              <View style={globalStyles.row}>
-                <Text>{transaction.date}</Text>
-                <Text> {transaction.time}</Text>
+        <TouchableOpacity key={transaction.id} onPress={() => toEditTransaction(transaction)}>
+          <View style={globalStyles.transactionContainer}>
+            <View style={globalStyles.row}>
+              <View style={[ globalStyles.column, { flex: 1 } ]}>
+                <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+              </View>
+              <View style={[ globalStyles.column, { flex: 4 }]}>
+                {transaction.notes ? 
+                  <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                  <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                <View style={globalStyles.row}>
+                  <Text>{transaction.date}</Text>
+                  <Text> {transaction.time}</Text>
+                </View>
+              </View>
+              <View style={[ globalStyles.column, { flex: 2 } ]}>
+                <Text style={globalStyles.expense}>${transaction.amount}</Text>
               </View>
             </View>
-            <View style={[ globalStyles.column, { flex: 2 } ]}>
-              <Text style={globalStyles.expense}>${transaction.amount}</Text>
-            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
+      <TouchableOpacity style={styles.addButton} onPress={() => router.push({ pathname: '/transactionsForm'})}>
+        <Feather name="plus" size={24} color="white" />
+      </TouchableOpacity>
+
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 10,
-    padding: 10,
-  },
   progressBar: {
     height: 7,
     width: '100%',
@@ -195,7 +217,18 @@ const styles = StyleSheet.create({
     height: 7,
     borderRadius: 10,
     zIndex: 10,
-  }
+  },
+  addButton: {
+    position: 'absolute',
+    right: 25,
+    bottom: 25,
+    backgroundColor: 'blue',
+    borderRadius: 30, // Half of the width and height to make it circular
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 

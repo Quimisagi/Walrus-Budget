@@ -26,7 +26,6 @@ const TransactionList = ({filteredTransactions}) => {
 
   }
   useEffect(() => {
-    console.log(filteredTransactions);
     if (filteredTransactions){
       const transactionsTemp = filteredTransactions.map(transaction => {
         const category = defaultCategories.find(category => category.id === transaction.categoryId);

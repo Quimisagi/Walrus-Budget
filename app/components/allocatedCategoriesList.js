@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import defaultCategories from '../../utils/defaultCategories';
 import globalStyles from '../../utils/globalStyles';
-import { router } from 'expo-router';
+import { router, navigation } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +22,14 @@ const AllocatedCategoriesList = ({openModal}) => {
     router.push({ pathname: '/addCategory', params: { categoryId: categoryId, editMode: true, index: index} });
   }
 
+  const handlePercentage = (percentage) => {
+    if (percentage > 100) {
+      return 100;
+    }
+    return percentage;
+  }
+
+
   useEffect(() => {
     setCateogires([]);
     if(activeBudget.allocatedCategories){
@@ -39,7 +47,7 @@ const AllocatedCategoriesList = ({openModal}) => {
       setCateogires(categoriesTemp);
     }
   }
-    , [activeBudget, transactions]);
+    , [activeBudget, transactions, activeBudget.allocatedCategories]);
   return (
     <View style={styles.categoriesContainer}>
       <View> 
@@ -63,20 +71,24 @@ const AllocatedCategoriesList = ({openModal}) => {
                   {category.percentage ? (
                     <View>
                       <CircularProgress
-                        percentage={category.percentage}
+                        percentage={handlePercentage(category.percentage)}
                         color={category.color}
                       >
                         <View>
                           {category.icon}
                         </View>
                       </CircularProgress>
-                      <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                      {category.percentage > 100 ? (
+                        <Text style={styles.warning}>{category.percentage}%</Text>
+                      ) : (
+                        <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                      )}
                     </View>
 
                   ): (
                     <View>
                       <CircularProgress
-                        percentage={category.percentage}
+                        percentage={100}
                         color={category.color}
                       >
                         <View>
@@ -128,6 +140,12 @@ const styles = StyleSheet.create({
     height: 30, 
     borderRadius: 8,
   },
+  warning: {
+    color: 'red',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 
 });
 

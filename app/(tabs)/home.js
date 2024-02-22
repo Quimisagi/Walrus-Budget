@@ -82,9 +82,6 @@ export default function Home() {
       setExpenses(calculateExpenses(filtered));
       setIncome(calculateIncome(filtered));
       setBalance(calculateBalance(activeBudget.begginingBalance, filtered));
-      const categories = setupCategories(activeBudget.allocatedCategories, filtered);
-      activeBudget.allocatedCategories = categories;
-      setActiveBudget(activeBudget);
     } 
   }, [activeBudget, budgets, transactions]);
 

@@ -6,7 +6,7 @@ import Svg, {Circle} from "react-native-svg";
 import Color from 'color';
 
 const CircularProgress = ({children, percentage, color}) => {
-  const radius = 35;
+  const radius = 38.5;
   const strokeWidth = 5;
   const strokeDashoffset = 25;
   const normalizedRadius = radius - strokeWidth * 2;

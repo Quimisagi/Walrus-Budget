@@ -119,7 +119,7 @@ const BudgetForm = () => {
   }, [navigation, begginingBalance, name, date]);
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Text style={globalStyles.inputFieldLabel}>Date:</Text>
       <TouchableOpacity style={globalStyles.inputField} onPress={() => { setShowPicker(true) }}>
         <View style={[globalStyles.dateLabel, globalStyles.row ]}>
@@ -155,9 +155,6 @@ const BudgetForm = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
   input: {
     height: 40,
     borderColor: 'gray',

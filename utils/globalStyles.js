@@ -9,10 +9,10 @@ Font.loadAsync({
 
 const globalStyles = StyleSheet.create({
   h1: {
-    fontSize: 24,
-    fontFamily: 'PlusJakarta',
+    fontSize: 20,
+    fontFamily: 'Poppins',
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: 'red',
   },
   h2: {
     fontSize: 17,
@@ -73,7 +73,9 @@ const globalStyles = StyleSheet.create({
     padding: 10,
   },
   container:{
-    padding: 15,
+    marginTop: 75,
+    padding: 20,
+    flex: 1
   },
   input: {
     height: 40,

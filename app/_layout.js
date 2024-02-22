@@ -1,13 +1,24 @@
 import { Stack } from 'expo-router/stack';
 import { GlobalProvider } from '../utils/globalProvider';
+import globalStyles from '../utils/globalStyles';
+import * as Font from 'expo-font';
+
+
+Font.loadAsync({
+  'PlusJakarta': require('../assets/fonts/PlusJakartaSans.ttf'),
+  'Poppins': require('../assets/fonts/Poppins-SemiBold.ttf'),
+});
+
 
 export default function Layout() {
   return (
     <GlobalProvider>
       <Stack
         screenOptions={{
-          headerStyle: {
-            backgroundColor: '#AED1D6',
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontFamily: 'Poppins', 
+            fontSize: 18,
           },
         }}
       >
