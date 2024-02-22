@@ -1,19 +1,23 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import { Entypo } from '@expo/vector-icons';
 
 export default () => {
   
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+          showLabel: false,
+        }}
+    >
       <Tabs.Screen 
       name="home" 
       options={{
-        title: 'Home',
+        title: '',
         tabBarIcon: (focused) => (
-          <Entypo name="home" size={24} color={focused ? '#000' : '#000'} />
+          <Entypo style={styles.button} name="home" size={24} color={focused ? '#000' : '#000'} />
         ),
       }}
       />
@@ -27,10 +31,10 @@ export default () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: focused ? '#000' : '#FFF',
-                borderRadius: 10,
-                top: -20,
-                width: 60,
-                height: 60,
+                borderRadius: 30,
+                top: -15,
+                width: 50,
+                height: 50,
               }}
               onPress={() => {
                 router.push({ pathname: '/transactionsForm'});
@@ -44,11 +48,18 @@ export default () => {
       <Tabs.Screen 
         name="settings" 
         options={{
-          title: 'Settings',
+          title: '',
           tabBarIcon: (focused) => (
-            <Ionicons name="settings" size={24} color={focused ? '#000' : '#000'} />
+            <Ionicons style={styles.button} name="settings" size={24} color={focused ? '#000' : '#000'} />
           ),
         }}/>
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 10,
+  },
+});
+

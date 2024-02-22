@@ -19,6 +19,7 @@ const BudgetsList = () => {
   const updateActiveBudget = async (budget) => {
     await storeData('activeBudget', JSON.stringify(budget));
     setActiveBudget(budget);
+    router.back();
   }
   const deleteBudget = async (id) => {
     let budgetsCopy = [...budgets];
