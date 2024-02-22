@@ -10,6 +10,7 @@ export const processMoneyValue = (text) => {
 };
 
 export const calculatePercentage = (spent, budgeted) => {
+  if(budgeted === 0) return 0;
   return Math.round((spent / budgeted) * 100);
 }
 
