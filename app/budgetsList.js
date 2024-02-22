@@ -4,6 +4,8 @@ import globalStyles from '../utils/globalStyles';
 import { useRouter} from "expo-router";
 import { getData, storeData } from "../utils/storage"; 
 import { useGlobal } from '../utils/globalProvider';
+import { Feather, AntDesign } from '@expo/vector-icons';
+
 
 const BudgetsList = () => {
 
@@ -27,32 +29,32 @@ const BudgetsList = () => {
   }
 
   return (
-    <View> 
-      <Text>Budgets List</Text>
+    <View style={globalStyles.container}> 
       <ScrollView>
         { budgets ? 
             (
               budgets.map(budget => (
-                <View style={globalStyles.row} key={budget.id}>
-                  <TouchableOpacity
-                    style={globalStyles.column}
-                    onPress={() => {
-                      updateActiveBudget(budget);
-                    }}
-                  >
-                    <Text>{budget.date}</Text>
-                    <Text>{budget.name}</Text>
-                  </TouchableOpacity>
-                  <View style={globalStyles.column}>
-                    <TouchableOpacity onPress={() => goToEditBudget(budget.id)}>
-                      <View style={[styles.button, { backgroundColor: '#000' }]} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => deleteBudget(budget.id)}>
-                      <View style={[styles.button, { backgroundColor: '#E31' }]} />
-                    </TouchableOpacity>
-
+                <TouchableOpacity
+                  key={budget.id}
+                  onPress={() => {
+                    updateActiveBudget(budget);
+                  }}
+                >
+                  <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
+                    <View style={globalStyles.row}>
+                      <View style={{flex: 3}}>
+                        <Text style={globalStyles.h2}>{budget.name}</Text>
+                        <View style={globalStyles.row}>
+                          <Text style={globalStyles.text}>Budgeted: </Text>
+                          <Text style={globalStyles.text}>${budget.begginingBalance}</Text>
+                        </View>
+                      </View>
+                      <View style={[ {flex: 1, marginRight: 'auto'}]}>
+                        <Text style={globalStyles.text}>{budget.date}</Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               ))
             ) : 
             (
@@ -60,11 +62,10 @@ const BudgetsList = () => {
             ) 
         }
       </ScrollView>
-      <View>
-        <TouchableOpacity style={globalStyles.button} onPress={()=> router.back()}>
-          <Text>Close</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/budgetForm'})}>
+        <Feather name="plus" size={24} color="white" />
+      </TouchableOpacity>
+
     </View>
   );
 }

@@ -102,12 +102,18 @@ export default function Home() {
         ) : (
           <View style={{ flex: 1 }}>
             <View style={[ globalStyles.row, globalStyles.centered ]}>
-              <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
-                <View style={globalStyles.row}>
-                  <Text style={globalStyles.h2}>{activeBudget.name}</Text>
-                  <Ionicons name="caret-down" size={24} color="black" />
-                </View>
-              </TouchableOpacity>
+              <View style={ globalStyles.column }>
+                <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
+                  <View style={[ globalStyles.row, styles.budgetSelectMenu ]}>
+                    <View style={[{flex: 7, marginLeft: 'auto'}, globalStyles.centered ]}>
+                      <Text style={[ globalStyles.h2 ]}>{activeBudget.name}</Text>
+                    </View>
+                    <View style={[{flex: 1}, globalStyles.centered ]}>
+                      <Ionicons name="caret-down" size={18} color="black" />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
             <ScrollView style={{ flex: 1 }}>
               <View>
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 40,
     padding: 5,
     justifyContent: 'center'
   },
@@ -202,5 +208,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'PlusJakarta',
     color: 'green',
+  },
+  budgetSelectMenu: {
+    borderRadius: 5,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginLeft: 50,
+    marginRight: 50,
+    padding: 5,
   }
 });

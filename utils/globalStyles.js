@@ -17,8 +17,6 @@ const globalStyles = StyleSheet.create({
   h2: {
     fontSize: 17,
     fontFamily: 'Poppins',
-    marginTop: 20,
-    marginBottom: 20,
   },
   h3: {
     fontSize: 14,
@@ -70,7 +68,7 @@ const globalStyles = StyleSheet.create({
   column: {
     flex: 1,
     margin: 5,
-    padding: 10,
+    padding: 5,
   },
   container:{
     marginTop: 75,
@@ -181,6 +179,18 @@ const globalStyles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'PlusJakarta',
   },
+  addButton: {
+    position: 'absolute',
+    right: 25,
+    bottom: 25,
+    backgroundColor: 'blue',
+    borderRadius: 30, // Half of the width and height to make it circular
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 });
 
 export default globalStyles;

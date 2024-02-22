@@ -196,7 +196,7 @@ const AllocatedCategoryDetails = () => {
           </View>
         </TouchableOpacity>
       ))}
-      <TouchableOpacity style={styles.addButton} onPress={() => router.push({ pathname: '/transactionsForm'})}>
+      <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm'})}>
         <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>
 
@@ -217,17 +217,6 @@ const styles = StyleSheet.create({
     height: 7,
     borderRadius: 10,
     zIndex: 10,
-  },
-  addButton: {
-    position: 'absolute',
-    right: 25,
-    bottom: 25,
-    backgroundColor: 'blue',
-    borderRadius: 30, // Half of the width and height to make it circular
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 

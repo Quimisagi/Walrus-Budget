@@ -70,7 +70,7 @@ const BudgetForm = () => {
 
       setBudgets(budgetsTemp);
       setActiveBudget(newBudget);
-      router.back();
+      router.replace({ pathname: '/home' });
     } catch (error) {
       console.error("An error occurred while creating the budget:", error);
     }
