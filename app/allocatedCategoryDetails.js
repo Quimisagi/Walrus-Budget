@@ -37,7 +37,8 @@ const AllocatedCategoryDetails = () => {
     allocatedCategoriesTemp.splice(categoryIndex, 1);
     let budgetsCopy = [...budgets];
     let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
-    budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
+    activeBudget.allocatedCategories = allocatedCategoriesTemp;
+    budgetsCopy[budgetIndex] = activeBudget;
     await storeData('budgets', JSON.stringify(budgetsCopy));
     setBudgets(budgetsCopy);
     await storeData('activeBudget', JSON.stringify(activeBudget));
@@ -65,12 +66,13 @@ const AllocatedCategoryDetails = () => {
   }
 
   useEffect(() => {
-    let categoryTemp = activeBudget.allocatedCategories.find(category => category.categoryId === parseInt(categoryId));
-    const defaultCategory = defaultCategories.find(category => category.id === parseInt(categoryId));
+    let categoryTemp = activeBudget.allocatedCategories.find(category => category.id === id);
+    if(!categoryTemp) return;
+    const defaultCategory = defaultCategories.find(category => category.id === parseInt(categoryTemp.categoryId));
     categoryTemp = Object.assign({}, categoryTemp, defaultCategory);
     setCategory(categoryTemp);
     if(transactions){
-      const temp = transactions.filter(transaction => transaction.categoryId === parseInt(categoryId) && transaction.budgetId === budgetId);
+      const temp = transactions.filter(transaction => transaction.allocatedCategoryId === id && transaction.budgetId === budgetId);
       setFilteredTransactions(temp);
       let spentTemp = 0;
       temp.map(transaction => spentTemp += transaction.amount);

@@ -17,10 +17,6 @@ const AllocatedCategoriesList = ({openModal}) => {
   const goToDetails = (category) => {
     router.push({ pathname: '/allocatedCategoryDetails', params: { id: category.id,  budgetId: activeBudget.id, categoryId: category.categoryId,}});
   }
-  const goToEdit = (index, categoryId) => {
-    console.log(index);
-    router.push({ pathname: '/addCategory', params: { categoryId: categoryId, editMode: true, index: index} });
-  }
 
   const handlePercentage = (percentage) => {
     if (percentage > 100) {
@@ -28,7 +24,6 @@ const AllocatedCategoriesList = ({openModal}) => {
     }
     return percentage;
   }
-
 
   useEffect(() => {
     setCateogires([]);
@@ -38,7 +33,7 @@ const AllocatedCategoriesList = ({openModal}) => {
         const categoryData = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
         const category = Object.assign({}, allocatedCategory, categoryData)
         category.id = allocatedCategory.id;
-        const totalSpent = calculateCategoryTotalSpent(category.categoryId, transactions);
+        const totalSpent = calculateCategoryTotalSpent(category.id, transactions);
         category.totalSpent = totalSpent ? totalSpent : 0;
         category.percentage = calculatePercentage(category.totalSpent, category.amount);
         categoriesTemp = [...categoriesTemp, category];

@@ -12,7 +12,7 @@ import { Feather } from '@expo/vector-icons';
 const TransactionList = ({filteredTransactions}) => {
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
 
-  const {transactions, setTransactions} = useGlobal();
+  const { activeBudget, transactions, setTransactions} = useGlobal();
 
   const toEditTransaction = (transaction) => {
     router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
@@ -27,9 +27,15 @@ const TransactionList = ({filteredTransactions}) => {
   }
   useEffect(() => {
     if (filteredTransactions){
+      const allocatedCategories = activeBudget.allocatedCategories;
       const transactionsTemp = filteredTransactions.map(transaction => {
-        const category = defaultCategories.find(category => category.id === transaction.categoryId);
+        const allocatedCategory = allocatedCategories.find(category => category.id === transaction.allocatedCategoryId);
+        let category = undefined;
+        if(allocatedCategory){
+          category = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+        }
         return { ...transaction, category };
+
       });
       setTransactionsWithCategories(transactionsTemp);
     }

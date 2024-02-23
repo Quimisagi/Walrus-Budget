@@ -103,7 +103,7 @@ const TransactionsForm = ({}) => {
       notes                : notes,
       date                 : date,
       time                 : time,
-      categoryId           : category.categoryId,
+      allocatedCategoryId  : category.id,
       budgetId             : activeBudget.id,
       transactionType      : transactionType
     };
@@ -123,10 +123,12 @@ const TransactionsForm = ({}) => {
         setNotes(transactionTemp.notes);
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
-        let category = defaultCategories.find(category => category.id === transactionTemp.categoryId)
-        category.categoryId = transactionTemp.categoryId;
+        let category = undefined
+        let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id === transactionTemp.allocatedCategoryId) 
+        if(allocatedCategory){
+          category = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+        }
         setCategory(category);
-        console.log("Category: ", category)
         setTransactionType(transactionTemp.transactionType);
       }
     }
@@ -175,7 +177,15 @@ const TransactionsForm = ({}) => {
           </Pressable>
         </View>
       ) : (
-        <Text> Select category </Text>
+        <View>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text> Select category </Text>
+          </Pressable>
+        </View>
+
       )}
       <View style={globalStyles.hr} />
       <Text styles={globalStyles.label}>Notes:</Text>
