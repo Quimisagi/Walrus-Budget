@@ -35,7 +35,7 @@ const TransactionsForm = ({}) => {
 
   const { activeBudget, transactions, setTransactions} = useGlobal();
 
-  const { editMode, transactionId } = params;
+  const { editMode, transactionId, categoryId } = params;
 
   const onChangeDate = (event, selectedDate) => {
     setDate(selectedDate.toISOString().split('T')[0]);
@@ -116,6 +116,16 @@ const TransactionsForm = ({}) => {
 
 
   useEffect(() => {
+    if(categoryId){
+      let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id ===  categoryId)
+      let categoryTemp = undefined
+      if(allocatedCategory){
+        categoryTemp = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+      }
+      const category = Object.assign({}, allocatedCategory, categoryTemp ? categoryTemp : {});
+      category.id= allocatedCategory.id;
+      setCategory(category);
+    }
     if(editMode){
       let transactionTemp = transactions.find(transaction => transaction.id === transactionId)
       if(typeof transactionTemp !== 'undefined'){
@@ -123,18 +133,20 @@ const TransactionsForm = ({}) => {
         setNotes(transactionTemp.notes);
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
-        let category = undefined
+        let categoryTemp = undefined
         let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id === transactionTemp.allocatedCategoryId) 
         if(allocatedCategory){
-          category = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+          categoryTemp = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+          const category = Object.assign({}, allocatedCategory, categoryTemp ? categoryTemp : {});
+          category.id= allocatedCategory.id;
+          setCategory(category);
         }
-        setCategory(category);
         setTransactionType(transactionTemp.transactionType);
       }
     }
   }, []);
 
-    useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity

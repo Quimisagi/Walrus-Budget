@@ -185,8 +185,8 @@ const globalStyles = StyleSheet.create({
     bottom: 25,
     backgroundColor: 'blue',
     borderRadius: 30, // Half of the width and height to make it circular
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },

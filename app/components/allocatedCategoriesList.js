@@ -63,7 +63,7 @@ const AllocatedCategoriesList = ({openModal}) => {
                   key={index}
                   onPress={() => goToDetails(category)}
                 >
-                  {category.percentage ? (
+                  {( category.percentage || category.percentage === 0) ? (
                     <View>
                       <CircularProgress
                         percentage={handlePercentage(category.percentage)}
@@ -79,7 +79,6 @@ const AllocatedCategoriesList = ({openModal}) => {
                         <Text style={globalStyles.centered}>{category.percentage}%</Text>
                       )}
                     </View>
-
                   ): (
                     <View>
                       <CircularProgress
@@ -91,7 +90,6 @@ const AllocatedCategoriesList = ({openModal}) => {
                         </View>
                       </CircularProgress>
                       <Text style={globalStyles.centered}>-</Text>
-
                     </View>
                   )
                   }

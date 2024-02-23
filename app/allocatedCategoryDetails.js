@@ -78,12 +78,12 @@ const AllocatedCategoryDetails = () => {
       temp.map(transaction => spentTemp += transaction.amount);
       setSpent(spentTemp);
     }
-  }, [budgets]
+  }, [budgets, transactions]
   ) 
 
   useEffect(() => {
     setPercentage(calculatePercentage(spent, category.amount));
-  }, [spent, amount, category.amount]);
+  }, [spent, amount, category.amount, transactions]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -198,7 +198,7 @@ const AllocatedCategoryDetails = () => {
           </View>
         </TouchableOpacity>
       ))}
-      <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm'})}>
+      <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {categoryId: id}})}>
         <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>
 
