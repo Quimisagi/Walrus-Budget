@@ -6,7 +6,7 @@ import globalStyles from '../../utils/globalStyles';
 import { router } from "expo-router";
 import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
-import SwipeableItem from '../utils/swipeableItem';
+import SwipeableItem from '../../utils/swipeableItem';
 
 
 const TransactionList = ({filteredTransactions}) => {
@@ -23,7 +23,6 @@ const TransactionList = ({filteredTransactions}) => {
     transactionsTemp.splice(index, 1);
     await storeData('transactions', JSON.stringify(transactionsTemp));
     setTransactions(transactionsTemp);
-
   }
   useEffect(() => {
     if (filteredTransactions){

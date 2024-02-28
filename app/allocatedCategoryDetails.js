@@ -11,6 +11,7 @@ import { calculatePercentage } from "../utils/numberUtils";
 import { processMoneyValue } from "../utils/numberUtils";
 import { storeData } from "../utils/storage"; 
 import Toast from 'react-native-toast-message';
+import SwipeableItem from "../utils/swipeableItem";
 
 
 const AllocatedCategoryDetails = () => {
@@ -19,7 +20,7 @@ const AllocatedCategoryDetails = () => {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
-  const { budgets, setBudgets, transactions, activeBudget } = useGlobal();
+  const { budgets, setBudgets, transactions, setTransactions, activeBudget } = useGlobal();
 
   const {id, budgetId, categoryId} = params;
 
@@ -31,6 +32,14 @@ const AllocatedCategoryDetails = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [amount, setAmount] = useState(0);
+
+  const deleteTransaction = async (transactionId) => {
+    let index = transactions.findIndex(transaction => transaction.id === transactionId);
+    let transactionsTemp = [...transactions];
+    transactionsTemp.splice(index, 1);
+    await storeData('transactions', JSON.stringify(transactionsTemp));
+    setTransactions(transactionsTemp);
+  }
 
   const deleteCategory = async () => {
     let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
@@ -50,7 +59,6 @@ const AllocatedCategoryDetails = () => {
   const toEditTransaction = (transaction) => {
     router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
   }
-
 
   const editCategoryAmount = async () => {
     let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
@@ -187,27 +195,29 @@ const AllocatedCategoryDetails = () => {
       </View>
       <View style={globalStyles.hr}/>
       {filteredTransactions.map((transaction) => (
-        <TouchableOpacity key={transaction.id} onPress={() => toEditTransaction(transaction)}>
-          <View style={globalStyles.transactionContainer}>
-            <View style={globalStyles.row}>
-              <View style={[ globalStyles.column, { flex: 1 } ]}>
-                <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
-              </View>
-              <View style={[ globalStyles.column, { flex: 4 }]}>
-                {transaction.notes ? 
-                  <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                  <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-                <View style={globalStyles.row}>
-                  <Text>{transaction.date}</Text>
-                  <Text> {transaction.time}</Text>
+        <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
+          <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
+            <View style={globalStyles.transactionContainer}>
+              <View style={globalStyles.row}>
+                <View style={[ globalStyles.column, { flex: 1 } ]}>
+                  <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+                </View>
+                <View style={[ globalStyles.column, { flex: 4 }]}>
+                  {transaction.notes ? 
+                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                  <View style={globalStyles.row}>
+                    <Text>{transaction.date}</Text>
+                    <Text> {transaction.time}</Text>
+                  </View>
+                </View>
+                <View style={[ globalStyles.column, { flex: 2 } ]}>
+                  <Text style={globalStyles.expense}>${transaction.amount}</Text>
                 </View>
               </View>
-              <View style={[ globalStyles.column, { flex: 2 } ]}>
-                <Text style={globalStyles.expense}>${transaction.amount}</Text>
-              </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </SwipeableItem>
       ))}
       <TouchableOpacity onPress={showToast}>
         <Text> Show toast </Text>
