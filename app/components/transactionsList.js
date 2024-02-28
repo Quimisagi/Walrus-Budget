@@ -6,7 +6,7 @@ import globalStyles from '../../utils/globalStyles';
 import { router } from "expo-router";
 import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
-import { Feather } from '@expo/vector-icons';
+import SwipeableItem from '../utils/swipeableItem';
 
 
 const TransactionList = ({filteredTransactions}) => {
@@ -45,36 +45,38 @@ const TransactionList = ({filteredTransactions}) => {
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>
         {transactionsWithCategories.map((transaction, index) => (
-          <TouchableOpacity key={index} onPress={() => toEditTransaction(transaction)}>
-            <View style={globalStyles.transactionContainer}>
-              <View style={globalStyles.row}>
-                <View style={[ globalStyles.column, { flex: 1} ]}>
-                  {transaction.category ? 
+          <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
+            <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
+              <View style={globalStyles.transactionContainer}>
+                <View style={globalStyles.row}>
+                  <View style={[ globalStyles.column, { flex: 1} ]}>
+          {transaction.category ? 
                     <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color, transform: [{scale: 0.85}]}]}>
-                      {transaction.category.icon}
+                    {transaction.category.icon}
+              </View>
+                  : (<Text>no icon</Text>)}
                     </View>
-                    : (<Text>no icon</Text>)}
-                </View>
-                <View style={[ globalStyles.column, { flex: 4 } ]}>
-                  {transaction.category ? 
-                    <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
-                    <Text style={globalStyles.secondaryText}>(No category)</Text>}
-                  {transaction.notes ? 
-                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-                  <View style={globalStyles.row}>
+                  <View style={[ globalStyles.column, { flex: 4 } ]}>
+          {transaction.category ? 
+            <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
+                  <Text style={globalStyles.secondaryText}>(No category)</Text>}
+          {transaction.notes ? 
+            <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                  <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                    <View style={globalStyles.row}>
                     <Text>{transaction.date} </Text>
                     <Text> {transaction.time}</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={[ globalStyles.column, { flex: 2 } ]}>
-                  <View style={[ globalStyles.row, styles.prueba ]}>
+                  <View style={[ globalStyles.column, { flex: 2 } ]}>
+                    <View style={[ globalStyles.row, styles.prueba ]}>
                     <Text style={globalStyles.expense}>-${transaction.amount}</Text>
+                    </View>
+                  </View>
                   </View>
                 </View>
-              </View>
-            </View>
-          </TouchableOpacity>
+              </TouchableOpacity>
+          </SwipeableItem>
         ))}
     </View>
   );

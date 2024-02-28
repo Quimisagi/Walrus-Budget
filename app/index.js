@@ -5,6 +5,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useGlobal } from '../utils/globalProvider';
 import { deleteAllData, getData, storeData } from '../utils/storage';
 import { setupCategories } from '../utils/numberUtils';
+import 'react-native-gesture-handler';
+
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();

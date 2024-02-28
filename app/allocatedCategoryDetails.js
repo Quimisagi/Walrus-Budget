@@ -10,6 +10,7 @@ import { Feather, AntDesign } from '@expo/vector-icons';
 import { calculatePercentage } from "../utils/numberUtils";
 import { processMoneyValue } from "../utils/numberUtils";
 import { storeData } from "../utils/storage"; 
+import Toast from 'react-native-toast-message';
 
 
 const AllocatedCategoryDetails = () => {
@@ -65,6 +66,15 @@ const AllocatedCategoryDetails = () => {
     setEditMode(false);
   }
 
+  const showToast = () => {
+    console.log("Should show toast")
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is a success message',
+    });
+  }
+
   useEffect(() => {
     let categoryTemp = activeBudget.allocatedCategories.find(category => category.id === id);
     if(!categoryTemp) return;
@@ -78,6 +88,7 @@ const AllocatedCategoryDetails = () => {
       temp.map(transaction => spentTemp += transaction.amount);
       setSpent(spentTemp);
     }
+
   }, [budgets, transactions]
   ) 
 
@@ -198,6 +209,9 @@ const AllocatedCategoryDetails = () => {
           </View>
         </TouchableOpacity>
       ))}
+      <TouchableOpacity onPress={showToast}>
+        <Text> Show toast </Text>
+      </TouchableOpacity>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {categoryId: id}})}>
         <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>
