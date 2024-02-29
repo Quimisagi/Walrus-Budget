@@ -39,6 +39,12 @@ const AllocatedCategoryDetails = () => {
     transactionsTemp.splice(index, 1);
     await storeData('transactions', JSON.stringify(transactionsTemp));
     setTransactions(transactionsTemp);
+    Toast.show({
+      type: 'success',
+      text1: 'Transaction deleted',
+      position: 'bottom',
+    });
+
   }
 
   const deleteCategory = async () => {
@@ -53,6 +59,11 @@ const AllocatedCategoryDetails = () => {
     setBudgets(budgetsCopy);
     await storeData('activeBudget', JSON.stringify(activeBudget));
     activeBudget.allocatedCategories = allocatedCategoriesTemp;
+    Toast.show({
+      type: 'success',
+      text1: 'Category deleted',
+      position: 'bottom',
+    });
     router.back();
   }
 
@@ -71,16 +82,13 @@ const AllocatedCategoryDetails = () => {
     setBudgets(budgetsCopy);
     await storeData('activeBudget', JSON.stringify(activeBudget));
     activeBudget.allocatedCategories = allocatedCategoriesTemp;
-    setEditMode(false);
-  }
-
-  const showToast = () => {
-    console.log("Should show toast")
     Toast.show({
       type: 'success',
-      text1: 'Hello',
-      text2: 'This is a success message',
+      text1: 'Category updated', 
+      position: 'bottom',
     });
+
+    setEditMode(false);
   }
 
   useEffect(() => {
@@ -219,9 +227,6 @@ const AllocatedCategoryDetails = () => {
           </TouchableOpacity>
         </SwipeableItem>
       ))}
-      <TouchableOpacity onPress={showToast}>
-        <Text> Show toast </Text>
-      </TouchableOpacity>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {categoryId: id}})}>
         <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>

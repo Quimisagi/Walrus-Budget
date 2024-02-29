@@ -15,7 +15,7 @@ export default function Home() {
   const [appIsReady, setAppIsReady] = useState(false);
   const navigation = useNavigation();
 
-  const { budgets, setBudgets, transactions, setTransactions, activeBudget, setActiveBudget} = useGlobal();
+  const { budgets, setBudgets, transactions, setTransactions, activeBudget, setActiveBudget, accounts, setAccounts} = useGlobal();
 
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [expenses, setExpenses] = useState(0);
@@ -94,6 +94,20 @@ export default function Home() {
           })
           .catch(error => {
           });
+
+        await getData('accounts')
+          .then(accounts => {
+            if(accounts){
+              accounts = JSON.parse(accounts);
+              setAccounts(accounts);
+            }
+            else{
+              setAccounts([]);
+            }
+          })
+          .catch(error => {
+          });
+
         if(activeBudgetTemp) {
           let filtered = transactionsTemp.filter(transaction => transaction.budgetId === activeBudgetTemp.id);
           setFilteredTransactions(filtered);

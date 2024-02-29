@@ -2,6 +2,7 @@ import { Stack } from 'expo-router/stack';
 import { GlobalProvider } from '../utils/globalProvider';
 import globalStyles from '../utils/globalStyles';
 import * as Font from 'expo-font';
+import Toast from 'react-native-toast-message';
 
 
 Font.loadAsync({
@@ -45,6 +46,7 @@ export default function Layout() {
           options={{ headerTitle: 'Category details' }}
         />
       </Stack>
+      <Toast/>
     </GlobalProvider>
   );
 }

@@ -46,9 +46,9 @@ export default () => {
         }}
       />
       <Tabs.Screen 
-        name="settings" 
+        name="accountsList" 
         options={{
-          title: '',
+          title: 'Accounts',
           tabBarIcon: (focused) => (
             <Ionicons style={styles.button} name="settings" size={24} color={focused ? '#000' : '#000'} />
           ),

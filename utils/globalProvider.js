@@ -7,6 +7,7 @@ export const GlobalProvider = ({ children }) => {
   const [activeBudget, setActiveBudget] = useState({}); 
   const [budgets, setBudgets] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [accounts, setAccounts] = useState([]);
 
   const globalState = {
     theme,
@@ -16,7 +17,9 @@ export const GlobalProvider = ({ children }) => {
     transactions,
     setTransactions,
     activeBudget,
-    setActiveBudget
+    setActiveBudget,
+    accounts,
+    setAccounts,
   };
   return (
     <GlobalContext.Provider value={globalState}>
