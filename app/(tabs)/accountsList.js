@@ -5,6 +5,9 @@ import { useRouter} from "expo-router";
 import { getData, storeData } from "../../utils/storage"; 
 import { useGlobal } from '../../utils/globalProvider';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import SwipeableItem from '../../utils/swipeableItem';
+
 
 
 const AccountsList = () => {
@@ -16,29 +19,40 @@ const AccountsList = () => {
     router.push({pathname: 'budgetForm', params: { editMode: true, id: id } });
   }
 
+  deleteAccount = async (id) => {
+    let accountsTemp = accounts.filter(account => account.id !== id);
+    await storeData('accounts', JSON.stringify(accountsTemp));
+    setAccounts(accountsTemp);
+    Toast.show({
+      type: 'success',
+      position: 'bottom',
+      text1: 'Account deleted',
+    });
+  }
+
   return (
     <View style={globalStyles.container}> 
       <ScrollView>
         { accounts ? 
             (
               accounts.map(account => (
-                <TouchableOpacity
-                  key={account.id}
-                >
-                  <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
-                    <View style={globalStyles.row}>
-                      <View style={{flex: 3}}>
+                <SwipeableItem key={account.id} onDelete={() => deleteAccount(account.id)}>
+                  <TouchableOpacity>
+                    <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
+                      <View style={globalStyles.row}>
+                        <View style={{flex: 3}}>
                         <Text style={globalStyles.h2}>{account.name}</Text>
-                        <View style={globalStyles.row}>
+                          <View style={globalStyles.row}>
                           <Text style={globalStyles.text}>{account.type}</Text>
+                          </View>
+                        </View>
+                        <View style={{flex: 1}}>
+                        <Text style={globalStyles.amount}>${account.initialValue}</Text>
                         </View>
                       </View>
-                      <View style={{flex: 1}}>
-                        <Text style={globalStyles.amount}>${account.initialValue}</Text>
-                      </View>
                     </View>
-                  </View>
                 </TouchableOpacity>
+                </SwipeableItem>
               ))
             ) : 
             (
