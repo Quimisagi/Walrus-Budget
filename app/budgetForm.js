@@ -9,9 +9,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
-
-
-const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+import { displayDateInFormat } from '../utils/dateUtils';
 
 const BudgetForm = () => {
   const navigation = useNavigation();
@@ -19,33 +17,20 @@ const BudgetForm = () => {
   const [begginingBalance, setBegginingBalance] = useState(0);
   let currentDate = new Date();
   const [date, setDate] = useState(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
-  const defaultName = monthNames[currentDate.getMonth()] + " " + currentDate.getFullYear() 
-  const [name, setName] = useState(defaultName);
+  const [name, setName] = useState("");
   const [dateInFormat, setDateInFormat] = useState(displayDateInFormat);
-
-  const [isNameChanged, setIsNameChanged] = useState(false);
-
   const [showPicker, setShowPicker] = useState(false);
-
   const { budgets, setBudgets, setActiveBudget } = useGlobal();
   const { id, editMode } = useLocalSearchParams();
 
-  const displayDateInFormat = (date) => {
-    let dateArray = date.split("-");
-    let month = monthNames[parseInt(dateArray[1]) - 1];
-    setDateInFormat(month + " " + dateArray[0]);
-  };
   const onChangeDate = (event, selectedDate) => {
     setShowPicker(false);
     const currentDate = selectedDate || date;
     try {
       if (currentDate && currentDate instanceof Date && !isNaN(currentDate)) {
         setDate(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
-        displayDateInFormat(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
-        if (!isNameChanged) {
-          const nameTemp = monthNames[currentDate.getMonth()] + " " + currentDate.getFullYear();
-          setName(nameTemp);
-        }
+        const dateInFormat = displayDateInFormat(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
+        setDateInFormat(dateInFormat);
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -170,7 +155,7 @@ const BudgetForm = () => {
         <TextInput
           style={[ globalStyles.inputField, {flex: 9}]}
           value={name}
-          onChangeText={(text) => { setName(text); setIsNameChanged(true); }}
+          onChangeText={(text) => { setName(text); }}
         />
       </View>
     </View>

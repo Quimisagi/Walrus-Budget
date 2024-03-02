@@ -10,6 +10,7 @@ import AllocatedCategoriesList from '../components/allocatedCategoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { setupCategories } from '../../utils/numberUtils';
+import { displayDateInFormat } from '../../utils/dateUtils';
 
 
 import * as Font from 'expo-font';
@@ -106,7 +107,7 @@ export default function Home() {
                 <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
                   <View style={[ globalStyles.row, styles.budgetSelectMenu ]}>
                     <View style={[{flex: 7, marginLeft: 'auto'}, globalStyles.centered ]}>
-                      <Text style={[ globalStyles.h2 ]}>{activeBudget.name}</Text>
+                      <Text style={[ globalStyles.h2 ]}>{activeBudget.name ? activeBudget.name : displayDateInFormat(activeBudget.date)}</Text>
                     </View>
                     <View style={[{flex: 1}, globalStyles.centered ]}>
                       <Ionicons name="caret-down" size={18} color="black" />
