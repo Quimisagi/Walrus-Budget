@@ -18,7 +18,7 @@ const BudgetForm = () => {
   let currentDate = new Date();
   const [date, setDate] = useState(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
   const [name, setName] = useState("");
-  const [dateInFormat, setDateInFormat] = useState(displayDateInFormat);
+  const [dateInFormat, setDateInFormat] = useState(displayDateInFormat(date));
   const [showPicker, setShowPicker] = useState(false);
   const { budgets, setBudgets, setActiveBudget } = useGlobal();
   const { id, editMode } = useLocalSearchParams();
