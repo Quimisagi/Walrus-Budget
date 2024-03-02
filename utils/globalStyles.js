@@ -41,9 +41,10 @@ const globalStyles = StyleSheet.create({
     borderRadius: 10
   },
   label: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: 'PlusJakarta',
     marginBottom: 5,
+    marginTop: 5,
   },
   input: {
     height: 40,
@@ -71,7 +72,7 @@ const globalStyles = StyleSheet.create({
     padding: 5,
   },
   container:{
-    marginTop: 75,
+    marginTop: 65,
     padding: 20,
     flex: 1
   },
@@ -109,7 +110,7 @@ const globalStyles = StyleSheet.create({
     fontFamily: 'PlusJakarta',
     marginBottom: 5,
   },
-  inputField: {
+  inputFieldContainer: {
     borderColor: 'gray',
     borderWidth: 0.5,
     marginBottom: 10,
@@ -118,6 +119,13 @@ const globalStyles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'PlusJakarta',
   },
+  inputField: {
+    textAlign: 'left',
+    marginLeft: 10,
+    fontSize: 16,
+    fontFamily: 'PlusJakarta',
+    color: 'black',
+  },
   dateLabel:{
     fontSize: 16,
     fontFamily: 'PlusJakarta',
@@ -125,12 +133,25 @@ const globalStyles = StyleSheet.create({
   },
   inputFieldB: {
     textAlign: 'center',
-    borderWidth: 0.5,
     marginBottom: 10,
     padding: 8,
     borderRadius: 5,
     fontSize: 32,
     fontFamily: 'PlusJakarta',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  inputFieldBInvisible: {
+    textAlign: 'center',
+    marginBottom: 10,
+    padding: 8,
+    borderRadius: 5,
+    fontSize: 32,
+    fontFamily: 'PlusJakarta',
+    marginBottom: 20,
+    marginTop: 20,
+    opacity: 0,
+    position: 'absolute',
   },
   buttonA: {
     alignItems: 'center',

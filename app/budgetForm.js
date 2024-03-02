@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import { storeData, getData } from '../utils/storage';
 import 'react-native-get-random-values';
@@ -7,7 +7,7 @@ import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import MonthPicker from 'react-native-month-year-picker';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 
 
@@ -15,7 +15,7 @@ const monthNames = ["january", "february", "march", "april", "may", "june", "jul
 
 const BudgetForm = () => {
   const navigation = useNavigation();
-
+  const budgetRef = useRef(null);
   const [begginingBalance, setBegginingBalance] = useState(0);
   let currentDate = new Date();
   const [date, setDate] = useState(currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1));
@@ -35,7 +35,6 @@ const BudgetForm = () => {
     let month = monthNames[parseInt(dateArray[1]) - 1];
     setDateInFormat(month + " " + dateArray[0]);
   };
-
   const onChangeDate = (event, selectedDate) => {
     setShowPicker(false);
     const currentDate = selectedDate || date;
@@ -91,6 +90,12 @@ const BudgetForm = () => {
     createBudget();
   };
 
+  const focusBudget = () => {
+    if(budgetRef.current){
+      budgetRef.current.focus();
+    }
+  }
+
   useEffect(() => {
     displayDateInFormat(date);
     if (editMode) {
@@ -120,12 +125,33 @@ const BudgetForm = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.inputFieldLabel}>Date:</Text>
-      <TouchableOpacity style={globalStyles.inputField} onPress={() => { setShowPicker(true) }}>
-        <View style={[globalStyles.dateLabel, globalStyles.row ]}>
+      <Text style={globalStyles.label}>Beginning Balance:</Text>
+      <TouchableOpacity onPress={focusBudget}>
+        <Text style={globalStyles.inputFieldB}>{'$' + begginingBalance.toString()}</Text>
+      </TouchableOpacity>
+      <TextInput
+        style={globalStyles.inputFieldBInvisible}
+        ref={budgetRef}
+        autoFocus={true}
+        selectTextOnFocus={false}
+        keyboardType="numeric"
+        caretHidden={true}
+        value={"$" + begginingBalance.toString()}
+        defaultValue={"$0"}
+        onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
+      />
+      <Text style={globalStyles.label}>Date:</Text>
+      <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
+        <View style={[ globalStyles.centered, {flex:1} ]}>
           <AntDesign name="calendar" size={16} color="black" />
-          <Text style={{marginLeft: 5}}>{dateInFormat}</Text>
         </View>
+        <TextInput 
+          style={[ globalStyles.inputField, {flex: 9} ]}
+          pointerEvents="none"
+          editable={false}
+        >
+          <Text style={{marginLeft: 30}}>{dateInFormat}</Text>
+        </TextInput>
       </TouchableOpacity>
       {showPicker ? (
         <MonthPicker
@@ -136,20 +162,17 @@ const BudgetForm = () => {
           locale="en"
         />
       ) : null}
-      <Text style={globalStyles.inputFieldLabel}>Name:</Text>
-      <TextInput
-        style={globalStyles.inputField}
-        value={name}
-        onChangeText={(text) => { setName(text); setIsNameChanged(true); }}
-      />
-      <Text style={globalStyles.inputFieldLabel}>Beginning Balance:</Text>
-      <TextInput
-        style={globalStyles.inputFieldB}
-        keyboardType="numeric"
-        placeholder="$0.00"
-        value={"$" + begginingBalance.toString()}
-        onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
-      />
+      <Text style={globalStyles.label}>Displayed name (Optional):</Text>
+      <View style={[ globalStyles.inputFieldContainer, globalStyles.row ]}> 
+        <View style={[ globalStyles.centered, {flex:1} ]}>
+          <MaterialCommunityIcons name="text" size={16} color="black" />
+        </View>
+        <TextInput
+          style={[ globalStyles.inputField, {flex: 9}]}
+          value={name}
+          onChangeText={(text) => { setName(text); setIsNameChanged(true); }}
+        />
+      </View>
     </View>
   );
 };
