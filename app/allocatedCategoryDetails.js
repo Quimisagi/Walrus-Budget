@@ -230,7 +230,6 @@ const AllocatedCategoryDetails = () => {
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {categoryId: id}})}>
         <Feather name="plus" size={24} color="white" />
       </TouchableOpacity>
-
     </View>
   )
 }

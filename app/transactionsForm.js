@@ -11,6 +11,8 @@ import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { AntDesign } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
+import Modal from "react-native-modal";
+
 
 const TransactionType = {
   EXPENSE: -1,
@@ -27,15 +29,17 @@ const TransactionsForm = ({}) => {
   const [date, setDate] = useState(currentDate.toISOString().split('T')[0]);
   const [time, setTime] = useState(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
   const [category, setCategory] = useState({});
+  const [account, setAccount] = useState({});
   const [transactionType, setTransactionType] = useState(TransactionType.EXPENSE);
 
   const [selection, setSelection] = useState(-1);
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [isAccountModalVisible, setAccountModalVisible] = useState(false);
 
-  const { activeBudget, transactions, setTransactions} = useGlobal();
+  const { activeBudget, transactions, setTransactions, accounts} = useGlobal();
 
-  const { editMode, transactionId, categoryId } = params;
+  const { editMode, transactionId, categoryId, accountId } = params;
 
   const onChangeDate = (event, selectedDate) => {
     setDate(selectedDate.toISOString().split('T')[0]);
@@ -46,7 +50,7 @@ const TransactionsForm = ({}) => {
   }
   const selectCategory = (category) => {
     setCategory(category);
-    setModalVisible(false);
+    setCategoryModalVisible(false);
   } 
   const showDatepicker = () => {
     let parts = date.split("-");
@@ -104,6 +108,7 @@ const TransactionsForm = ({}) => {
       date                 : date,
       time                 : time,
       allocatedCategoryId  : category.id,
+      accountId            : account.id,
       budgetId             : activeBudget.id,
       transactionType      : transactionType
     };
@@ -116,6 +121,10 @@ const TransactionsForm = ({}) => {
 
 
   useEffect(() => {
+    if(accountId){
+      let accountTemp = accounts.find(account => account.id === accountId)
+      setAccount(accountTemp);
+    }
     if(categoryId){
       let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id ===  categoryId)
       let categoryTemp = undefined
@@ -178,28 +187,30 @@ const TransactionsForm = ({}) => {
           <Text style={[styles.btnText, selection === 1 ? { color: "white" } : null]}>Income</Text>
         </TouchableOpacity>
       </View>
-      <Text style={globalStyles.label}>Category:</Text>
-      {category ? (
-        <View>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>{category.name}</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <View>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text> Select category </Text>
-          </Pressable>
-        </View>
-
-      )}
-      <View style={globalStyles.hr} />
+      <View style={globalStyles.row}>
+        <TouchableOpacity 
+          style={{flex: 1}}
+          onPress={() => setCategoryModalVisible(true)}
+        >
+          <Text style={globalStyles.label}>Category</Text>
+          {category && Object.keys(category).length > 0 ? (
+            <Text style={globalStyles.text}>{category.name}</Text>
+          ) : (
+            <Text style={globalStyles.text}>No category</Text>
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={{flex: 1}}
+          onPress={() => setAccountModalVisible(true)}
+        >
+          <Text style={globalStyles.label}>Account</Text>
+          {account && Object.keys(account).length > 0 ? (
+            <Text style={globalStyles.text}>{account.name}</Text>
+          ) : (
+            <Text style={globalStyles.text}>No account</Text>
+          )}
+        </TouchableOpacity>
+      </View>
       <Text styles={globalStyles.label}>Notes:</Text>
       <TextInput
         style={globalStyles.inputField}
@@ -226,10 +237,21 @@ const TransactionsForm = ({}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <Modal
+        isVisible={isAccountModalVisible}
+        onClose={() => setAccountModalVisible(false)}>
+        <View style={globalStyles.modal}>
+          {accounts.map(account => (
+            <Pressable key={account.id} onPress={() => { setAccount(account); setAccountModalVisible(false)}}>
+              <Text style={globalStyles.modalText}>{account.name}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </Modal>
 
       <CategoryModal 
-        isVisible={isModalVisible} 
-        onClose={() => setModalVisible(false)} 
+        isVisible={isCategoryModalVisible} 
+        onClose={() => setCategoryModalVisible(false)} 
         setCategory={(category) => selectCategory (category)}
         categories={activeBudget.allocatedCategories}
         filterSelected={true}
