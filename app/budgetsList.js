@@ -5,7 +5,7 @@ import { useRouter} from "expo-router";
 import { getData, storeData } from "../utils/storage"; 
 import { useGlobal } from '../utils/globalProvider';
 import { Feather, AntDesign } from '@expo/vector-icons';
-
+import { displayDateInFormat } from '../utils/dateUtils';
 
 const BudgetsList = () => {
 
@@ -44,7 +44,7 @@ const BudgetsList = () => {
                   <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
                     <View style={globalStyles.row}>
                       <View style={{flex: 3}}>
-                        <Text style={globalStyles.h2}>{budget.name}</Text>
+                        <Text style={globalStyles.h2}>{ budget.name ? budget.name : displayDateInFormat(budget.date)}</Text>
                         <View style={globalStyles.row}>
                           <Text style={globalStyles.text}>Budgeted: </Text>
                           <Text style={globalStyles.text}>${budget.begginingBalance}</Text>

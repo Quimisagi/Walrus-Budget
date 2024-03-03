@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, Pressable } from "react-native";
 import { getData, storeData } from "../utils/storage"; 
@@ -9,7 +9,7 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { v4 as uuidv4 } from 'uuid';
 import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
-import { AntDesign } from '@expo/vector-icons';
+import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import Modal from "react-native-modal";
 
@@ -22,7 +22,6 @@ const TransactionType = {
 const TransactionsForm = ({}) => {
   const params = useLocalSearchParams();
   const navigation = useNavigation();
-
   const [amount, setAmount] = useState(0); 
   const [notes, setNotes] = useState('');
   const currentDate = new Date();
@@ -31,15 +30,12 @@ const TransactionsForm = ({}) => {
   const [category, setCategory] = useState({});
   const [account, setAccount] = useState({});
   const [transactionType, setTransactionType] = useState(TransactionType.EXPENSE);
-
   const [selection, setSelection] = useState(-1);
-
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [isAccountModalVisible, setAccountModalVisible] = useState(false);
-
   const { activeBudget, transactions, setTransactions, accounts} = useGlobal();
-
   const { editMode, transactionId, categoryId, accountId } = params;
+  const valueRef = useRef(null)
 
   const onChangeDate = (event, selectedDate) => {
     setDate(selectedDate.toISOString().split('T')[0]);
@@ -119,6 +115,11 @@ const TransactionsForm = ({}) => {
     else createTransaction(newTransaction);
   }
 
+  const focusValue = () => {
+    if(valueRef.current){
+      valueRef.current.focus();
+    }
+  }
 
   useEffect(() => {
     if(accountId){
@@ -170,15 +171,6 @@ const TransactionsForm = ({}) => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.label}>Amount:</Text>
-      <TextInput
-        style={globalStyles.inputFieldB}
-        keyboardType="numeric"
-        placeholder="$0.00"
-        value={"$" + amount.toString()}
-        onChangeText={(text) => setAmount(processMoneyValue(text))}
-      />
-      <Text style={globalStyles.label}>Transaction Type:</Text>
       <View style={styles.btnGroup}>
         <TouchableOpacity style={[styles.btn, selection === -1 ? { backgroundColor: "#6B7280" } : null]} onPress={() => setSelection(-1)}>
           <Text style={[styles.btnText, selection === -1 ? { color: "white" } : null]}>Expense</Text>
@@ -187,53 +179,104 @@ const TransactionsForm = ({}) => {
           <Text style={[styles.btnText, selection === 1 ? { color: "white" } : null]}>Income</Text>
         </TouchableOpacity>
       </View>
-      <View style={globalStyles.row}>
-        <TouchableOpacity 
-          style={{flex: 1}}
-          onPress={() => setCategoryModalVisible(true)}
-        >
-          <Text style={globalStyles.label}>Category</Text>
-          {category && Object.keys(category).length > 0 ? (
-            <Text style={globalStyles.text}>{category.name}</Text>
-          ) : (
-            <Text style={globalStyles.text}>No category</Text>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={{flex: 1}}
-          onPress={() => setAccountModalVisible(true)}
-        >
-          <Text style={globalStyles.label}>Account</Text>
-          {account && Object.keys(account).length > 0 ? (
-            <Text style={globalStyles.text}>{account.name}</Text>
-          ) : (
-            <Text style={globalStyles.text}>No account</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-      <Text styles={globalStyles.label}>Notes:</Text>
+
+      <TouchableOpacity onPress={focusValue}>
+        <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "$") + amount.toString()}</Text>
+      </TouchableOpacity>
       <TextInput
-        style={globalStyles.inputField}
-        value={notes}
-        onChangeText={(text) => setNotes(text)}
+        style={globalStyles.inputFieldBInvisible}
+        ref={valueRef}
+        autoFocus={true}
+        keyboardType="numeric"
+        placeholder="$0.00"
+        value={"$" + amount.toString()}
+        onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
-      <View style={globalStyles.row}>
-        <View style={globalStyles.column}>
-          <Text style={globalStyles.label}>Date</Text>
-          <TouchableOpacity style={globalStyles.inputField} onPress={showDatepicker}>
-            <View style={[globalStyles.row ]}>
-              <AntDesign name="calendar" size={16} color="black" />
-              <Text style={[globalStyles.dateLabel, {marginLeft: 5} ]}>{date}</Text>
+
+      <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setCategoryModalVisible(true) }}>
+        <View style={[ globalStyles.centered, {flex:1} ]}>
+          {category && Object.keys(category).length > 0 ? (
+            <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
+              <View style={{transform: [{scale: 0.65}]}}>{category.icon}</View>
             </View>
+          ) : (
+            <AntDesign name="calendar" size={16} color="black" />
+          )}
+
+        </View>
+        <TextInput 
+          style={[ globalStyles.inputField, {flex: 9} ]}
+          pointerEvents="none"
+          editable={false}
+        >
+          {category && Object.keys(category).length > 0 ? (
+            <Text style={[ globalStyles.centered, {color: 'black'} ]}>{category.name}</Text>
+          ) : (
+            <Text style={{color: 'gray'}}>No category</Text>
+          )}
+
+        </TextInput>
+      </TouchableOpacity>
+      <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setAccountModalVisible(true) }}>
+        <View style={[ globalStyles.centered, {flex:1} ]}>
+          {account && Object.keys(account).length > 0 ? (
+            <View>
+              account.icon
+            </View>
+          ) : (
+            <AntDesign name="calendar" size={16} color="black" />
+          )}
+        </View>
+        <TextInput 
+          style={[ globalStyles.inputField, {flex: 9} ]}
+          pointerEvents="none"
+          editable={false}
+        >
+          {account && Object.keys(account).length > 0 ? (
+            <Text style={[ globalStyles.centered, {color: 'black'} ]}>{account.name}</Text>
+          ) : (
+            <Text style={{color: 'gray'}}>No account</Text>
+          )}
+        </TextInput>
+      </TouchableOpacity>
+      <View style={[ globalStyles.inputFieldContainer, globalStyles.row, {marginBottom: 15}]}>
+        <View style={[ globalStyles.centered, {flex:1} ]}>
+          <MaterialCommunityIcons name="text" size={16} color="black" />
+        </View>
+        <TextInput
+          style={[ globalStyles.inputField, {flex: 9} ]}
+          value={notes}
+          placeholder='Description'
+          onChangeText={(text) => setNotes(text)}
+        />
+      </View>
+      <View style={globalStyles.row}>
+        <View style={{flex:1, marginRight: 5}}>
+          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
+            <View style={[ globalStyles.centered, {flex:1} ]}>
+              <AntDesign name="calendar" size={16} color="black" />
+            </View>
+            <TextInput 
+              style={[ globalStyles.inputField, {flex: 7} ]}
+              pointerEvents="none"
+              editable={false}
+            >
+              <Text style={{marginLeft: 30}}>{date}</Text>
+            </TextInput>
           </TouchableOpacity>
         </View>
-        <View style={globalStyles.column}>
-          <Text style={globalStyles.label}>Time:</Text>
-          <TouchableOpacity style={globalStyles.inputField} onPress={showTimepicker}>
-            <View style={globalStyles.row}>
-              <AntDesign name="clockcircleo" size={16} color="black" />
-              <Text style={[globalStyles.dateLabel, {marginLeft: 5} ]}>{time}</Text>
+        <View style={{flex:1, marginLeft: 5}}>
+          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
+            <View style={[ globalStyles.centered, {flex:1} ]}>
+              <AntDesign name="clockcircle" size={16} color="black" />
             </View>
+            <TextInput 
+              style={[ globalStyles.inputField, {flex: 7} ]}
+              pointerEvents="none"
+              editable={false}
+            >
+              <Text style={{marginLeft: 30}}>{time}</Text>
+            </TextInput>
           </TouchableOpacity>
         </View>
       </View>
@@ -288,15 +331,21 @@ const styles = StyleSheet.create({
   },
   btn: {
     flex: 1,
-    borderRightWidth: 0.25,
-    borderLeftWidth: 0.25,
     borderColor: '#6B7280'
   },
   btnText: {
     textAlign: 'center',
-    paddingVertical: 16,
+    paddingVertical: 10,
     fontSize: 14
-  }
+  },
+    categoryIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 });
 
 export default TransactionsForm;

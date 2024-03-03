@@ -118,11 +118,8 @@ const BudgetForm = () => {
         style={globalStyles.inputFieldBInvisible}
         ref={budgetRef}
         autoFocus={true}
-        selectTextOnFocus={false}
         keyboardType="numeric"
-        caretHidden={true}
         value={"$" + begginingBalance.toString()}
-        defaultValue={"$0"}
         onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
       />
       <Text style={globalStyles.label}>Date:</Text>

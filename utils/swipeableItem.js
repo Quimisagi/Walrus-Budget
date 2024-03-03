@@ -23,9 +23,12 @@ const SwipeableItem = ({ children, height, onDelete }) => {
 
   const itemRef = useRef();
 
+  const [heightReady, setHeightReady] = useState(false);
+
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     itemHeight.value = height;
+    setHeightReady(true);
   };
 
   const gestureHandler = useAnimatedGestureHandler({
@@ -72,9 +75,14 @@ const SwipeableItem = ({ children, height, onDelete }) => {
           </Animated.View>
         </PanGestureHandler>
       </Animated.View>
-      <View style={styles.transparent} onLayout={onLayout} ref={itemRef}>
-        {children}
-      </View>
+      {!heightReady ? 
+          (
+            <View style={styles.transparent} onLayout={onLayout} ref={itemRef}>
+              {children}
+            </View>
+          ) :
+          null
+      }
     </GestureHandlerRootView>
   );
 }
