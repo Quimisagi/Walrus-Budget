@@ -110,7 +110,7 @@ const BudgetForm = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.label}>Beginning Balance:</Text>
+      <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
         <Text style={globalStyles.inputFieldB}>{'$' + begginingBalance.toString()}</Text>
       </TouchableOpacity>
@@ -122,7 +122,6 @@ const BudgetForm = () => {
         value={"$" + begginingBalance.toString()}
         onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
       />
-      <Text style={globalStyles.label}>Date:</Text>
       <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
         <View style={[ globalStyles.centered, {flex:1} ]}>
           <AntDesign name="calendar" size={16} color="black" />
@@ -144,13 +143,13 @@ const BudgetForm = () => {
           locale="en"
         />
       ) : null}
-      <Text style={globalStyles.label}>Displayed name (Optional):</Text>
       <View style={[ globalStyles.inputFieldContainer, globalStyles.row ]}> 
         <View style={[ globalStyles.centered, {flex:1} ]}>
           <MaterialCommunityIcons name="text" size={16} color="black" />
         </View>
         <TextInput
           style={[ globalStyles.inputField, {flex: 9}]}
+          placeholder='Custom name (optional)'
           value={name}
           onChangeText={(text) => { setName(text); }}
         />

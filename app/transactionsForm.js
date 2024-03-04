@@ -221,7 +221,7 @@ const TransactionsForm = ({}) => {
         <View style={[ globalStyles.centered, {flex:1} ]}>
           {account && Object.keys(account).length > 0 ? (
             <View>
-              account.icon
+              { account.icon }
             </View>
           ) : (
             <AntDesign name="calendar" size={16} color="black" />
@@ -282,10 +282,12 @@ const TransactionsForm = ({}) => {
       </View>
       <Modal
         isVisible={isAccountModalVisible}
+        onBackdropPress={() => setAccountModalVisible(false)}
         onClose={() => setAccountModalVisible(false)}>
         <View style={globalStyles.modal}>
           {accounts.map(account => (
             <Pressable key={account.id} onPress={() => { setAccount(account); setAccountModalVisible(false)}}>
+              <Text>adafdafdafds</Text>
               <Text style={globalStyles.modalText}>{account.name}</Text>
             </Pressable>
           ))}

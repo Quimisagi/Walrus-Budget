@@ -133,6 +133,7 @@ const globalStyles = StyleSheet.create({
   },
   inputFieldB: {
     textAlign: 'center',
+    justifyContent: 'center',
     marginBottom: 10,
     padding: 8,
     borderRadius: 5,

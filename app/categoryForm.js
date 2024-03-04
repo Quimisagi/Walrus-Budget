@@ -1,15 +1,18 @@
 import React from 'react';
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import { storeData } from '../utils/storage';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { categoryIcons, colors } from '../utils/iconsList';  
+import HorizontalScrolleableSelector from '../utils/horizontalScrolleableSelector'; 
+
 
 const CategoryForm = () => {
   const router = useRouter();
@@ -18,15 +21,20 @@ const CategoryForm = () => {
   const { categoryId, editMode, index} = params;
 
   const [category, setCategory] = useState({});
+  const [name, setName] = useState('');
+  const [color, setColor] = useState('#81ecec');
+  const [icon, setIcon] = useState('');
   const [amount, setAmount] = useState(0);
 
   const { activeBudget, setActiveBudget, budgets, setBudgets } = useGlobal();
+  const budgetRef = useRef(null);
 
   const AllocateCategory = async () => {
     const newAllocatedCategory = {
-      id         : uuidv4(),
-      amount     : amount,
-      categoryId : parseInt( categoryId ),
+      id     : uuidv4(),
+      amount : amount,
+      name   : name,
+      icon   : icon
     }
     const budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
     if (budgetIndex !== -1) {
@@ -58,6 +66,12 @@ const CategoryForm = () => {
     await AllocateCategory();
   }
 
+  const focusBudget = () => {
+    if(budgetRef.current){
+      budgetRef.current.focus();
+    }
+  }
+
   useEffect(() => {
     if(editMode){
       let categoryToEdit = activeBudget.allocatedCategories[index];
@@ -68,7 +82,7 @@ const CategoryForm = () => {
   }
     , []);
 
-    useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
@@ -83,25 +97,46 @@ const CategoryForm = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.h3}>Selected category:</Text>
-      <View style={globalStyles.centered}>
-        {category.icon ? (
-          <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
-            {category.icon}
-          </View>
-        ) : null
-        }
-        <Text style={globalStyles.label}>{category.name}</Text>
-      </View>
-      <View style={[ globalStyles.hr, {margin: 10}]} />
-      <Text style={globalStyles.label}>Amount:</Text>
+      <Text style={globalStyles.label}>Budgeted value:</Text>
+      <TouchableOpacity onPress={focusBudget}>
+        <Text style={globalStyles.inputFieldB}>{'$' + amount.toString()}</Text>
+      </TouchableOpacity>
       <TextInput
-        style={globalStyles.inputFieldB}
+        style={globalStyles.inputFieldBInvisible}
+        ref={budgetRef}
+        autoFocus={true}
         keyboardType="numeric"
-        placeholder="$0.00"
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
+      <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 5, justifyContent: 'center'} ]}>
+        <View style={[ globalStyles.centered, {flex: 1} ]}>
+          {category.icon ? (
+            <View style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
+              {category.icon}
+            </View>
+          ) : null
+          }
+        </View>
+        <View style={{flex: 3, justifyContent:'center'}}>
+          <View style={[ globalStyles.inputFieldContainer, globalStyles.row]}> 
+            <View style={[ globalStyles.centered, {flex:1} ]}>
+            <MaterialCommunityIcons name="text" size={16} color="black" />
+            </View>
+          <TextInput
+            style={[ globalStyles.inputField, {flex: 9}]}
+            placeholder='Name'
+            value={name}
+            onChangeText={(text) => { setName(text); }}
+          />
+          </View>
+          </View>
+      </View>
+      <Text style={globalStyles.label}>Icons:</Text>
+      <HorizontalScrolleableSelector items={colors} areItemsColors={true} setSelectedItem={(color) => setColor(color)}/>
+      <Text style={globalStyles.label}>Color:</Text>
+      <HorizontalScrolleableSelector items={colors} areItemsColors={true} setSelectedItem={(color) => setColor(color)}/>
+
     </View>
   );
 }
