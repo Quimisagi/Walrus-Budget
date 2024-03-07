@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
@@ -10,8 +10,11 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { categoryIcons, colors } from '../utils/iconsList';  
-import HorizontalScrolleableSelector from '../utils/horizontalScrolleableSelector'; 
+import { icons, colors } from '../utils/iconsList';  
+import ColorSelector from './components/colorSelector';
+import IconsModal from './components/iconsModal';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 
 
 const CategoryForm = () => {
@@ -25,6 +28,7 @@ const CategoryForm = () => {
   const [color, setColor] = useState('#81ecec');
   const [icon, setIcon] = useState('');
   const [amount, setAmount] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const { activeBudget, setActiveBudget, budgets, setBudgets } = useGlobal();
   const budgetRef = useRef(null);
@@ -40,9 +44,9 @@ const CategoryForm = () => {
     if (budgetIndex !== -1) {
       const budgetsTemp = [...budgets];
       budgetsTemp[budgetIndex] = {
-          ...budgetsTemp[budgetIndex],
-          allocatedCategories: [...budgetsTemp[budgetIndex].allocatedCategories, newAllocatedCategory] 
-        };
+        ...budgetsTemp[budgetIndex],
+        allocatedCategories: [...budgetsTemp[budgetIndex].allocatedCategories, newAllocatedCategory] 
+      };
       await storeData('budgets', JSON.stringify(budgetsTemp));
       setBudgets(budgetsTemp);
       await storeData('activeBudget', JSON.stringify(budgetsTemp[budgetIndex]));
@@ -109,36 +113,42 @@ const CategoryForm = () => {
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
+      <View style={globalStyles.hr}/>
       <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 5, justifyContent: 'center'} ]}>
         <View style={[ globalStyles.centered, {flex: 1} ]}>
-          {category.icon ? (
-            <View style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
-              {category.icon}
-            </View>
-          ) : null
-          }
+          <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
+            {icon ? (
+              <FontAwesome6 name={icon} size={30} color="black" />
+            ) : (
+              <Text>Icon</Text>
+            )
+            }
+          </TouchableOpacity>
         </View>
         <View style={{flex: 3, justifyContent:'center'}}>
           <View style={[ globalStyles.inputFieldContainer, globalStyles.row]}> 
             <View style={[ globalStyles.centered, {flex:1} ]}>
-            <MaterialCommunityIcons name="text" size={16} color="black" />
+              <MaterialCommunityIcons name="text" size={16} color="black" />
             </View>
-          <TextInput
-            style={[ globalStyles.inputField, {flex: 9}]}
-            placeholder='Name'
-            value={name}
-            onChangeText={(text) => { setName(text); }}
-          />
+            <TextInput
+              style={[ globalStyles.inputField, {flex: 9}]}
+              placeholder='Name'
+              value={name}
+              onChangeText={(text) => { setName(text); }}
+            />
           </View>
-          </View>
+        </View>
       </View>
-      <Text style={globalStyles.label}>Icons:</Text>
-      <HorizontalScrolleableSelector items={colors} areItemsColors={true} setSelectedItem={(color) => setColor(color)}/>
       <Text style={globalStyles.label}>Color:</Text>
-      <HorizontalScrolleableSelector items={colors} areItemsColors={true} setSelectedItem={(color) => setColor(color)}/>
-
+      <ColorSelector items={colors} areItemsColors={true} setSelectedItem={(color) => setColor(color)}/>
+      <IconsModal
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        setIcon={(icon) => setIcon(icon)}
+      />
     </View>
   );
 }
+
 export default CategoryForm;
 

@@ -91,7 +91,7 @@ export default function Home() {
       <View style={styles.main}>
         {budgets.length === 0 ? (
           <View style={styles.noBudgetsPanel}>
-            <Image source={require('../../assets/icons/money-bag.png')} />
+            <Image source={require('../../assets/icons/money-bag-svgrepo-com.svg')} />
             <Text style={globalStyles.h2}>No budgets created</Text>
             <TouchableOpacity style={globalStyles.buttonA} onPress={() => router.push({pathname: "/budgetForm"})}>
               <View style={globalStyles.row}>

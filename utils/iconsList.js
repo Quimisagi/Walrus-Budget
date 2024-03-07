@@ -5,26 +5,75 @@ import {
   Entypo
 } from '@expo/vector-icons';
 
-export const categoryIcons = [
-  <MaterialCommunityIcons name="food" size={12} color="black" />,
-  <Ionicons name="home-sharp" size={12} color="black" />,
-  <MaterialCommunityIcons name="car" size={12} color="black" />,
-  <Entypo name="game-controller" size={12} color="black" />,
-  <MaterialCommunityIcons name="shopping" size={12} color="black" />,
-  <Entypo name="heart" size={12} color="black" />,
-  <MaterialCommunityIcons name="food" size={12} color="black" />,
-  <Ionicons name="home-sharp" size={12} color="black" />,
-  <MaterialCommunityIcons name="car" size={12} color="black" />,
-  <Entypo name="game-controller" size={12} color="black" />,
-  <MaterialCommunityIcons name="shopping" size={12} color="black" />,
-  <Entypo name="heart" size={12} color="black" />,
-  <MaterialCommunityIcons name="food" size={12} color="black" />,
-  <Ionicons name="home-sharp" size={12} color="black" />,
-  <MaterialCommunityIcons name="car" size={12} color="black" />,
-  <Entypo name="game-controller" size={12} color="black" />,
-  <MaterialCommunityIcons name="shopping" size={12} color="black" />,
-  <Entypo name="heart" size={12} color="black" />,
-]
+const iconDirectoryPath = '../assets/icons';
+
+export const loadIcons = async () => {
+    try {
+      const iconFiles = await require.context(iconDirectoryPath, false, /\.(svg)$/);
+      return iconFiles.keys().map((iconPath) => iconPath);
+    } catch (error) {
+      console.error('Error loading icons:', error);
+      return null;
+    }
+  };
+
+export const icons = [
+  "star",
+  "heart",
+  "house",
+  "credit-card",
+  "cart-shopping",
+  "car",
+  "gift",
+  "bowl-food",
+  "mug-saucer",
+  "seedling",
+  "plane",
+  "book",
+  "wine-bottle",
+  "music",
+  "gamepad",
+  "film",
+  "futbol",
+  "burger",
+  "glass-water",
+  "cloud",
+  "bone",
+  "cat",
+  "dog",
+  "paw",
+  "tree",
+  "umbrella",
+  "cloud-sun",
+  "vault",
+  "coins",
+  "cloud-moon",
+  "piggy-bank",
+  "scale-balanced",
+  "wallet",
+  "briefcase",
+  "cash-register",
+  "landmark",
+  "store",
+  "graduation-cap",
+  "paperclip",
+  "pen",
+  "bed",
+  "briefcase-medical",
+  "trash",
+  "camera",
+  "mobile",
+  "dumbbell",
+  "bicycle",
+  "desktop",
+  "guitar",
+  "train",
+  "shirt",
+  "scissors",
+  "lightbulb",
+  "bolt",
+  "hotel"
+];
 
 export const colors = [
   '#81ecec',
