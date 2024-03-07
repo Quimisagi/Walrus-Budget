@@ -5,17 +5,21 @@ import {
   Entypo
 } from '@expo/vector-icons';
 
-const iconDirectoryPath = '../assets/icons';
 
-export const loadIcons = async () => {
-    try {
-      const iconFiles = await require.context(iconDirectoryPath, false, /\.(svg)$/);
-      return iconFiles.keys().map((iconPath) => iconPath);
-    } catch (error) {
-      console.error('Error loading icons:', error);
-      return null;
-    }
-  };
+const getBrightness = (color) => {
+  // Convert hex color to RGB
+  const rgb = parseInt(color.substring(1), 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >>  8) & 0xff;
+  const b = (rgb >>  0) & 0xff;
+
+  // Calculate brightness using the formula (0.299 * R + 0.587 * G + 0.114 * B)
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+};
+
+export const getContrastColor = (color) => {
+  return getBrightness(color) < 0.5 ? '#ffffff' : 'black'; };
+
 
 export const icons = [
   "star",
@@ -76,17 +80,27 @@ export const icons = [
 ];
 
 export const colors = [
-  '#81ecec',
-  '#a29bfe',
-  '#faea50',
-  '#fab0af',
-  '#b44fff',
-  '#a03',
-  '#4fa344',
-  '#e33',
-  '#000f0f',
-  '#3aa',
-  '#d60000',
-  '#0625dd'
+  "#2F2A2A",
+  "#800000", // Maroon
+  "#DC143C", // Crimson
+  "#FF4500", // Orange Red
+  "#FF5733", // Reddish Orange
+  "#FF8C00", // Dark Orange
+  "#FF6347", // Tomato
+  "#FFD700", // Gold
+  "#ADFF2F", // Green Yellow
+  "#32CD32", // Lime Green
+  "#073B11",
+  "#2E8B57", // Sea Green
+  "#66FF99", // Pastel Green
+  "#00FFFF", // Cyan
+  "#00CED1", // Dark Turquoise
+  "#20B2AA",  // Light Sea Green,
+  "#3366FF", // Vivid Blue
+  "#FF69B4", // Hot Pink
+  "#9932CC", // Dark Orchid
+  "#8A2BE2", // Blue Violet
+  "#800080", // Purple,
+  "#ADA1A9"
 ]
 

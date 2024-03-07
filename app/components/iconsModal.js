@@ -6,18 +6,20 @@ import Modal from "react-native-modal";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { icons } from '../../utils/iconsList';
 
-const IconsModal = ({ isVisible, onClose, setIcon}) =>{
+const IconsModal = ({ isVisible, onClose, setIcon, selectedIcon}) =>{
 
   return(
     <View style={globalStyles.centered}>
       <Modal isVisible={isVisible} onBackdropPress={onClose}>
         <View style={globalStyles.modal}>
-          <Text style={[ globalStyles.label, {marginBottom: 20} ]}>Select icon:</Text>
+          <Text style={[ globalStyles.h3, {marginBottom: 20} ]}>Select icon:</Text>
           <View style={globalStyles.row}>
             {icons.map((icon, index) => (
-              <TouchableOpacity style={[styles.item, true ? styles.selectedItem : null]} key={index} onPress={() => { setIcon(icon); onClose(); }}>
+              <View key={index}>
+                <TouchableOpacity style={[styles.item, selectedIcon === icon ? styles.selectedItem : null]} onPress={() => { setIcon(icon); onClose(); }}>
                 <FontAwesome6 name={icon} size={22.5} color="black" />
               </TouchableOpacity>
+              </View>
             ))}
           </View>
 
@@ -34,13 +36,13 @@ const styles = StyleSheet.create({
     borderRadius: 30, 
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'gray',
+    backgroundColor: '#C2C9C8',
     margin: 5
   },
   selectedItem: {
     borderWidth: 3,
     borderRadius: 30,
-    borderColor: 'gray',
+    borderColor: 'red',
   }
 });
 

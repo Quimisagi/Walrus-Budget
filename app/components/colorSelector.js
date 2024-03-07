@@ -1,11 +1,18 @@
 import React from "react";
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import { colors } from '../../utils/iconsList';
+import { getContrastColor, colors } from '../../utils/iconsList';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
 
 const ColorSelector = ({ setSelectedItem }) => {
 
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [iconColor, setIconColor] = useState('black')
+
+  useEffect(() => {
+    setIconColor(getContrastColor(colors[selectedIndex]))
+  } , [selectedIndex])
 
   return (
     <View>
@@ -15,8 +22,7 @@ const ColorSelector = ({ setSelectedItem }) => {
               colors.map((color, index) => (
                 <TouchableOpacity onPress={() => { setSelectedIndex(index); setSelectedItem(color) }} key={index}>
                   <View style={[styles.item, index === selectedIndex ? styles.selectedItem : null, {backgroundColor: color}]}>
-                    <View>
-                    </View>
+                    { index === selectedIndex ? <FontAwesome6 name={"check"} size={22.5} color={iconColor} /> : null}
                   </View>
                 </TouchableOpacity>
               ))
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
   selectedItem: {
     borderWidth: 3,
     borderRadius: 30,
-    borderColor: 'gray',
+    borderColor: 'black',
   }
 });
 

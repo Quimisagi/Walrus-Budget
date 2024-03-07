@@ -10,11 +10,10 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { icons, colors } from '../utils/iconsList';  
+import { getContrastColor, colors } from '../utils/iconsList';  
 import ColorSelector from './components/colorSelector';
 import IconsModal from './components/iconsModal';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
 
 
 const CategoryForm = () => {
@@ -32,6 +31,8 @@ const CategoryForm = () => {
 
   const { activeBudget, setActiveBudget, budgets, setBudgets } = useGlobal();
   const budgetRef = useRef(null);
+
+  const [iconColor, setIconColor] = useState('black');
 
   const AllocateCategory = async () => {
     const newAllocatedCategory = {
@@ -86,6 +87,12 @@ const CategoryForm = () => {
   }
     , []);
 
+  useEffect(() => {
+    const iconColor = getContrastColor(color);
+    setIconColor(iconColor);
+  }, [color]);
+
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -115,12 +122,12 @@ const CategoryForm = () => {
       />
       <View style={globalStyles.hr}/>
       <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 5, justifyContent: 'center'} ]}>
-        <View style={[ globalStyles.centered, {flex: 1} ]}>
+        <View style={[{flex: 1} ]}>
           <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
             {icon ? (
-              <FontAwesome6 name={icon} size={30} color="black" />
+              <FontAwesome6 name={icon} size={30} color={iconColor} />
             ) : (
-              <Text>Icon</Text>
+              <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text>
             )
             }
           </TouchableOpacity>
@@ -145,6 +152,7 @@ const CategoryForm = () => {
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
         setIcon={(icon) => setIcon(icon)}
+        selectedIcon={icon}
       />
     </View>
   );
