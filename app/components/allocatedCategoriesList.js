@@ -4,9 +4,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import globalStyles from '../../utils/globalStyles';
 import { router, navigation } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
-import { getData, storeData } from "../../utils/storage"; 
 import { Ionicons } from '@expo/vector-icons';
-import CircularProgress from '../../utils/circularProgress'; 
+import CircularProgress from '../../utils/circularProgress';
 import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'
 
 const AllocatedCategoriesList = () => {
@@ -73,11 +72,8 @@ const AllocatedCategoriesList = () => {
                       <CircularProgress
                         percentage={handlePercentage(category.percentage)}
                         color={category.color}
-                      >
-                        <View>
-                          {category.icon}
-                        </View>
-                      </CircularProgress>
+                        icon={category.icon}
+                      />
                       {category.percentage > 100 ? (
                         <Text style={styles.warning}>{category.percentage}%</Text>
                       ) : (

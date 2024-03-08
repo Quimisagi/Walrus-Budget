@@ -4,7 +4,6 @@ import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "../utils/globalProvider";
 import {View, Text, TouchableOpacity, TextInput } from "react-native";
 import globalStyles from "../utils/globalStyles";
-import defaultCategories from "../utils/defaultCategories";
 import { StyleSheet } from "react-native";
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { calculatePercentage } from "../utils/numberUtils";
@@ -12,15 +11,17 @@ import { processMoneyValue } from "../utils/numberUtils";
 import { storeData } from "../utils/storage"; 
 import Toast from 'react-native-toast-message';
 import SwipeableItem from "../utils/swipeableItem";
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { getContrastColor } from '../utils/iconsList';
 
 
 const AllocatedCategoryDetails = () => {
-  
+
   const router = useRouter();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
-  const { budgets, setBudgets, transactions, setTransactions, activeBudget } = useGlobal();
+  const { transactions, setTransactions, activeBudget, activeBudgetCategories } = useGlobal();
 
   const {id, budgetId, categoryId} = params;
 
@@ -72,34 +73,16 @@ const AllocatedCategoryDetails = () => {
   }
 
   const editCategoryAmount = async () => {
-    let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
-    let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
-    allocatedCategoriesTemp[categoryIndex].amount = amount;
-    let budgetsCopy = [...budgets];
-    let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
-    budgetsCopy[budgetIndex].allocatedCategories = allocatedCategoriesTemp;
-    await storeData('budgets', JSON.stringify(budgetsCopy));
-    setBudgets(budgetsCopy);
-    await storeData('activeBudget', JSON.stringify(activeBudget));
-    activeBudget.allocatedCategories = allocatedCategoriesTemp;
-    Toast.show({
-      type: 'success',
-      text1: 'Category updated', 
-      position: 'bottom',
-    });
-
-    setEditMode(false);
   }
 
   useEffect(() => {
-    if (activeBudget){
-      setCategory(activeBudget.allocatedCategories.find(cat => cat.id === id));
-      //Load filtered transactions
+    if (activeBudgetCategories){
+      const cat = activeBudgetCategories.find(cat => cat.id === id);
+      setCategory(cat);
       setFilteredTransactions(transactions.filter(transaction => transaction.categoryId === id));
     }
-  }, [activeBudget, transactions]
-  ) 
-
+  }, [activeBudget, transactions, activeBudgetCategories]);
+ 
   useEffect(() => {
     setPercentage(calculatePercentage(spent, category.amount));
   }, [spent, amount, category.amount, transactions]);
@@ -121,50 +104,52 @@ const AllocatedCategoryDetails = () => {
 
   return (
     <View style={globalStyles.container}>
-      <View style={globalStyles.row}>
-        <View style={[ globalStyles.column, {flex: 1} ]}>
-          <View style={[ globalStyles.categoryIcon, globalStyles.centered, {backgroundColor: category.color, transform: [{scale: 1.3}]} ]}>
-            {category.icon}
-          </View>
-        </View>
-        <View style={[ globalStyles.column, { flex: 4} ]}>
-          { category.amount === 0 ? (
-            <View style={globalStyles.row}>
-              <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                <Text style={globalStyles.h3}>${spent}</Text>
-                <Text style={globalStyles.text}>Spent</Text>
-              </View>
-              <View style={[ globalStyles.column, globalStyles.centered, {alignItems: 'flex-end'} ]}>
-                <Text style={globalStyles.h3}>-</Text>
-                <Text style={globalStyles.text}>Remaining</Text>
-              </View>
+      { category ? (
+        <View style={globalStyles.row}>
+          <View style={[ globalStyles.column, {flex: 1} ]}>
+            <View style={[ globalStyles.categoryIcon, globalStyles.centered, {backgroundColor: category.color} ]}>
+              <FontAwesome6 name={category.icon} size={25} color={() => getContrastColor(category.color)} />
             </View>
-          )
-          : (
-            <View>
-              <View style={globalStyles.centered}>
-                <Text style={globalStyles.text}>{percentage}% spent</Text>
-              </View>
-              <View style={styles.progressBar}> 
-                {percentage >= 100 ? 
-                  <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
-                  <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
-                }
-              </View>
+          </View>
+          <View style={[ globalStyles.column, { flex: 4} ]}>
+            { category.amount === 0 ? (
               <View style={globalStyles.row}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
                   <Text style={globalStyles.h3}>${spent}</Text>
                   <Text style={globalStyles.text}>Spent</Text>
                 </View>
-                <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
-                  <Text style={globalStyles.h3}>${category.amount - spent}</Text>
+                <View style={[ globalStyles.column, globalStyles.centered, {alignItems: 'flex-end'} ]}>
+                  <Text style={globalStyles.h3}>-</Text>
                   <Text style={globalStyles.text}>Remaining</Text>
                 </View>
               </View>
-            </View>
-          )}
+            )
+            : (
+              <View>
+                <View style={globalStyles.centered}>
+                  <Text style={globalStyles.text}>{percentage}% spent</Text>
+                </View>
+                <View style={styles.progressBar}> 
+                  {percentage >= 100 ? 
+                    <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
+                    <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
+                  }
+                </View>
+                <View style={globalStyles.row}>
+                  <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
+                    <Text style={globalStyles.h3}>${spent}</Text>
+                    <Text style={globalStyles.text}>Spent</Text>
+                  </View>
+                  <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
+                    <Text style={globalStyles.h3}>${category.amount - spent}</Text>
+                    <Text style={globalStyles.text}>Remaining</Text>
+                  </View>
+                </View>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
+      ) : null}
       <View style={globalStyles.centered}>
         <Text style={globalStyles.text}>Budgeted</Text>
         {editMode ? (

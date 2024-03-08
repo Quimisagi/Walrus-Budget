@@ -6,7 +6,8 @@ import { router } from "expo-router";
 import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
 import SwipeableItem from '../../utils/swipeableItem';
-
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { getContrastColor } from '../../utils/iconsList';
 
 const TransactionList = () => {
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
@@ -55,8 +56,9 @@ const TransactionList = () => {
               <View style={globalStyles.row}>
                 <View style={[ globalStyles.column, { flex: 1} ]}>
                   {transaction.category ? 
-                    <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color, transform: [{scale: 0.85}]}]}>
-                      {transaction.category.icon}
+                    <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
+                      <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
+
                     </View>
                     : (<Text>no icon</Text>)}
                 </View>

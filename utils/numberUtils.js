@@ -18,7 +18,7 @@ export const calculateCategoryTotalSpent = (categoryId, transactions) => {
   if (!transactions) return 0;
   let totalSpent = 0;
   transactions.map(transaction => {
-    if (transaction.allocatedCategoryId === categoryId) {
+    if (transaction.categoryId === categoryId) {
       totalSpent += transaction.amount;
     }
   });

@@ -1,61 +1,41 @@
 import React, { useState, useEffect } from 'react';
+import { useGlobal } from '../../utils/globalProvider';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import defaultCategories from '../../utils/defaultCategories';
 import globalStyles from '../../utils/globalStyles';
 import Modal from "react-native-modal";
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { getContrastColor } from "../../utils/iconsList";
 
-const CategoryModal = ({ isVisible, onClose, setCategory, categories, filterSelected = false }) =>{
-  const [filteredCategories, setFilteredCategories] = useState([]);
+const CategoryModal = ({ isVisible, onClose, setCategory}) =>{
 
-  const selectedCategories = () => {
-    const filteredCategories = categories.map(allocatedCategory => {
-      const matchedCategory = defaultCategories.find(defaultCategory => defaultCategory.id === allocatedCategory.categoryId);
-      return {...matchedCategory, ...allocatedCategory} 
-    });
-    return filteredCategories;
-  }
-  const notSelectedCategories = () => {
-    const notSelected = defaultCategories.filter(defaultCategory => {
-      // Check if the category id is not present in the selected categories
-      return !categories.some(allocatedCategory => allocatedCategory.categoryId === defaultCategory.id);
-    });
-    return notSelected;
-  };
-
-  useEffect(() => {
-    if (categories) { 
-      filterSelected ? setFilteredCategories(selectedCategories()) : setFilteredCategories(notSelectedCategories()); 
-    }
-    else {
-      setFilteredCategories(defaultCategories);
-    }
-  } , [categories]);
+  const { activeBudgetCategories } = useGlobal();
 
   return(
     <View style={globalStyles.centered}>
       <Modal isVisible={isVisible} onBackdropPress={onClose}>
         <View style={globalStyles.modal}>
           <Text style={[ globalStyles.label, {marginBottom: 20} ]}>Select a category:</Text>
-          <View style={globalStyles.hr} />
-          {filteredCategories !== undefined ? (
-            filteredCategories.map((category, index) => (
-              <View key={index}>
-                <View style={{flexDirection: 'row'}}>
-                  <TouchableOpacity style={{width: '100%'}} onPress={() => setCategory(category)}> 
-                    <View style={globalStyles.row}>
-                      {category.icon ? (
-                        <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
-                          {category.icon}
-                        </View>
-                      ) : null
-                      }
-                      <Text>{category.name}</Text>
-                    </View>
-                  </TouchableOpacity>
+          {activeBudgetCategories ? (
+            <View style={globalStyles.row}>
+              {activeBudgetCategories.map((category) => (
+                <View key={category.id}>
+                  <View style={styles.categoryButton}>
+                    <TouchableOpacity onPress={() => setCategory(category)}> 
+                      <View>
+                        {category.icon ? (
+                          <View style={[globalStyles.categoryIcon, {backgroundColor: category.color}]}>
+                            <FontAwesome6 name={category.icon} size={25} color={getContrastColor(category.color)} />
+                          </View>
+                        ) : null
+                        }
+                        <Text>{category.name}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={globalStyles.hr} />
                 </View>
-                <View style={globalStyles.hr} />
-              </View>
-            ))
+              ))}
+            </View>
           ) : null}
         </View>
       </Modal>
@@ -65,12 +45,10 @@ const CategoryModal = ({ isVisible, onClose, setCategory, categories, filterSele
 
 const styles = StyleSheet.create({
   categoryButton: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    margin: 5,
+    padding: 5,
+    margin: 10,
   },
   backgroundPanel:{
     flex: 1,

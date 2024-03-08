@@ -2,7 +2,6 @@ import React from 'react';
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
-import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import { storeData } from '../utils/storage';
@@ -22,14 +21,13 @@ const CategoryForm = () => {
   const navigation = useNavigation();
   const { categoryId, editMode, index} = params;
 
-  const [category, setCategory] = useState({});
   const [name, setName] = useState('');
   const [color, setColor] = useState(colors[0]);
   const [icon, setIcon] = useState('');
   const [amount, setAmount] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { activeBudget, setActiveBudget, budgets, setBudgets, categories, setCategories } = useGlobal();
+  const { activeBudget, budgets, setBudgets, categories, setCategories } = useGlobal();
   const budgetRef = useRef(null);
 
   const [iconColor, setIconColor] = useState('black');
@@ -41,7 +39,8 @@ const CategoryForm = () => {
         budgetId : activeBudget.id,
         amount   : amount,
         name     : name,
-        icon     : icon
+        icon     : icon,
+        color    : color,
       }
       const categoriesTemp = [...categories];
       categoriesTemp.push(newAllocatedCategory);
@@ -75,12 +74,6 @@ const focusBudget = () => {
 }
 
 useEffect(() => {
-  if(editMode){
-    let categoryToEdit = activeBudget.allocatedCategories[index];
-    setAmount(categoryToEdit.amount);
-  }
-  let category = defaultCategories.find(category => category.id === parseInt( categoryId ));
-  setCategory(category);
 }
   , []);
 
@@ -101,7 +94,7 @@ useLayoutEffect(() => {
       </TouchableOpacity>
     ),
   });
-}, [navigation, amount]);
+}, [navigation, amount, icon, color, name]);
 
 return (
   <View style={globalStyles.container}>
@@ -122,7 +115,7 @@ return (
       <View style={[{flex: 1} ]}>
         <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
           {icon ? (
-            <FontAwesome6 name={icon} size={30} color={iconColor} />
+            <FontAwesome6 name={icon} size={25} color={iconColor} />
           ) : (
             <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text>
           )

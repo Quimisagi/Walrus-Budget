@@ -12,6 +12,9 @@ import globalStyles from '../utils/globalStyles';
 import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import Modal from "react-native-modal";
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { getContrastColor } from '../utils/iconsList';
+
 
 
 const TransactionType = {
@@ -103,7 +106,7 @@ const TransactionsForm = ({}) => {
       notes                : notes,
       date                 : date,
       time                 : time,
-      allocatedCategoryId  : category.id,
+      categoryId           : category.id,
       accountId            : account.id,
       budgetId             : activeBudget.id,
       transactionType      : transactionType
@@ -197,7 +200,7 @@ const TransactionsForm = ({}) => {
         <View style={[ globalStyles.centered, {flex:1} ]}>
           {category && Object.keys(category).length > 0 ? (
             <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
-              <View style={{transform: [{scale: 0.65}]}}>{category.icon}</View>
+              <FontAwesome6 name={category.icon} size={15} color={getContrastColor(category.color)} />
             </View>
           ) : (
             <AntDesign name="calendar" size={16} color="black" />
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 14
   },
-    categoryIcon: {
+  categoryIcon: {
     width: 30,
     height: 30,
     borderRadius: 30,

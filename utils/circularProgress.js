@@ -2,8 +2,10 @@ import React from "react";
 import { useState, useEffect } from "react";
 import {View, Text, StyleSheet} from "react-native";
 import Svg, {Circle} from "react-native-svg";
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {getContrastColor} from "./iconsList";
 
-const CircularProgress = ({children, percentage, color}) => {
+const CircularProgress = ({percentage, color, icon}) => {
 
   const [strokeColor, setStrokeColor] = useState(color);
   const radius = 38.5;
@@ -13,6 +15,8 @@ const CircularProgress = ({children, percentage, color}) => {
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDasharray = `${circumference} ${circumference}`;
   const offset = circumference - percentage / 100 * circumference;
+
+  const [iconColor, setIconColor] = useState('black');
 
   const hexToRgba = (hex, alpha) => {
     const bigint = parseInt(hex.slice(1), 16);
@@ -59,7 +63,7 @@ const CircularProgress = ({children, percentage, color}) => {
           transform={`rotate(-90 ${radius} ${radius})`}
         />
         <View style={styles.center}>
-          {children}
+          <FontAwesome6 name={icon} size={30} color={iconColor} />
         </View>
       </Svg>
     </View>
