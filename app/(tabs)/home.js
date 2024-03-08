@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from 'expo-router';
-import { Text, Button, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useGlobal } from '../../utils/globalProvider';
-import { deleteAllData, getData, storeData } from '../../utils/storage';
 import globalStyles from '../../utils/globalStyles';
 import CategoryModal from '../components/categoryModal';
 import { router } from 'expo-router';
 import AllocatedCategoriesList from '../components/allocatedCategoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { setupCategories } from '../../utils/numberUtils';
 import { displayDateInFormat } from '../../utils/dateUtils';
+import { calculateExpenses, calculateIncome } from '../../utils/numberUtils';
 
 
 import * as Font from 'expo-font';
@@ -23,20 +22,22 @@ Font.loadAsync({
 export default function Home() {
   const navigation = useNavigation();
 
-  const { activeBudgetId, budgets, transactions, activeBudget, setActiveBudget} = useGlobal();
+  const { 
+    budgets,
+    transactions,
+    categories,
+    activeBudget,
+    activeBudgetTransactions,
+    setActiveBudgetTransactions,
+    activeBudgetCategories,
+    setActiveBudgetCategories,
+  } = useGlobal();
 
-  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [expenses, setExpenses] = useState(0);
   const [income, setIncome] = useState(0);
   const [balance, setBalance] = useState(0);
 
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const [index, setIndex] = useState(0);
-  const routes = [
-    { key: 'allocatedCategories', title: 'Allocated Categories' },
-    { key: 'transactions', title: 'Transactions' },
-  ];
 
   const calculateBalance = (balance, transactions) => {
     transactions.forEach(transaction => {
@@ -45,29 +46,6 @@ export default function Home() {
     return balance;
   }
 
-  const calculateExpenses = (transactions) => {
-    let expenses = 0;
-    transactions.forEach(transaction => {
-      if (transaction.transactionType === -1) {
-        expenses += transaction.amount;
-      }
-    });
-    return expenses;
-  }
-  const calculateIncome = (transactions) => {
-    let income = 0;
-    transactions.forEach(transaction => {
-      if (transaction.transactionType === 1) {
-        income += transaction.amount;
-      }
-    }
-    );
-    return income;
-  }
-  const updateActiveBudget = async (budget) => {
-    await storeData('activeBudget', JSON.stringify(budget));
-    setActiveBudget(budget);
-  }
   const toAddCategory = (category ) => {
     router.push({ pathname: '/categoryForm', params: { categoryId: category.id, activeBudgetId: activeBudgetId } });
     setModalVisible(false);
@@ -78,20 +56,29 @@ export default function Home() {
 
   useEffect(() => {
     if(activeBudget){
-      let filtered = transactions.filter(transaction => transaction.budgetId === activeBudget.id);
-      setFilteredTransactions(filtered);
-      setExpenses(calculateExpenses(filtered));
-      setIncome(calculateIncome(filtered));
-      setBalance(calculateBalance(activeBudget.begginingBalance, filtered));
+      setExpenses(calculateExpenses(activeBudgetTransactions));
+      setIncome(calculateIncome(activeBudgetTransactions));
+      setBalance(calculateBalance(activeBudget.begginingBalance, activeBudgetTransactions));
     } 
-  }, [activeBudget, budgets, transactions]);
+  }, [activeBudget, budgets, transactions, activeBudgetTransactions]);
+
+  useEffect(() => {
+    if(activeBudget){
+      setActiveBudgetTransactions(transactions.filter(transaction => transaction.budgetId === activeBudget.id));
+    }
+  }, [transactions, activeBudget]);
+
+  useEffect(() => {
+    if(activeBudget){
+      setActiveBudgetCategories(categories.filter(category => category.budgetId === activeBudget.id));
+    }
+  }, [categories, activeBudget]);
 
   return (
     <View style={styles.container}>
       <View style={styles.main}>
         {budgets.length === 0 ? (
           <View style={styles.noBudgetsPanel}>
-            <Image source={require('../../assets/icons/money-bag-svgrepo-com.svg')} />
             <Text style={globalStyles.h2}>No budgets created</Text>
             <TouchableOpacity style={globalStyles.buttonA} onPress={() => router.push({pathname: "/budgetForm"})}>
               <View style={globalStyles.row}>
@@ -152,9 +139,7 @@ export default function Home() {
                 <AllocatedCategoriesList
                   openModal={() => setModalVisible(true)}
                 />
-                <TransactionList
-                  filteredTransactions={filteredTransactions}
-                />
+                <TransactionList/>
                 <CategoryModal
                   isVisible={isModalVisible}
                   onClose={() => setModalVisible(false)}

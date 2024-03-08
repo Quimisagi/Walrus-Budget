@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import defaultCategories from '../../utils/defaultCategories';
 import globalStyles from '../../utils/globalStyles';
 import { router, navigation } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
@@ -10,12 +9,20 @@ import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from '../../utils/circularProgress'; 
 import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'
 
-const AllocatedCategoriesList = ({openModal}) => {
-  const [categories, setCateogires] = useState([]);
-  const { activeBudget, transactions} = useGlobal();
+const AllocatedCategoriesList = () => {
+  const [categories, setCategories] = useState([]);
+  const { 
+    activeBudget,
+    activeBudgetCategories,
+    activeBudgetTransactions,
+  } = useGlobal();
 
   const goToDetails = (category) => {
     router.push({ pathname: '/allocatedCategoryDetails', params: { id: category.id,  budgetId: activeBudget.id, categoryId: category.categoryId,}});
+  }
+
+  const goToAddCategory = () => {
+    router.push({ pathname: '/categoryForm', params: { budgetId: activeBudget.id }});
   }
 
   const handlePercentage = (percentage) => {
@@ -26,30 +33,28 @@ const AllocatedCategoriesList = ({openModal}) => {
   }
 
   useEffect(() => {
-    setCateogires([]);
-    if(activeBudget.allocatedCategories){
-      let categoriesTemp = [];
-      activeBudget.allocatedCategories.map(allocatedCategory => {
-        const categoryData = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
-        const category = Object.assign({}, allocatedCategory, categoryData)
-        category.id = allocatedCategory.id;
-        const totalSpent = calculateCategoryTotalSpent(category.id, transactions);
-        category.totalSpent = totalSpent ? totalSpent : 0;
-        category.percentage = calculatePercentage(category.totalSpent, category.amount);
-        categoriesTemp = [...categoriesTemp, category];
+    if(activeBudgetCategories){
+      const categoriesTemp = activeBudgetCategories.map(category => {
+        const spent = calculateCategoryTotalSpent(category.id, activeBudgetTransactions);
+        const percentage = calculatePercentage(spent, category.amount);
+        return {
+          ...category,
+          spent,
+          percentage
+        }
       }
       );
-      setCateogires(categoriesTemp);
+      setCategories(categoriesTemp);
     }
-  }
-    , [activeBudget, transactions, activeBudget.allocatedCategories]);
+  }, [activeBudgetCategories, activeBudgetTransactions]);
+
   return (
     <View style={styles.categoriesContainer}>
       <View> 
         <Text style={globalStyles.h2} >Categories</Text>
         <View>
           <ScrollView horizontal={true}>
-            <TouchableOpacity onPress={openModal}>
+            <TouchableOpacity onPress={goToAddCategory}>
               <View style={styles.categoryContainer}>
                 <View style={styles.dottedCategoryContainer}>
                   <Ionicons name="add-sharp" size={40} color={'#bcc1ca'}/>

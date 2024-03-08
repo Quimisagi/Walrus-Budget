@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
-import defaultCategories from '../../utils/defaultCategories';
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import globalStyles from '../../utils/globalStyles';
 import { router } from "expo-router";
 import { useGlobal } from '../../utils/globalProvider';
@@ -9,10 +8,17 @@ import { getData, storeData } from "../../utils/storage";
 import SwipeableItem from '../../utils/swipeableItem';
 
 
-const TransactionList = ({filteredTransactions}) => {
+const TransactionList = () => {
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
 
-  const { activeBudget, transactions, setTransactions, accounts} = useGlobal();
+  const { 
+    activeBudget,
+    transactions,
+    setTransactions,
+    activeBudgetTransactions,
+    categories,
+    accounts
+  } = useGlobal();
 
   const toEditTransaction = (transaction) => {
     router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
@@ -25,25 +31,20 @@ const TransactionList = ({filteredTransactions}) => {
     setTransactions(transactionsTemp);
   }
   useEffect(() => {
-    if (filteredTransactions){
-      const allocatedCategories = activeBudget.allocatedCategories;
-      const transactionsTemp = filteredTransactions.map(transaction => {
-        const allocatedCategory = allocatedCategories.find(category => category.id === transaction.allocatedCategoryId);
-        let category = undefined;
-        if(allocatedCategory){
-          category = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
+    if (activeBudgetTransactions){
+      let transactionsWithCategoriesTemp = activeBudgetTransactions.map(transaction => {
+        let category = categories.find(category => category.id === transaction.categoryId);
+        let account = accounts.find(account => account.id === transaction.accountId);
+        return {
+          ...transaction,
+          category,
+          account
         }
-        let account = undefined;
-        if(transaction.accountId){
-          account = accounts.find(account => account.id === transaction.accountId);
-          account = account.name;
-        }
-        return { ...transaction, category, account};
       });
-      setTransactionsWithCategories(transactionsTemp);
+      setTransactionsWithCategories(transactionsWithCategoriesTemp);
     }
   }
-    , [filteredTransactions]);
+    , [activeBudgetTransactions]);
   return (
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>

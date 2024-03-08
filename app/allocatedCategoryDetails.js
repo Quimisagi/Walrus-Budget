@@ -92,20 +92,12 @@ const AllocatedCategoryDetails = () => {
   }
 
   useEffect(() => {
-    let categoryTemp = activeBudget.allocatedCategories.find(category => category.id === id);
-    if(!categoryTemp) return;
-    const defaultCategory = defaultCategories.find(category => category.id === parseInt(categoryTemp.categoryId));
-    categoryTemp = Object.assign({}, categoryTemp, defaultCategory);
-    setCategory(categoryTemp);
-    if(transactions){
-      const temp = transactions.filter(transaction => transaction.allocatedCategoryId === id && transaction.budgetId === budgetId);
-      setFilteredTransactions(temp);
-      let spentTemp = 0;
-      temp.map(transaction => spentTemp += transaction.amount);
-      setSpent(spentTemp);
+    if (activeBudget){
+      setCategory(activeBudget.allocatedCategories.find(cat => cat.id === id));
+      //Load filtered transactions
+      setFilteredTransactions(transactions.filter(transaction => transaction.categoryId === id));
     }
-
-  }, [budgets, transactions]
+  }, [activeBudget, transactions]
   ) 
 
   useEffect(() => {

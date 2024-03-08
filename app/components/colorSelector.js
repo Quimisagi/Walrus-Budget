@@ -5,14 +5,13 @@ import { getContrastColor, colors } from '../../utils/iconsList';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 
-const ColorSelector = ({ setSelectedItem }) => {
+const ColorSelector = ({ setColor, selectedColor }) => {
 
-  const [selectedIndex, setSelectedIndex] = useState(0)
   const [iconColor, setIconColor] = useState('black')
 
   useEffect(() => {
-    setIconColor(getContrastColor(colors[selectedIndex]))
-  } , [selectedIndex])
+    setIconColor(getContrastColor(selectedColor))
+  } , [selectedColor])
 
   return (
     <View>
@@ -20,9 +19,9 @@ const ColorSelector = ({ setSelectedItem }) => {
         { colors ? 
             (
               colors.map((color, index) => (
-                <TouchableOpacity onPress={() => { setSelectedIndex(index); setSelectedItem(color) }} key={index}>
-                  <View style={[styles.item, index === selectedIndex ? styles.selectedItem : null, {backgroundColor: color}]}>
-                    { index === selectedIndex ? <FontAwesome6 name={"check"} size={22.5} color={iconColor} /> : null}
+                <TouchableOpacity onPress={() => setColor(color) } key={index}>
+                  <View style={[styles.item, selectedColor === color ? styles.selectedItem : null, {backgroundColor: color}]}>
+                    { selectedColor === color ? <FontAwesome6 name={"check"} size={22.5} color={iconColor} /> : null}
                   </View>
                 </TouchableOpacity>
               ))

@@ -46,7 +46,7 @@ export default () => {
         }}
       />
       <Tabs.Screen 
-        name="accountsList" 
+        name="settings" 
         options={{
           title: 'Accounts',
           tabBarIcon: (focused) => (

@@ -1,11 +1,11 @@
 import React from "react";
-
-//Create a circular progress bar with SVG
+import { useState, useEffect } from "react";
 import {View, Text, StyleSheet} from "react-native";
 import Svg, {Circle} from "react-native-svg";
-import Color from 'color';
 
 const CircularProgress = ({children, percentage, color}) => {
+
+  const [strokeColor, setStrokeColor] = useState(color);
   const radius = 38.5;
   const strokeWidth = 5;
   const strokeDashoffset = 25;
@@ -22,6 +22,14 @@ const CircularProgress = ({children, percentage, color}) => {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
 
+  useEffect(() => {
+    if(color){
+      const strokeColor = hexToRgba(color, 0.2);
+      setStrokeColor(strokeColor);
+    }
+  }
+    , [color]);
+
   return (
     <View>
       <Svg
@@ -29,7 +37,7 @@ const CircularProgress = ({children, percentage, color}) => {
         width={radius * 2}
       >
         <Circle
-          stroke={hexToRgba(color, 0.2)}
+          stroke={strokeColor}
           fill="none"
           strokeWidth={strokeWidth}
           strokeDasharray={strokeDasharray}

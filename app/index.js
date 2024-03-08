@@ -15,52 +15,28 @@ export default function Home() {
   const [appIsReady, setAppIsReady] = useState(false);
   const navigation = useNavigation();
 
-  const { budgets, setBudgets, transactions, setTransactions, activeBudget, setActiveBudget, accounts, setAccounts} = useGlobal();
-
-  const [filteredTransactions, setFilteredTransactions] = useState([]);
-  const [expenses, setExpenses] = useState(0);
-  const [income, setIncome] = useState(0);
-  const [balance, setBalance] = useState(0);
-
-  const calculateBalance = (balance, transactions) => {
-    transactions.forEach(transaction => {
-      balance += transaction.amount * transaction.transactionType;
-    });
-    return balance;
-  }
-
-  const calculateExpenses = (transactions) => {
-    let expenses = 0;
-    transactions.forEach(transaction => {
-      if (transaction.transactionType === -1) {
-        expenses += transaction.amount;
-      }
-    });
-    return expenses;
-  }
-  const calculateIncome = (transactions) => {
-    let income = 0;
-    transactions.forEach(transaction => {
-      if (transaction.transactionType === 1) {
-        income += transaction.amount;
-      }
-    }
-    );
-    return income;
-  }
+  const {
+    activeBudget,
+    setBudgets, 
+    transactions,
+    setTransactions,
+    setActiveBudget,
+    setAccounts,
+    categories,
+    setCategories,
+    setActiveBudgetTransactions,
+    setActiveBudgetCategories,
+  } = useGlobal();
 
 
   useEffect(() => {
     navigation.setOptions({headerShown: false});
     async function prepare() {
       try {
-        let activeBudgetTemp = {};
-        let transactionsTemp = [];
         await getData('activeBudget')
           .then(activeBudget => {
             if(activeBudget) setActiveBudget(JSON.parse(activeBudget));
             else setActiveBudget({});
-            activeBudgetTemp = JSON.parse(activeBudget);
           })
           .catch(error => {
           });
@@ -79,22 +55,30 @@ export default function Home() {
           })
           .catch(error => {
           });
-
         await getData('transactions')
           .then(transactions => {
             if(transactions){
               transactions = JSON.parse(transactions);
               setTransactions(transactions);
-              transactionsTemp = transactions;
             }
             else{
               setTransactions([]);
-              transactionsTemp = [];
             }
           })
           .catch(error => {
           });
-
+        await getData('categories')
+          .then(categories => {
+            if(categories){
+              categories = JSON.parse(categories);
+              setCategories(categories);
+            }
+            else{
+              setCategories([]);
+            }
+          })
+          .catch(error => {
+          });
         await getData('accounts')
           .then(accounts => {
             if(accounts){
@@ -107,15 +91,6 @@ export default function Home() {
           })
           .catch(error => {
           });
-
-        if(activeBudgetTemp) {
-          let filtered = transactionsTemp.filter(transaction => transaction.budgetId === activeBudgetTemp.id);
-          setFilteredTransactions(filtered);
-          setExpenses(calculateExpenses(filtered));
-          setIncome(calculateIncome(filtered));
-          setBalance(calculateBalance(activeBudgetTemp.begginingBalance, filtered));
-        }
-
         await new Promise(resolve => setTimeout(resolve, 1000));
       } catch (e) {
         console.warn(e);
