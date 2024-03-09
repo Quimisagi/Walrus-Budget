@@ -67,7 +67,7 @@ const AllocatedCategoriesList = () => {
                   key={index}
                   onPress={() => goToDetails(category)}
                 >
-                  {( category.percentage || category.percentage === 0) ? (
+                  { category.amount > 0 ? (
                     <View>
                       <CircularProgress
                         percentage={handlePercentage(category.percentage)}
@@ -77,7 +77,10 @@ const AllocatedCategoriesList = () => {
                       {category.percentage > 100 ? (
                         <Text style={styles.warning}>{category.percentage}%</Text>
                       ) : (
-                        <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                        <View>
+                          <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                          <Text style={[ globalStyles.centered, globalStyles.secondaryText ]}>{category.name}</Text>
+                        </View>
                       )}
                     </View>
                   ): (
@@ -85,12 +88,13 @@ const AllocatedCategoriesList = () => {
                       <CircularProgress
                         percentage={100}
                         color={category.color}
+                        icon={category.icon}
+
                       >
-                        <View>
-                          {category.icon}
-                        </View>
                       </CircularProgress>
                       <Text style={globalStyles.centered}>-</Text>
+                      <Text style={[ globalStyles.centered, globalStyles.secondaryText ]}>{category.name}</Text>
+
                     </View>
                   )
                   }
