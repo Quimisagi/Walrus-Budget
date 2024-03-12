@@ -56,11 +56,13 @@ const TransactionList = () => {
               <View style={globalStyles.row}>
                 <View style={[ globalStyles.column, { flex: 1} ]}>
                   {transaction.category ? 
-                    <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
-                      <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
+                      (
+                        <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
+                          <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
 
-                    </View>
-                    : (<Text>no icon</Text>)}
+                        </View>
+                      )
+                      : (<Text>no icon</Text>)}
                 </View>
                 <View style={[ globalStyles.column, { flex: 4 } ]}>
                   <View style={globalStyles.row}>
@@ -69,8 +71,8 @@ const TransactionList = () => {
                       <Text style={globalStyles.secondaryText}>(No category)</Text>
                     }
                     {transaction.account ?
-                      <Text style={globalStyles.secondaryText}>・{transaction.account}</Text> :
-                        null
+                        (<Text style={globalStyles.secondaryText}>・{transaction.account.name}</Text>) 
+                        : null
                     }
                   </View>
                   {transaction.notes ? 

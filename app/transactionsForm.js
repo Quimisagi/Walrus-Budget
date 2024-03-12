@@ -36,7 +36,13 @@ const TransactionsForm = ({}) => {
   const [selection, setSelection] = useState(-1);
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [isAccountModalVisible, setAccountModalVisible] = useState(false);
-  const { activeBudget, transactions, setTransactions, accounts} = useGlobal();
+  const { 
+    activeBudget,
+    transactions,
+    setTransactions,
+    accounts,
+    activeBudgetCategories,
+  } = useGlobal();
   const { editMode, transactionId, categoryId, accountId } = params;
   const valueRef = useRef(null)
 
@@ -146,15 +152,11 @@ const TransactionsForm = ({}) => {
         setNotes(transactionTemp.notes);
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
-        let categoryTemp = undefined
-        let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id === transactionTemp.allocatedCategoryId) 
-        if(allocatedCategory){
-          categoryTemp = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
-          const category = Object.assign({}, allocatedCategory, categoryTemp ? categoryTemp : {});
-          category.id= allocatedCategory.id;
-          setCategory(category);
-        }
         setTransactionType(transactionTemp.transactionType);
+        const categoryTemp = activeBudgetCategories.find(category => category.id === transactionTemp.categoryId);
+        setCategory(categoryTemp);
+        const accountTemp = accounts.find(account => account.id === transactionTemp.accountId);
+        setAccount(accountTemp);
       }
     }
   }, []);
@@ -255,7 +257,7 @@ const TransactionsForm = ({}) => {
       </View>
       <View style={globalStyles.row}>
         <View style={{flex:1, marginRight: 5}}>
-          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
+          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showDatepicker() }}>
             <View style={[ globalStyles.centered, {flex:1} ]}>
               <AntDesign name="calendar" size={16} color="black" />
             </View>
@@ -269,7 +271,7 @@ const TransactionsForm = ({}) => {
           </TouchableOpacity>
         </View>
         <View style={{flex:1, marginLeft: 5}}>
-          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
+          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showTimepicker() }}>
             <View style={[ globalStyles.centered, {flex:1} ]}>
               <AntDesign name="clockcircle" size={16} color="black" />
             </View>
