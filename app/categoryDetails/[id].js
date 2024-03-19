@@ -12,6 +12,7 @@ import { storeData } from "../../utils/storage";
 import Toast from 'react-native-toast-message';
 import SwipeableItem from "../../utils/swipeableItem";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { getContrastColor } from "../../utils/iconsList";
 
 const CategoriesDetails= () => {
 
@@ -19,7 +20,7 @@ const CategoriesDetails= () => {
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
-  const { transactions, setTransactions, activeBudget, activeBudgetCategories } = useGlobal();
+  const { transactions, setTransactions, activeBudget, categories, setCategories } = useGlobal();
 
   const {id} = params;
 
@@ -30,7 +31,6 @@ const CategoriesDetails= () => {
   const [income, setIncome] = useState(0);
   const [percentage, setPercentage] = useState(0);
 
-  const [editMode, setEditMode] = useState(false);
   const [amount, setAmount] = useState(0);
 
   const deleteTransaction = async (transactionId) => {
@@ -47,17 +47,11 @@ const CategoriesDetails= () => {
   }
 
   const deleteCategory = async () => {
-    let categoryIndex = activeBudget.allocatedCategories.findIndex(cat => cat.id === id) 
-    let allocatedCategoriesTemp = [...activeBudget.allocatedCategories];
-    allocatedCategoriesTemp.splice(categoryIndex, 1);
-    let budgetsCopy = [...budgets];
-    let budgetIndex = budgets.findIndex(budget => budget.id === activeBudget.id);
-    activeBudget.allocatedCategories = allocatedCategoriesTemp;
-    budgetsCopy[budgetIndex] = activeBudget;
-    await storeData('budgets', JSON.stringify(budgetsCopy));
-    setBudgets(budgetsCopy);
-    await storeData('activeBudget', JSON.stringify(activeBudget));
-    activeBudget.allocatedCategories = allocatedCategoriesTemp;
+    let index = categories.findIndex(cat => cat.id === id);
+    let categoriesTemp = [...categories];
+    categoriesTemp.splice(index, 1);
+    await storeData('categories', JSON.stringify(categoriesTemp));
+    setCategories(categoriesTemp);
     Toast.show({
       type: 'success',
       text1: 'Category deleted',
@@ -69,13 +63,12 @@ const CategoriesDetails= () => {
   const toEditTransaction = (transaction) => {
     router.push({ pathname: '/transactionsForm', params: { editMode: true, transactionId: transaction.id }});
   }
-
-  const editCategoryAmount = async () => {
+  const toEditCategory = () => {
+    router.push({ pathname: '/categoryForm', params: { editMode: true, id: id }});
   }
-
   useEffect(() => {
-    if (activeBudgetCategories){
-      const cat = activeBudgetCategories.find(cat => cat.id === id);
+    if (categories){
+      const cat = categories.find(cat => cat.id === id);
       setCategory(cat);
       const filteredTransactions = transactions.filter(transaction => transaction.categoryId === id);
       setFilteredTransactions(filteredTransactions);
@@ -84,13 +77,15 @@ const CategoriesDetails= () => {
       const income = calculateIncome(filteredTransactions);
       setIncome(income);
     }
-  }, [activeBudget, transactions, activeBudgetCategories]);
+  }, [activeBudget, transactions, categories]);
  
   useEffect(() => {
+    if(category){
     if(-expenses + income >= 0)
       setPercentage(calculatePercentage(0, category.amount));
     else setPercentage(calculatePercentage(expenses, category.amount));
-  }, [expenses, amount, category.amount, transactions]);
+    }
+  }, [expenses, amount, category, transactions]);
   
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -98,6 +93,7 @@ const CategoriesDetails= () => {
         <View style={globalStyles.row}>
           <TouchableOpacity
             style={{ marginTop: 15, marginRight: 10 }}
+            onPress={toEditCategory}
           >
             <Feather name="edit" size={20}/>
           </TouchableOpacity>

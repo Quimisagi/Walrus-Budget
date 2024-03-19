@@ -17,7 +17,7 @@ const TransactionList = () => {
     transactions,
     setTransactions,
     activeBudgetTransactions,
-    categories,
+    activeBudgetCategories,
     accounts
   } = useGlobal();
 
@@ -32,9 +32,10 @@ const TransactionList = () => {
     setTransactions(transactionsTemp);
   }
   useEffect(() => {
+    console.log("Pollo frito");
     if (activeBudgetTransactions){
       let transactionsWithCategoriesTemp = activeBudgetTransactions.map(transaction => {
-        let category = categories.find(category => category.id === transaction.categoryId);
+        let category = activeBudgetCategories.find(category => category.id === transaction.categoryId);
         let account = accounts.find(account => account.id === transaction.accountId);
         return {
           ...transaction,
@@ -45,7 +46,7 @@ const TransactionList = () => {
       setTransactionsWithCategories(transactionsWithCategoriesTemp);
     }
   }
-    , [activeBudgetTransactions]);
+    , [activeBudgetTransactions, activeBudgetCategories, accounts]);
   return (
     <View>
       <Text style={globalStyles.h2}>Transactions</Text>

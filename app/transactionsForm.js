@@ -112,8 +112,8 @@ const TransactionsForm = ({}) => {
       notes                : notes,
       date                 : date,
       time                 : time,
-      categoryId           : category.id,
-      accountId            : account.id,
+      categoryId           : category ? category.id : undefined,
+      accountId            : account ? account.id : undefined,
       budgetId             : activeBudget.id,
       transactionType      : transactionType
     };
