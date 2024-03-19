@@ -5,7 +5,7 @@ import { useGlobal } from '../../utils/globalProvider';
 import globalStyles from '../../utils/globalStyles';
 import CategoryModal from '../components/categoryModal';
 import { router } from 'expo-router';
-import AllocatedCategoriesList from '../components/allocatedCategoriesList';
+import CategoriesList from '../components/categoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
@@ -136,7 +136,7 @@ export default function Home() {
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
-                <AllocatedCategoriesList
+                <CategoriesList
                   openModal={() => setModalVisible(true)}
                 />
                 <TransactionList/>

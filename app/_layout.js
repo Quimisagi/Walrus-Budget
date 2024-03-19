@@ -42,8 +42,8 @@ export default function Layout() {
           options={{ headerTitle: 'New category' }}
         />
         <Stack.Screen
-          name="allocatedCategoryDetails"
-          options={{ headerTitle: 'Category details' }}
+          name="categoryDetails/[id]"
+          options={{ headerTitle: '' }}
         />
       </Stack>
       <Toast/>

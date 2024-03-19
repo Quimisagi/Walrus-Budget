@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from '../../utils/circularProgress';
 import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'
 
-const AllocatedCategoriesList = () => {
+const categoriesList = () => {
   const [categories, setCategories] = useState([]);
   const { 
     activeBudget,
@@ -17,7 +17,7 @@ const AllocatedCategoriesList = () => {
   } = useGlobal();
 
   const goToDetails = (category) => {
-    router.push({ pathname: '/allocatedCategoryDetails', params: { id: category.id,  budgetId: activeBudget.id, categoryId: category.categoryId,}});
+    router.push({ pathname: 'categoryDetails/' + category.id});
   }
 
   const goToAddCategory = () => {
@@ -147,4 +147,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default AllocatedCategoriesList;
+export default categoriesList;

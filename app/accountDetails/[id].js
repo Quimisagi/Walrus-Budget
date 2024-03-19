@@ -12,7 +12,7 @@ import { storeData } from "../../utils/storage";
 import Toast from 'react-native-toast-message';
 import SwipeableItem from "../../utils/swipeableItem";
 
-const AllocatedCategoryDetails = () => {
+const AccountDetails = () => {
   
   const router = useRouter();
   const navigation = useNavigation();
@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default AllocatedCategoryDetails;
+export default AccountDetails;
