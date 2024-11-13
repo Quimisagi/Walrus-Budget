@@ -19,7 +19,7 @@ export default function Layout() {
           headerTransparent: true,
           headerTitleStyle: {
             fontFamily: 'Poppins', 
-            fontSize: 18,
+            fontSize: 20,
           },
         }}
       >

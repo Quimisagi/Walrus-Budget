@@ -171,6 +171,7 @@ const TransactionsForm = ({}) => {
           <AntDesign name="check" size={24} color="black" />
         </TouchableOpacity>
       ),
+
     });
   }, [navigation, amount, notes, date, time, category, transactionType]);
 
@@ -193,6 +194,7 @@ const TransactionsForm = ({}) => {
         ref={valueRef}
         autoFocus={true}
         keyboardType="numeric"
+        maxLength={12}
         placeholder="$0.00"
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
@@ -205,7 +207,7 @@ const TransactionsForm = ({}) => {
               <FontAwesome6 name={category.icon} size={15} color={getContrastColor(category.color)} />
             </View>
           ) : (
-            <AntDesign name="calendar" size={16} color="black" />
+            <FontAwesome6 name="shapes" size={16} color="gray" />
           )}
 
         </View>
@@ -229,7 +231,7 @@ const TransactionsForm = ({}) => {
               { account.icon }
             </View>
           ) : (
-            <AntDesign name="calendar" size={16} color="black" />
+            <FontAwesome6 name="wallet" size={16} color="gray" />
           )}
         </View>
         <TextInput 
@@ -253,6 +255,7 @@ const TransactionsForm = ({}) => {
           value={notes}
           placeholder='Description'
           onChangeText={(text) => setNotes(text)}
+          maxLength={24}
         />
       </View>
       <View style={globalStyles.row}>

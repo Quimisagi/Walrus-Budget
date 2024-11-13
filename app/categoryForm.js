@@ -23,7 +23,7 @@ const CategoryForm = () => {
 
   const [name, setName] = useState('');
   const [color, setColor] = useState(colors[0]);
-  const [icon, setIcon] = useState('');
+  const [icon, setIcon] = useState('star');
   const [amount, setAmount] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -124,15 +124,16 @@ const CategoryForm = () => {
         ref={budgetRef}
         autoFocus={true}
         keyboardType="numeric"
+        maxLength={12}
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
       <View style={globalStyles.hr}/>
-      <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 5, justifyContent: 'center'} ]}>
-        <View style={[{flex: 1} ]}>
-          <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, {backgroundColor: color}]}>
+      <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 25, justifyContent: 'center'} ]}>
+        <View style={[{flex: 1}]}>
+          <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, styles.categoryButton, {backgroundColor: color}]}>
             {icon ? (
-              <FontAwesome6 name={icon} size={25} color={iconColor} />
+              <FontAwesome6 name={icon} size={30} color={iconColor} />
             ) : (
               <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text>
             )
@@ -140,7 +141,7 @@ const CategoryForm = () => {
           </TouchableOpacity>
         </View>
         <View style={{flex: 3, justifyContent:'center'}}>
-          <View style={[ globalStyles.inputFieldContainer, globalStyles.row]}> 
+          <View style={[ globalStyles.inputFieldContainer, globalStyles.row, styles.name]}> 
             <View style={[ globalStyles.centered, {flex:1} ]}>
               <MaterialCommunityIcons name="text" size={16} color="black" />
             </View>
@@ -148,12 +149,13 @@ const CategoryForm = () => {
               style={[ globalStyles.inputField, {flex: 9}]}
               placeholder='Name'
               value={name}
+              maxLength={24}
               onChangeText={(text) => { setName(text); }}
             />
           </View>
         </View>
       </View>
-      <Text style={globalStyles.label}>Color:</Text>
+      <Text style={globalStyles.label}>Pick a color:</Text>
       <ColorSelector setColor={(color) => setColor(color)} selectedColor={color}/>
       <IconsModal
         isVisible={isModalVisible}
@@ -164,6 +166,16 @@ const CategoryForm = () => {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  categoryButton: {
+    height: 60,
+    width: 60,
+  },
+  name: {
+    marginTop: 7.5,
+  },
+});
 
 export default CategoryForm;
 

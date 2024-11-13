@@ -63,6 +63,7 @@ const globalStyles = StyleSheet.create({
   categoryIcon: {
     width: 50,
     height: 50,
+    marginLeft: 5,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
@@ -73,8 +74,8 @@ const globalStyles = StyleSheet.create({
     padding: 5,
   },
   container:{
-    marginTop: 65,
-    padding: 20,
+    marginTop: 85,
+    padding: 30,
     flex: 1
   },
   input: {
@@ -190,7 +191,7 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     zIndex: 10, 
-    padding: 20,
+    padding: 30,
   },
   expense: {
     color: 'red',
@@ -212,6 +213,9 @@ const globalStyles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  block: {
+    marginTop: 20,
   },
 
 });

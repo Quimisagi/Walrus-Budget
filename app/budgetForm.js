@@ -118,6 +118,7 @@ const BudgetForm = () => {
         style={globalStyles.inputFieldBInvisible}
         ref={budgetRef}
         autoFocus={true}
+        maxLength={12}
         keyboardType="numeric"
         value={"$" + begginingBalance.toString()}
         onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}

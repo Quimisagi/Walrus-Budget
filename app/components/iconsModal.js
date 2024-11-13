@@ -11,9 +11,9 @@ const IconsModal = ({ isVisible, onClose, setIcon, selectedIcon}) =>{
   return(
     <View style={globalStyles.centered}>
       <Modal isVisible={isVisible} onBackdropPress={onClose}>
-        <View style={globalStyles.modal}>
-          <Text style={[ globalStyles.h3, {marginBottom: 20} ]}>Select icon:</Text>
-          <View style={globalStyles.row}>
+        <View style={[globalStyles.modal, globalStyles.centered]}>
+          <Text style={[ globalStyles.h2, {marginBottom: 20} ]}>Select icon</Text>
+          <View style={[globalStyles.row, globalStyles.centered]}>
             {icons.map((icon, index) => (
               <View key={index}>
                 <TouchableOpacity style={[styles.item, selectedIcon === icon ? styles.selectedItem : null]} onPress={() => { setIcon(icon); onClose(); }}>

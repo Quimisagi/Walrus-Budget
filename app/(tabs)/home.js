@@ -104,49 +104,52 @@ export default function Home() {
               </View>
             </View>
             <ScrollView style={{ flex: 1 }}>
-              <View>
+              <View style={styles.homeContent}>
                 <View style={globalStyles.row}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.h3}>Balance:</Text>
+                      <Text style={globalStyles.h3}>Balance</Text>
                     </View>
                     <View style={globalStyles.row}>
                       <Text style={globalStyles.balance}> ${balance}</Text>
                     </View>
                   </View>
                 </View>
-                <View style={globalStyles.row}>
+                <View style={[globalStyles.row, styles.homeContent]}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
                     <View style={globalStyles.row}>
-                      <Text style={styles.totalExpenses}>${expenses}</Text>
+                      <Text style={globalStyles.h3}>Expenses</Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <Text style={globalStyles.h3}>Expenses</Text>
+                      <Text style={styles.totalExpenses}>${expenses}</Text>
                     </View>
                     <Feather style={styles.totalExpenses} name="arrow-up-right"/>
                   </View>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
                     <View style={globalStyles.row}>
-                      <Text style={styles.totalIncome}>${income}</Text>
-                    </View>
-                    <View style={globalStyles.row}>
                       <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Income</Text>
+                    </View>
+
+                    <View style={globalStyles.row}>
+                      <Text style={styles.totalIncome}>${income}</Text>
                     </View>
                     <Feather style={styles.totalIncome} name="arrow-down-left"/>
                   </View>
                 </View>
                 <View style={globalStyles.hr} />
-                <CategoriesList
-                  openModal={() => setModalVisible(true)}
-                />
-                <TransactionList/>
-                <CategoryModal
-                  isVisible={isModalVisible}
-                  onClose={() => setModalVisible(false)}
-                  setCategory={(category) => toAddCategory(category)}
-                  categories={activeBudget.allocatedCategories}
-                  filterSelected={false}
-                />
+                <View style={styles.homeContent}>
+                  <CategoriesList
+                    openModal={() => setModalVisible(true)}
+                  />
+                  <TransactionList/>
+                  <CategoryModal
+                    isVisible={isModalVisible}
+                    onClose={() => setModalVisible(false)}
+                    setCategory={(category) => toAddCategory(category)}
+                    categories={activeBudget.allocatedCategories}
+                    filterSelected={false}
+                  />
+                </View>
               </View>
             </ScrollView>
           </View>
@@ -160,8 +163,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 40,
-    padding: 5,
+    marginTop: 50,
+    padding: 10,
     justifyContent: 'center'
   },
   main: {
@@ -202,5 +205,8 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     marginRight: 50,
     padding: 5,
+  },
+  homeContent: {
+    marginTop: 10,
   }
 });
