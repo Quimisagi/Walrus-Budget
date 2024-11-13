@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { PanGestureHandler, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
-import { useRef, useEffect, useLayoutEffect, useState } from 'react';
+import { useRef, useState } from 'react';
+import { useGlobal } from './globalProvider';
 
 import Animated, {
   useAnimatedGestureHandler,
@@ -14,9 +15,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const TRANSLATE_X_THRESHOLD = SCREEN_WIDTH * 0.3;
+const TRANSLATE_X_THRESHOLD = SCREEN_WIDTH * 0.2;
 
 const SwipeableItem = ({ children, height, onDelete }) => {
+  const { isSwiping, setIsSwiping } = useGlobal();
   const translateX = useSharedValue(0);
   const itemHeight = useSharedValue(0);
   const opacity = useSharedValue(1);
@@ -32,10 +34,18 @@ const SwipeableItem = ({ children, height, onDelete }) => {
   };
 
   const gestureHandler = useAnimatedGestureHandler({
+    onStart: (event) => {
+      // setIsSwiping(true);
+    },
     onActive: (event, gestureState) => {
       translateX.value = event.translationX;
     },
+    onCancel: (event) => {
+      translateX.value = withTiming(0);
+    },
+
     onEnd: (event) => {
+      // setIsSwiping(false);
       if (Math.abs(event.translationX) > TRANSLATE_X_THRESHOLD) {
         translateX.value = withTiming(SCREEN_WIDTH * -1);
         itemHeight.value = withTiming(0, undefined, (isFinished) => {

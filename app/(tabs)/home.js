@@ -31,6 +31,8 @@ export default function Home() {
     setActiveBudgetTransactions,
     activeBudgetCategories,
     setActiveBudgetCategories,
+    isSwiping,
+    setIsSwiping,
   } = useGlobal();
 
   const [expenses, setExpenses] = useState(0);
@@ -103,7 +105,7 @@ export default function Home() {
                 </TouchableOpacity>
               </View>
             </View>
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView scrollEnabled={!isSwiping} style={{ flex: 1 }}>
               <View style={styles.homeContent}>
                 <View style={globalStyles.row}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
@@ -113,7 +115,7 @@ export default function Home() {
                     <View style={globalStyles.row}>
                       <Text style={globalStyles.balance}> ${balance}</Text>
                     </View>
-                  </View>
+               </View>
                 </View>
                 <View style={[globalStyles.row, styles.homeContent]}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
@@ -136,7 +138,6 @@ export default function Home() {
                     <Feather style={styles.totalIncome} name="arrow-down-left"/>
                   </View>
                 </View>
-                <View style={globalStyles.hr} />
                 <View style={styles.homeContent}>
                   <CategoriesList
                     openModal={() => setModalVisible(true)}
@@ -207,6 +208,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   homeContent: {
-    marginTop: 10,
+    marginTop: 20,
   }
 });

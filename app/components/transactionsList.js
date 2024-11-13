@@ -32,7 +32,6 @@ const TransactionList = () => {
     setTransactions(transactionsTemp);
   }
   useEffect(() => {
-    console.log("Pollo frito");
     if (activeBudgetTransactions){
       let transactionsWithCategoriesTemp = activeBudgetTransactions.map(transaction => {
         let category = activeBudgetCategories.find(category => category.id === transaction.categoryId);
@@ -48,14 +47,14 @@ const TransactionList = () => {
   }
     , [activeBudgetTransactions, activeBudgetCategories, accounts]);
   return (
-    <View>
+    <View style={styles.transactionsContainer}>
       <Text style={globalStyles.h2}>Transactions</Text>
       {transactionsWithCategories.map((transaction, index) => (
         <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
           <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
             <View style={globalStyles.transactionContainer}>
               <View style={globalStyles.row}>
-                <View style={[ globalStyles.column, { flex: 1} ]}>
+                <View style={[ globalStyles.column, { flex: 2} ]}>
                   {transaction.category ? 
                       (
                         <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
@@ -63,9 +62,10 @@ const TransactionList = () => {
 
                         </View>
                       )
-                      : (<Text>no icon</Text>)}
+                      : (<View style={[globalStyles.categoryIcon, {backgroundColor: 'gray' }]}/> )}
+                        
                 </View>
-                <View style={[ globalStyles.column, { flex: 4 } ]}>
+                <View style={[ globalStyles.column, { flex: 6 } ]}>
                   <View style={globalStyles.row}>
                     {transaction.category ? 
                       <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
@@ -85,8 +85,13 @@ const TransactionList = () => {
                   </View>
                 </View>
                 <View style={[ globalStyles.column, { flex: 2 } ]}>
-                  <View style={[ globalStyles.row, styles.prueba ]}>
+                  <View style={globalStyles.row}>
+                    <Text style={globalStyles.secondaryText}></Text>
+                  </View>
+                  <View style={globalStyles.row}>
+                    <View style={[ globalStyles.row, styles.prueba ]}>
                     <Text style={globalStyles.expense}>-${transaction.amount}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -108,7 +113,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  transactionsContainer: {
+    padding: 10,
+  },
 
 });
 

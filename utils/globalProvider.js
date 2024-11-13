@@ -11,6 +11,7 @@ export const GlobalProvider = ({ children }) => {
   const [accounts, setAccounts] = useState([]);
   const [activeBudgetTransactions, setActiveBudgetTransactions] = useState([]);
   const [activeBudgetCategories, setActiveBudgetCategories] = useState([]);
+  const [isSwiping, setIsSwiping] = useState(false);
 
   const globalState = {
     theme,
@@ -29,6 +30,8 @@ export const GlobalProvider = ({ children }) => {
     setActiveBudgetTransactions,
     activeBudgetCategories,
     setActiveBudgetCategories,
+    isSwiping,
+    setIsSwiping,
   };
   return (
     <GlobalContext.Provider value={globalState}>

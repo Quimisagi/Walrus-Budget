@@ -92,13 +92,13 @@ const CategoriesDetails= () => {
       headerRight: () => (
         <View style={globalStyles.row}>
           <TouchableOpacity
-            style={{ marginTop: 15, marginRight: 10 }}
+            style={{ marginTop: 15, marginRight: 20 }}
             onPress={toEditCategory}
           >
             <Feather name="edit" size={20}/>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ marginTop: 15 }}
+            style={{ marginTop: 15, marginRight: 10}}
             onPress={deleteCategory}
           >
             <Feather name="trash" size={20}/>

@@ -64,6 +64,7 @@ const globalStyles = StyleSheet.create({
     width: 50,
     height: 50,
     marginLeft: 5,
+    marginRight: 10,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
