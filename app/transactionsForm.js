@@ -115,7 +115,7 @@ const TransactionsForm = ({}) => {
       categoryId           : category ? category.id : undefined,
       accountId            : account ? account.id : undefined,
       budgetId             : activeBudget.id,
-      transactionType      : transactionType
+      transactionType      : selection,
     };
     if(editMode){
       updateTransaction(newTransaction);
@@ -178,17 +178,18 @@ const TransactionsForm = ({}) => {
   return (
     <View style={globalStyles.container}>
       <View style={styles.btnGroup}>
-        <TouchableOpacity style={[styles.btn, selection === -1 ? { backgroundColor: "#6B7280" } : null]} onPress={() => setSelection(-1)}>
-          <Text style={[styles.btnText, selection === -1 ? { color: "white" } : null]}>Expense</Text>
+        <TouchableOpacity style={[styles.btn, selection === -1 ? { backgroundColor: "#DF3B57" } : null]} onPress={() => setSelection(-1)}>
+          <Text style={[styles.btnText, globalStyles.h3, selection === -1 ? { color: "white" } : null]}>Expense</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btn, selection === 1 ? { backgroundColor: "#6B7280" } : null]} onPress={() => setSelection(1)}>
-          <Text style={[styles.btnText, selection === 1 ? { color: "white" } : null]}>Income</Text>
+        <TouchableOpacity style={[styles.btn, selection === 1 ? { backgroundColor: "#5FB49C" } : null]} onPress={() => setSelection(1)}>
+          <Text style={[styles.btnText, globalStyles.h3, selection === 1 ? { color: "white" } : null]}>Income</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={focusValue}>
-        <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "$") + amount.toString()}</Text>
-      </TouchableOpacity>
+      <View style={globalStyles.block}>
+        <TouchableOpacity onPress={focusValue}>
+        <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + amount.toString()}</Text>
+        </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}
         ref={valueRef}
@@ -199,71 +200,73 @@ const TransactionsForm = ({}) => {
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
-
-      <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setCategoryModalVisible(true) }}>
-        <View style={[ globalStyles.centered, {flex:1} ]}>
-          {category && Object.keys(category).length > 0 ? (
-            <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
-              <FontAwesome6 name={category.icon} size={15} color={getContrastColor(category.color)} />
-            </View>
-          ) : (
-            <FontAwesome6 name="shapes" size={16} color="gray" />
-          )}
-
-        </View>
-        <TextInput 
-          style={[ globalStyles.inputField, {flex: 9} ]}
-          pointerEvents="none"
-          editable={false}
-        >
-          {category && Object.keys(category).length > 0 ? (
-            <Text style={[ globalStyles.centered, {color: 'black'} ]}>{category.name}</Text>
-          ) : (
-            <Text style={{color: 'gray'}}>No category</Text>
-          )}
-
-        </TextInput>
-      </TouchableOpacity>
-      <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setAccountModalVisible(true) }}>
-        <View style={[ globalStyles.centered, {flex:1} ]}>
-          {account && Object.keys(account).length > 0 ? (
-            <View>
-              { account.icon }
-            </View>
-          ) : (
-            <FontAwesome6 name="wallet" size={16} color="gray" />
-          )}
-        </View>
-        <TextInput 
-          style={[ globalStyles.inputField, {flex: 9} ]}
-          pointerEvents="none"
-          editable={false}
-        >
-          {account && Object.keys(account).length > 0 ? (
-            <Text style={[ globalStyles.centered, {color: 'black'} ]}>{account.name}</Text>
-          ) : (
-            <Text style={{color: 'gray'}}>No account</Text>
-          )}
-        </TextInput>
-      </TouchableOpacity>
-      <View style={[ globalStyles.inputFieldContainer, globalStyles.row, {marginBottom: 15}]}>
-        <View style={[ globalStyles.centered, {flex:1} ]}>
-          <MaterialCommunityIcons name="text" size={16} color="black" />
-        </View>
-        <TextInput
-          style={[ globalStyles.inputField, {flex: 9} ]}
-          value={notes}
-          placeholder='Description'
-          onChangeText={(text) => setNotes(text)}
-          maxLength={24}
-        />
       </View>
-      <View style={globalStyles.row}>
-        <View style={{flex:1, marginRight: 5}}>
-          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showDatepicker() }}>
-            <View style={[ globalStyles.centered, {flex:1} ]}>
+
+      <View style={globalStyles.block}>
+        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setCategoryModalVisible(true) }}>
+          <View style={[ globalStyles.centered, {flex:1} ]}>
+            {category && Object.keys(category).length > 0 ? (
+              <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
+                <FontAwesome6 name={category.icon} size={15} color={getContrastColor(category.color)} />
+              </View>
+            ) : (
+              <FontAwesome6 name="shapes" size={16} color="gray" />
+            )}
+
+          </View>
+          <TextInput 
+            style={[ globalStyles.inputField, {flex: 9} ]}
+            pointerEvents="none"
+            editable={false}
+          >
+            {category && Object.keys(category).length > 0 ? (
+              <Text style={[ globalStyles.centered, {color: 'black'} ]}>{category.name}</Text>
+            ) : (
+              <Text style={{color: 'gray'}}>No category</Text>
+            )}
+
+          </TextInput>
+        </TouchableOpacity>
+        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setAccountModalVisible(true) }}>
+          <View style={[ globalStyles.centered, {flex:1} ]}>
+            {account && Object.keys(account).length > 0 ? (
+              <View>
+                { account.icon }
+              </View>
+            ) : (
+              <FontAwesome6 name="wallet" size={16} color="gray" />
+            )}
+          </View>
+          <TextInput 
+            style={[ globalStyles.inputField, {flex: 9} ]}
+            pointerEvents="none"
+            editable={false}
+          >
+            {account && Object.keys(account).length > 0 ? (
+              <Text style={[ globalStyles.centered, {color: 'black'} ]}>{account.name}</Text>
+            ) : (
+              <Text style={{color: 'gray'}}>No account</Text>
+            )}
+          </TextInput>
+        </TouchableOpacity>
+        <View style={[ globalStyles.inputFieldContainer, globalStyles.row, {marginBottom: 15}]}>
+          <View style={[ globalStyles.centered, {flex:1} ]}>
+            <MaterialCommunityIcons name="text" size={16} color="black" />
+          </View>
+          <TextInput
+            style={[ globalStyles.inputField, {flex: 9} ]}
+            value={notes}
+            placeholder='Description'
+            onChangeText={(text) => setNotes(text)}
+            maxLength={24}
+          />
+        </View>
+        <View style={globalStyles.row}>
+          <View style={{flex:1, marginRight: 5}}>
+            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showDatepicker() }}>
+              <View style={[ globalStyles.centered, {flex:1} ]}>
               <AntDesign name="calendar" size={16} color="black" />
-            </View>
+              </View>
             <TextInput 
               style={[ globalStyles.inputField, {flex: 7} ]}
               pointerEvents="none"
@@ -271,21 +274,22 @@ const TransactionsForm = ({}) => {
             >
               <Text style={{marginLeft: 30}}>{date}</Text>
             </TextInput>
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
         <View style={{flex:1, marginLeft: 5}}>
           <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showTimepicker() }}>
             <View style={[ globalStyles.centered, {flex:1} ]}>
               <AntDesign name="clockcircle" size={16} color="black" />
             </View>
-            <TextInput 
-              style={[ globalStyles.inputField, {flex: 7} ]}
-              pointerEvents="none"
-              editable={false}
-            >
-              <Text style={{marginLeft: 30}}>{time}</Text>
-            </TextInput>
+          <TextInput 
+            style={[ globalStyles.inputField, {flex: 7} ]}
+            pointerEvents="none"
+            editable={false}
+          >
+            <Text style={{marginLeft: 30}}>{time}</Text>
+          </TextInput>
           </TouchableOpacity>
+        </View>
         </View>
       </View>
       <Modal

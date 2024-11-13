@@ -84,13 +84,16 @@ const TransactionList = () => {
                     <Text> {transaction.time}</Text>
                   </View>
                 </View>
-                <View style={[ globalStyles.column, { flex: 2 } ]}>
+                <View style={[ globalStyles.column, { flex: 3 } ]}>
                   <View style={globalStyles.row}>
                     <Text style={globalStyles.secondaryText}></Text>
                   </View>
                   <View style={globalStyles.row}>
                     <View style={[ globalStyles.row, styles.prueba ]}>
-                    <Text style={globalStyles.expense}>-${transaction.amount}</Text>
+                      {transaction.transactionType === -1 ? 
+                        <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
+                        <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                      }
                     </View>
                   </View>
                 </View>
