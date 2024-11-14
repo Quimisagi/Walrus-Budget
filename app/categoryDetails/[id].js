@@ -124,7 +124,7 @@ const CategoriesDetails= () => {
             </View>
           </View>
           { category.amount === 0 ? (
-            <View style={globalStyles.row}>
+            <View style={[globalStyles.row, globalStyles.block]}>
               <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
                 <Text style={globalStyles.text}>Spent</Text>
                 <Text style={globalStyles.h3}>${expenses}</Text>
@@ -136,7 +136,7 @@ const CategoriesDetails= () => {
             </View>
           )
           : (
-            <View>
+            <View style={globalStyles.block}>
               <View style={globalStyles.centered}>
                 <Text style={globalStyles.text}>{percentage}% spent</Text>
               </View>
@@ -146,16 +146,15 @@ const CategoriesDetails= () => {
                   <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
                 }
               </View>
-              <View style={globalStyles.row}>
+              <View style={[globalStyles.row, globalStyles.block]}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                  <Text style={globalStyles.text}>Spent</Text>
                   <Text style={globalStyles.h3}>-${expenses}</Text>
-                  <Text style={globalStyles.h3}>+${income}</Text>
+                  <Text style={globalStyles.text}>Spent</Text>
                 </View>
                 <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
                   {-expenses + income >= 0 ? 
-                    (<Text style={globalStyles.h3}>{category.amount}</Text>) :
-                    <Text style={globalStyles.h3}>${category.amount - expenses + income}</Text>
+                      (<Text style={globalStyles.h3}>{category.amount}</Text>) :
+                      <Text style={globalStyles.h3}>${category.amount - expenses + income}</Text>
                   }
                   <Text style={globalStyles.text}>Remaining</Text>
                 </View>
@@ -165,34 +164,35 @@ const CategoriesDetails= () => {
 
         </View>
       ) : null}
-      <View style={globalStyles.hr}/>
-      {filteredTransactions.map((transaction) => (
-        <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
-          <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
-            <View style={globalStyles.transactionContainer}>
-              <View style={globalStyles.row}>
-                <View style={[ globalStyles.column, { flex: 1 } ]}>
-                  <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
-                </View>
-                <View style={[ globalStyles.column, { flex: 4 }]}>
-                  {transaction.notes ? 
-                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-                  <View style={globalStyles.row}>
-                    <Text>{transaction.date}</Text>
-                    <Text> {transaction.time}</Text>
+      <View style={globalStyles.block}>
+        {filteredTransactions.map((transaction) => (
+          <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
+            <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
+              <View style={globalStyles.transactionContainer}>
+                <View style={globalStyles.row}>
+                  <View style={[ globalStyles.column, { flex: 1 } ]}>
+                    <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+                  </View>
+                  <View style={[ globalStyles.column, { flex: 4 }]}>
+                    {transaction.notes ? 
+                      <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                    <View style={globalStyles.row}>
+                      <Text>{transaction.date}</Text>
+                      <Text> {transaction.time}</Text>
+                    </View>
+                  </View>
+                  <View style={[ globalStyles.column, { flex: 2 } ]}>
+                    <Text style={globalStyles.expense}>${transaction.amount}</Text>
                   </View>
                 </View>
-                <View style={[ globalStyles.column, { flex: 2 } ]}>
-                  <Text style={globalStyles.expense}>${transaction.amount}</Text>
-                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </SwipeableItem>
-      ))}
+            </TouchableOpacity>
+          </SwipeableItem>
+        ))}
+      </View>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {categoryId: id}})}>
-        <Feather name="plus" size={24} color="white" />
+        <Feather name="plus" size={32} color="white" />
       </TouchableOpacity>
     </View>
   )
