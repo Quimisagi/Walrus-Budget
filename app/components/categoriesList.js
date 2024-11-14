@@ -45,14 +45,16 @@ const categoriesList = () => {
     <View style={styles.categoriesContainer}>
       <View> 
         <Text style={globalStyles.h2}>Categories</Text>
-        <View>
+        <View style={globalStyles.block}>
           <ScrollView horizontal={true}>
             <TouchableOpacity onPress={goToAddCategory}>
               <View style={styles.categoryContainer}>
                 <View style={styles.dottedCategoryContainer}>
                   <Ionicons name="add-sharp" size={40} color={'#bcc1ca'} />
                 </View>
-                <Text style={globalStyles.centered}>Add</Text>
+                <View style={styles.addCategory}>
+                  <Text style={[globalStyles.centered, globalStyles.h3]}>Add</Text>
+                </View>
               </View>
             </TouchableOpacity>
             {categories ? (
@@ -66,10 +68,10 @@ const categoriesList = () => {
                         icon={category.icon}
                       />
                       {category.percentage > 100 ? (
-                        <Text style={styles.warning}>{category.percentage}%</Text>
+                        <Text style={[styles.warning, globalStyles.h3]}>{category.percentage}%</Text>
                       ) : (
                         <View>
-                          <Text style={globalStyles.centered}>{category.percentage}%</Text>
+                          <Text style={[globalStyles.centered, globalStyles.h3]}>{category.percentage}%</Text>
                           <Text style={[globalStyles.centered, globalStyles.secondaryText]}>
                             {category.name.length > 12 ? `${category.name.slice(0, 10)}...` : category.name}
                           </Text>
@@ -124,6 +126,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  addCategory: {
+    marginTop: 10,
   },
 });
 

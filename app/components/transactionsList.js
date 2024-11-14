@@ -49,59 +49,61 @@ const TransactionList = () => {
   return (
     <View style={styles.transactionsContainer}>
       <Text style={globalStyles.h2}>Transactions</Text>
-      {transactionsWithCategories.map((transaction, index) => (
-        <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
-          <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
-            <View style={globalStyles.transactionContainer}>
-              <View style={globalStyles.row}>
-                <View style={[ globalStyles.column, { flex: 2} ]}>
-                  {transaction.category ? 
-                      (
-                        <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
-                          <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
-
-                        </View>
-                      )
-                      : (<View style={[globalStyles.categoryIcon, {backgroundColor: 'gray' }]}/> )}
-                        
-                </View>
-                <View style={[ globalStyles.column, { flex: 6 } ]}>
-                  <View style={globalStyles.row}>
+      <View style={globalStyles.block}>
+        {transactionsWithCategories.map((transaction, index) => (
+          <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
+            <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
+              <View style={globalStyles.transactionContainer}>
+                <View style={globalStyles.row}>
+                  <View style={[ globalStyles.column, { flex: 2} ]}>
                     {transaction.category ? 
-                      <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
-                      <Text style={globalStyles.secondaryText}>(No category)</Text>
-                    }
-                    {transaction.account ?
-                        (<Text style={globalStyles.secondaryText}>・{transaction.account.name}</Text>) 
-                        : null
-                    }
+                        (
+                          <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
+                            <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
+
+                          </View>
+                        )
+                        : (<View style={[globalStyles.categoryIcon, {backgroundColor: 'gray' }]}/> )}
+
                   </View>
-                  {transaction.notes ? 
-                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-                  <View style={globalStyles.row}>
-                    <Text>{transaction.date} </Text>
-                    <Text> {transaction.time}</Text>
-                  </View>
-                </View>
-                <View style={[ globalStyles.column, { flex: 3 } ]}>
-                  <View style={globalStyles.row}>
-                    <Text style={globalStyles.secondaryText}></Text>
-                  </View>
-                  <View style={globalStyles.row}>
-                    <View style={[ globalStyles.row, styles.prueba ]}>
-                      {transaction.transactionType === -1 ? 
-                        <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
-                        <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                  <View style={[ globalStyles.column, { flex: 6 } ]}>
+                    <View style={globalStyles.row}>
+                      {transaction.category ? 
+                        <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
+                        <Text style={globalStyles.secondaryText}>(No category)</Text>
                       }
+                      {transaction.account ?
+                          (<Text style={globalStyles.secondaryText}>・{transaction.account.name}</Text>) 
+                          : null
+                      }
+                    </View>
+                    {transaction.notes ? 
+                      <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                    <View style={globalStyles.row}>
+                      <Text>{transaction.date} </Text>
+                      <Text> {transaction.time}</Text>
+                    </View>
+                  </View>
+                  <View style={[ globalStyles.column, { flex: 3 } ]}>
+                    <View style={globalStyles.row}>
+                      <Text style={globalStyles.secondaryText}></Text>
+                    </View>
+                    <View style={globalStyles.row}>
+                      <View style={[ globalStyles.row, styles.prueba ]}>
+                        {transaction.transactionType === -1 ? 
+                          <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
+                          <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                        }
+                      </View>
                     </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </SwipeableItem>
-      ))}
+            </TouchableOpacity>
+          </SwipeableItem>
+        ))}
+      </View>
     </View>
   );
 }
