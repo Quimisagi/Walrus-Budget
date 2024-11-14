@@ -153,6 +153,7 @@ const TransactionsForm = ({}) => {
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
         setTransactionType(transactionTemp.transactionType);
+        setSelection(transactionTemp.transactionType);
         const categoryTemp = activeBudgetCategories.find(category => category.id === transactionTemp.categoryId);
         setCategory(categoryTemp);
         const accountTemp = accounts.find(account => account.id === transactionTemp.accountId);
@@ -173,7 +174,7 @@ const TransactionsForm = ({}) => {
       ),
 
     });
-  }, [navigation, amount, notes, date, time, category, transactionType]);
+  }, [navigation, amount, notes, date, time, category, transactionType, account, selection]);
 
   return (
     <View style={globalStyles.container}>
