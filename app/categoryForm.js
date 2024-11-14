@@ -147,7 +147,7 @@ const CategoryForm = () => {
             </View>
             <TextInput
               style={[ globalStyles.inputField, {flex: 9}]}
-              placeholder='Name'
+              placeholder='Category name'
               value={name}
               maxLength={24}
               onChangeText={(text) => { setName(text); }}

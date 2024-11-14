@@ -53,7 +53,7 @@ export default function Home() {
     setModalVisible(false);
   }
   useEffect(() => {
-    navigation.setOptions({headerShown: false, tabBarVisible: false});
+    navigation.setOptions({headerShown: false });
   }, []);
 
   useEffect(() => {

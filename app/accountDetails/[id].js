@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "../../utils/globalProvider";
-import {View, Text, TouchableOpacity, TextInput } from "react-native";
+import {View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import globalStyles from "../../utils/globalStyles";
 import defaultCategories from "../../utils/defaultCategories";
 import { StyleSheet } from "react-native";
@@ -123,61 +123,52 @@ const AccountDetails = () => {
     <View style={globalStyles.container}>
       <View>
         <Text style={globalStyles.h2}>{account.name}</Text>
-        <Text style={globalStyles.secondaryText}>{account.type}</Text>
       </View>
-      <View>
-        <Text style={globalStyles.h3}>Progress</Text>
-        <Text style={globalStyles.text}>{percentage}% spent</Text>
-        <View style={styles.progressBar}> 
-          {percentage >= 100 ? 
-            <View style={[styles.totalBar, {width: '100%', backgroundColor: "green"}]}/> : 
-            <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: "green"}]}/>
-          }
-        </View>
-      </View>
-      <View style={globalStyles.row}>
-        <View style={{flex: 1}}>
+      <View style={[globalStyles.row, globalStyles.block]}>
+        <View style={[globalStyles.centered, {flex: 1}]}>
           <Text style={globalStyles.h3}>Balance</Text>
-          <Text style={globalStyles.amount}>${account.initialValue + (expenses * -1) + income}</Text>
+          <Text style={globalStyles.balance}>${account.initialValue + (expenses * -1) + income}</Text>
         </View>
       </View>
-      <View style={globalStyles.row}>
-        <View style={{flex: 1}}>
+      <View style={[globalStyles.row, globalStyles.block]}>
+        <View style={[{flex: 1}, globalStyles.centered]}>
           <Text style={globalStyles.h3}>Expenses</Text>
           <Text style={globalStyles.expense}>$-{expenses}</Text>
         </View>
-        <View style={{flex: 1}}>
+        <View style={[{flex: 1}, globalStyles.centered]}>
           <Text style={globalStyles.h3}>Income</Text>
           <Text style={globalStyles.income}>${income}</Text>
         </View>
       </View>
-      {filteredTransactions.map((transaction) => (
+      <ScrollView style={globalStyles.block}>
+    {filteredTransactions.map((transaction) => (
         <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
           <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
             <View style={globalStyles.transactionContainer}>
               <View style={globalStyles.row}>
                 <View style={[ globalStyles.column, { flex: 1 } ]}>
-                  <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+                <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
                 </View>
                 <View style={[ globalStyles.column, { flex: 4 }]}>
-                  {transaction.notes ? 
-                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+      {transaction.notes ? 
+        <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
                   <View style={globalStyles.row}>
-                    <Text>{transaction.date}</Text>
-                    <Text> {transaction.time}</Text>
+                  <Text>{transaction.date}</Text>
+                  <Text> {transaction.time}</Text>
                   </View>
                 </View>
                 <View style={[ globalStyles.column, { flex: 2 } ]}>
-                  <Text style={globalStyles.expense}>${transaction.amount}</Text>
+                <Text style={globalStyles.expense}>${transaction.amount}</Text>
                 </View>
               </View>
             </View>
           </TouchableOpacity>
-        </SwipeableItem>
+      </SwipeableItem>
       ))}
+        </ScrollView>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {accountId: id}})}>
-        <Feather name="plus" size={24} color="white" />
+        <Feather name="plus" size={35} color="white" />
       </TouchableOpacity>
     </View>
   )

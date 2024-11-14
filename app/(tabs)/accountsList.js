@@ -2,16 +2,18 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
 import { useEffect, useState } from 'react';
 import globalStyles from '../../utils/globalStyles';
-import { useRouter} from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import { getData, storeData } from "../../utils/storage"; 
 import { useGlobal } from '../../utils/globalProvider';
-import { Feather, AntDesign } from '@expo/vector-icons';
+import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import SwipeableItem from '../../utils/swipeableItem';
 
 const AccountsList = () => {
 
   const router = useRouter();
+  const navigation = useNavigation();
+
   const { accounts, setAccounts, transactions } = useGlobal();
 
   const [updatedAccounts, setUpdatedAccounts] = useState([]);
@@ -32,6 +34,11 @@ const AccountsList = () => {
   }
 
   useEffect(() => {
+    navigation.setOptions({headerShown: false });
+  }, []);
+
+
+  useEffect(() => {
     accounts.map(account => {
       let balance = account.initialValue;
       transactions.map(transaction => {
@@ -44,32 +51,46 @@ const AccountsList = () => {
     );
     setUpdatedAccounts(accounts);
   }
-  , [transactions, accounts]);
+    , [transactions, accounts]);
 
   return (
-    <View style={globalStyles.container}> 
+    <View style={styles.container}> 
+      <View style={globalStyles.row}>
+        <Text style={globalStyles.h2}>Accounts</Text>
+      </View>
       <ScrollView>
+        <TouchableOpacity
+          style={[globalStyles.row, styles.addNewAccount]}
+          onPress={() => router.push({ pathname: '/accountForm'})}
+        >
+          <View style={{flex: 4}}>
+          </View>
+          <View style={{flex: 2}}>
+            <Ionicons name="add-circle-outline" size={30} color={'#00A5E0'} />
+          </View>
+          <View style={{flex: 6}}>
+            <Text style={[globalStyles.h3, styles.addNewAccountText]}>Add new account</Text>
+          </View>
+          <View style={{flex: 4}}>
+          </View>
+        </TouchableOpacity>
         { accounts ? 
             (
               updatedAccounts.map(account => (
-                  <TouchableOpacity 
-                    key={account.id}
-                    onPress={() => router.push({ pathname: ('/accountDetails/' + account.id) })} 
-                  >
-                    <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
-                      <View style={globalStyles.row}>
-                        <View style={{flex: 3}}>
+                <TouchableOpacity 
+                  key={account.id}
+                  onPress={() => router.push({ pathname: ('/accountDetails/' + account.id) })} 
+                >
+                  <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
+                    <View style={globalStyles.row}>
+                      <View style={{flex: 4}}>
                         <Text style={globalStyles.h2}>{account.name}</Text>
-                          <View style={globalStyles.row}>
-                          <Text style={globalStyles.text}>{account.type}</Text>
-                          </View>
-                        </View>
-                        <View style={{flex: 1}}>
+                      </View>
+                      <View style={{flex: 2}}>
                         <Text style={globalStyles.amount}>${account.balance}</Text>
-                        <Text style={globalStyles.text}>Balance</Text>
-                        </View>
                       </View>
                     </View>
+                  </View>
                 </TouchableOpacity>
               ))
             ) : 
@@ -78,15 +99,28 @@ const AccountsList = () => {
             ) 
         }
       </ScrollView>
-      <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/accountForm'})}>
-        <Feather name="plus" size={24} color="white" />
-      </TouchableOpacity>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container:{
+    marginTop: 45,
+    padding: 30,
+    flex: 1
+  },
+  addNewAccount: {
+    backgroundColor: '#D6F4FF',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    height: 50,
+  },
+  addNewAccountText: {
+    marginTop: 2,
+    color: '#00A5E0',
+  },
+
   button: {
     width: 30,
     height: 30, 

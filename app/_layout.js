@@ -45,6 +45,11 @@ export default function Layout() {
           name="categoryDetails/[id]"
           options={{ headerTitle: '' }}
         />
+        <Stack.Screen
+          name="accountForm"
+          options={{ headerTitle: 'New account' }}
+        />
+
       </Stack>
       <Toast/>
     </GlobalProvider>
