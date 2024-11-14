@@ -183,7 +183,10 @@ const CategoriesDetails= () => {
                     </View>
                   </View>
                   <View style={[ globalStyles.column, { flex: 2 } ]}>
-                    <Text style={globalStyles.expense}>${transaction.amount}</Text>
+                    {transaction.transactionType === -1 ?
+                      <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
+                      <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                    }
                   </View>
                 </View>
               </View>

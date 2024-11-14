@@ -136,20 +136,14 @@ const TransactionsForm = ({}) => {
       setAccount(accountTemp);
     }
     if(categoryId){
-      let allocatedCategory = activeBudget.allocatedCategories.find(category => category.id ===  categoryId)
-      let categoryTemp = undefined
-      if(allocatedCategory){
-        categoryTemp = defaultCategories.find(category => category.id === allocatedCategory.categoryId);
-      }
-      const category = Object.assign({}, allocatedCategory, categoryTemp ? categoryTemp : {});
-      category.id= allocatedCategory.id;
-      setCategory(category);
+      let categoryTemp = activeBudgetCategories.find(category => category.id ===  categoryId)
+      setCategory(categoryTemp);
     }
     if(editMode){
       let transactionTemp = transactions.find(transaction => transaction.id === transactionId)
       if(typeof transactionTemp !== 'undefined'){
         setAmount(transactionTemp.amount);
-        setNotes(transactionTemp.notes);
+        setNotes(transactionTemp.notes)
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
         setTransactionType(transactionTemp.transactionType);

@@ -64,7 +64,7 @@ const BudgetsList = () => {
         }
       </ScrollView>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/budgetForm'})}>
-        <Feather name="plus" size={24} color="white" />
+        <Feather name="plus" size={32} color="white" />
       </TouchableOpacity>
 
     </View>
