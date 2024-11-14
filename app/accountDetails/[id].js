@@ -49,7 +49,7 @@ const AccountDetails = () => {
     let accountsTemp = accounts.filter(account => account.id !== id);
     await storeData('accounts', JSON.stringify(accountsTemp));
     setAccounts(accountsTemp);
-    router.push('/');
+    router.back();
     Toast.show({
       type: 'success',
       position: 'bottom',
@@ -111,6 +111,7 @@ const AccountDetails = () => {
       headerTitle: "",
       headerRight: () => (
         <TouchableOpacity
+          onPress={() => deleteAccount(id)}
           style={{ margin: 15 }}
         >
           <Feather name="trash" size={20}/>

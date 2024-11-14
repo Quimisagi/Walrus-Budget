@@ -229,13 +229,7 @@ const TransactionsForm = ({}) => {
         </TouchableOpacity>
         <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setAccountModalVisible(true) }}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
-            {account && Object.keys(account).length > 0 ? (
-              <View>
-                { account.icon }
-              </View>
-            ) : (
-              <FontAwesome6 name="wallet" size={16} color="gray" />
-            )}
+            <FontAwesome6 name="wallet" size={16} color="gray" />
           </View>
           <TextInput 
             style={[ globalStyles.inputField, {flex: 9} ]}
@@ -265,31 +259,31 @@ const TransactionsForm = ({}) => {
           <View style={{flex:1, marginRight: 5}}>
             <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showDatepicker() }}>
               <View style={[ globalStyles.centered, {flex:1} ]}>
-              <AntDesign name="calendar" size={16} color="black" />
+                <AntDesign name="calendar" size={16} color="black" />
               </View>
-            <TextInput 
-              style={[ globalStyles.inputField, {flex: 7} ]}
-              pointerEvents="none"
-              editable={false}
-            >
-              <Text style={{marginLeft: 30}}>{date}</Text>
-            </TextInput>
+              <TextInput 
+                style={[ globalStyles.inputField, {flex: 7} ]}
+                pointerEvents="none"
+                editable={false}
+              >
+                <Text style={{marginLeft: 30}}>{date}</Text>
+              </TextInput>
             </TouchableOpacity>
           </View>
-        <View style={{flex:1, marginLeft: 5}}>
-          <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showTimepicker() }}>
-            <View style={[ globalStyles.centered, {flex:1} ]}>
-              <AntDesign name="clockcircle" size={16} color="black" />
-            </View>
-          <TextInput 
-            style={[ globalStyles.inputField, {flex: 7} ]}
-            pointerEvents="none"
-            editable={false}
-          >
-            <Text style={{marginLeft: 30}}>{time}</Text>
-          </TextInput>
-          </TouchableOpacity>
-        </View>
+          <View style={{flex:1, marginLeft: 5}}>
+            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showTimepicker() }}>
+              <View style={[ globalStyles.centered, {flex:1} ]}>
+                <AntDesign name="clockcircle" size={16} color="black" />
+              </View>
+              <TextInput 
+                style={[ globalStyles.inputField, {flex: 7} ]}
+                pointerEvents="none"
+                editable={false}
+              >
+                <Text style={{marginLeft: 30}}>{time}</Text>
+              </TextInput>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <Modal
@@ -297,12 +291,25 @@ const TransactionsForm = ({}) => {
         onBackdropPress={() => setAccountModalVisible(false)}
         onClose={() => setAccountModalVisible(false)}>
         <View style={globalStyles.modal}>
-          {accounts.map(account => (
-            <Pressable key={account.id} onPress={() => { setAccount(account); setAccountModalVisible(false)}}>
-              <Text>adafdafdafds</Text>
-              <Text style={globalStyles.modalText}>{account.name}</Text>
-            </Pressable>
-          ))}
+          <Text style={globalStyles.h2}>Select an account</Text>
+          <View style={globalStyles.block}>
+            {accounts.map(account => (
+              <View key={account.id} style={styles.accountButton}>
+                <Pressable onPress={() => { setAccount(account); setAccountModalVisible(false)}}>
+                  <View style={globalStyles.row}>
+                    <View style={{flow: 3}}>
+                      <View>
+                        <Text style={globalStyles.h3}>{account.name}</Text>
+                      </View>
+                    </View>
+                    <View style={{flow: 1}}>
+                      <Text style={globalStyles.h3}> - (${account.initialValue})</Text>
+                    </View>
+                  </View>
+                </Pressable>
+              </View>
+            ))}
+          </View>
         </View>
       </Modal>
 
@@ -358,6 +365,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  accountButton: {
+    height: 40,
+    borderRadius: 8,
+    padding: 10,
   },
 
 });
