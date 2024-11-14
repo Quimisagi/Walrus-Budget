@@ -1,12 +1,12 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import globalStyles from '../../utils/globalStyles';
-import { router, navigation } from 'expo-router';
+import { router } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
 import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from '../../utils/circularProgress';
-import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'
+import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils';
 
 const categoriesList = () => {
   const [categories, setCategories] = useState([]);
@@ -17,22 +17,17 @@ const categoriesList = () => {
   } = useGlobal();
 
   const goToDetails = (category) => {
-    router.push({ pathname: 'categoryDetails/' + category.id});
-  }
+    router.push({ pathname: 'categoryDetails/' + category.id });
+  };
 
   const goToAddCategory = () => {
-    router.push({ pathname: '/categoryForm', params: { budgetId: activeBudget.id }});
-  }
+    router.push({ pathname: '/categoryForm', params: { budgetId: activeBudget.id } });
+  };
 
-  const handlePercentage = (percentage) => {
-    if (percentage > 100) {
-      return 100;
-    }
-    return percentage;
-  }
+  const handlePercentage = (percentage) => (percentage > 100 ? 100 : percentage);
 
   useEffect(() => {
-    if(activeBudgetCategories){
+    if (activeBudgetCategories) {
       const categoriesTemp = activeBudgetCategories.map(category => {
         const spent = calculateCategoryTotalSpent(category.id, activeBudgetTransactions);
         const percentage = calculatePercentage(spent, category.amount);
@@ -40,9 +35,8 @@ const categoriesList = () => {
           ...category,
           spent,
           percentage
-        }
-      }
-      );
+        };
+      });
       setCategories(categoriesTemp);
     }
   }, [activeBudgetCategories, activeBudgetTransactions]);
@@ -50,24 +44,21 @@ const categoriesList = () => {
   return (
     <View style={styles.categoriesContainer}>
       <View> 
-        <Text style={globalStyles.h2} >Categories</Text>
+        <Text style={globalStyles.h2}>Categories</Text>
         <View>
           <ScrollView horizontal={true}>
             <TouchableOpacity onPress={goToAddCategory}>
               <View style={styles.categoryContainer}>
                 <View style={styles.dottedCategoryContainer}>
-                  <Ionicons name="add-sharp" size={40} color={'#bcc1ca'}/>
+                  <Ionicons name="add-sharp" size={40} color={'#bcc1ca'} />
                 </View>
                 <Text style={globalStyles.centered}>Add</Text>
               </View>
             </TouchableOpacity>
-            { categories ? (
+            {categories ? (
               categories.map((category, index) => (
-                <TouchableOpacity 
-                  key={index}
-                  onPress={() => goToDetails(category)}
-                >
-                  { category.amount > 0 ? (
+                <TouchableOpacity key={index} onPress={() => goToDetails(category)}>
+                  {category.amount > 0 ? (
                     <View>
                       <CircularProgress
                         percentage={handlePercentage(category.percentage)}
@@ -79,35 +70,36 @@ const categoriesList = () => {
                       ) : (
                         <View>
                           <Text style={globalStyles.centered}>{category.percentage}%</Text>
-                          <Text style={[ globalStyles.centered, globalStyles.secondaryText ]}>{category.name}</Text>
+                          <Text style={[globalStyles.centered, globalStyles.secondaryText]}>
+                            {category.name.length > 12 ? `${category.name.slice(0, 10)}...` : category.name}
+                          </Text>
                         </View>
                       )}
                     </View>
-                  ): (
+                  ) : (
                     <View>
                       <CircularProgress
                         percentage={100}
                         color={category.color}
                         icon={category.icon}
-
-                      >
-                      </CircularProgress>
+                      />
                       <Text style={globalStyles.centered}>-</Text>
-                      <Text style={[ globalStyles.centered, globalStyles.secondaryText ]}>{category.name}</Text>
-
+                      <Text style={[globalStyles.centered, globalStyles.secondaryText]}>
+                        {category.name.length > 10 ? `${category.name.slice(0, 10)}...` : category.name}
+                      </Text>
                     </View>
-                  )
-                  }
+                  )}
                 </TouchableOpacity>
-              ))) : (<Text>No allocated categories</Text>)
-            }
+              ))
+            ) : (
+              <Text>No allocated categories</Text>
+            )}
           </ScrollView>
         </View>
-
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   categoryContainer: {
@@ -115,36 +107,24 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
   },
-  dottedCategoryContainer:{
+  dottedCategoryContainer: {
     width: 60,
     height: 60,
-    borderRadius: 30, 
+    borderRadius: 30,
     borderWidth: 3,
     borderColor: '#bcc1ca',
     borderStyle: 'dotted',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  categoryName: {
-    flex: 1,
-  },
-  categoryAmount: {
-    flex: 1,
-  },
-  button: {
-    width: 30,
-    height: 30, 
-    borderRadius: 8,
-  },
   warning: {
     color: 'red',
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-  }
-
+  },
 });
 
 export default categoriesList;
