@@ -10,8 +10,10 @@ export const processMoneyValue = (text) => {
 };
 
 export const calculatePercentage = (spent, budgeted) => {
-  if(budgeted === 0) return 0;
-  return Math.round((spent / budgeted) * 100);
+  if (budgeted === 0) return 0;
+  const remaining = budgeted + spent;
+  const percentage = (remaining / budgeted) * 100;
+  return Math.max(0, Math.min(100, Math.round(percentage))); // Clamp to [0, 100]
 }
 
 export const calculateCategoryTotalSpent = (categoryId, transactions) => {
@@ -19,7 +21,7 @@ export const calculateCategoryTotalSpent = (categoryId, transactions) => {
   let totalSpent = 0;
   transactions.map(transaction => {
     if (transaction.categoryId === categoryId) {
-      totalSpent += transaction.amount;
+      totalSpent += transaction.amount * transaction.transactionType;
     }
   });
   return totalSpent;

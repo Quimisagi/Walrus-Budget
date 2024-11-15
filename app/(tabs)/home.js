@@ -7,7 +7,7 @@ import CategoryModal from '../components/categoryModal';
 import { router } from 'expo-router';
 import CategoriesList from '../components/categoriesList';
 import TransactionList from '../components/transactionsList';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
 import { calculateExpenses, calculateIncome } from '../../utils/numberUtils';
 
@@ -80,19 +80,19 @@ export default function Home() {
     <View style={styles.container}>
       <View style={styles.main}>
         {budgets.length === 0 ? (
-          <View style={styles.noBudgetsPanel}>
-            <Text style={globalStyles.h2}>No budgets created</Text>
-            <TouchableOpacity style={globalStyles.buttonA} onPress={() => router.push({pathname: "/budgetForm"})}>
-              <View style={globalStyles.row}>
-                <Ionicons style={globalStyles.buttonAText} name="add-circle-outline" size={12}/>
-                <Text style={globalStyles.buttonAText}>Create a new budget</Text>
-              </View>
-            </TouchableOpacity>
+          <View>
+
           </View>
         ) : (
           <View style={{ flex: 1 }}>
             <View style={[ globalStyles.row, globalStyles.centered ]}>
-              <View style={ globalStyles.column }>
+              <TouchableOpacity 
+                style={{flex : 1, marginLeft: 5}}
+                onPress={() => router.push({ pathname: '/settings' })}
+              >
+                <FontAwesome6 name="wrench" size={25} color="black" />
+              </TouchableOpacity>
+              <View style={{flex: 5}}>
                 <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
                   <View style={[ globalStyles.row, styles.budgetSelectMenu ]}>
                     <View style={[{flex: 7, marginLeft: 'auto'}, globalStyles.centered ]}>
@@ -104,6 +104,7 @@ export default function Home() {
                   </View>
                 </TouchableOpacity>
               </View>
+              <View style={{flex: 1}}></View>
             </View>
             <ScrollView scrollEnabled={!isSwiping} style={{ flex: 1 }}>
               <View style={styles.homeContent}>
@@ -115,7 +116,7 @@ export default function Home() {
                     <View style={globalStyles.row}>
                       <Text style={globalStyles.balance}> ${balance}</Text>
                     </View>
-               </View>
+                  </View>
                 </View>
                 <View style={[globalStyles.row, styles.homeContent]}>
                   <View style={[ globalStyles.column, globalStyles.centered ]}>
@@ -203,11 +204,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: 'gray',
     borderWidth: 1,
-    marginLeft: 50,
-    marginRight: 50,
     padding: 5,
   },
   homeContent: {
     marginTop: 20,
-  }
+  },
+  walrus: {
+    flex: 1,
+    justifyContent: 'flex-end', // Pushes content to the bottom
+  },
 });

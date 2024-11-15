@@ -97,6 +97,11 @@ export default function Home() {
       } finally {
         setAppIsReady(true);
         await SplashScreen.hideAsync();
+        if(budgetsTemp.length === 0){
+          router.replace('/welcomeScreen');
+        }
+        else
+          // router.replace('/welcomeScreen');
         router.replace('/home');
       }
     }

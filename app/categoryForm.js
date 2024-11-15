@@ -13,6 +13,8 @@ import { getContrastColor, colors } from '../utils/iconsList';
 import ColorSelector from './components/colorSelector';
 import IconsModal from './components/iconsModal';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Toast from 'react-native-toast-message';
+
 
 
 const CategoryForm = () => {
@@ -38,10 +40,16 @@ const CategoryForm = () => {
       categoriesTemp.push(newCategory);
       await storeData('categories', JSON.stringify(categoriesTemp));
       setCategories(categoriesTemp);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Category created',
+      });
+
     } catch (error) {
       console.error("Error creating category: ", error)
     }
-  router.back();
+    router.back();
   }
 
   const updateCategory = async (category) => {
@@ -54,7 +62,7 @@ const CategoryForm = () => {
     } catch (error) {
       console.error("Error updating category: ", error)
     }
-  router.back();
+    router.back();
   }
 
   const sendData = async () => {

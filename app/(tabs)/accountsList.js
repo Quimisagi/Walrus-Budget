@@ -28,7 +28,7 @@ const AccountsList = () => {
     setAccounts(accountsTemp);
     Toast.show({
       type: 'success',
-      position: 'bottom',
+      position: 'top',
       text1: 'Account deleted',
     });
   }

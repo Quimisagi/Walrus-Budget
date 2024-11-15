@@ -12,8 +12,7 @@ const Settings = () => {
   }
 
   return (
-    <View>
-      <Text style={globalStyles.title}>Settings</Text>
+    <View style={globalStyles.container}>
       <Button title="DELETE EVERYTHING" onPress={deleteEverything}></Button>
     </View>
   )

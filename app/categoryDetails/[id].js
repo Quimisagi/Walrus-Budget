@@ -42,7 +42,7 @@ const CategoriesDetails= () => {
     Toast.show({
       type: 'success',
       text1: 'Transaction deleted',
-      position: 'bottom',
+      position: 'top',
     });
   }
 
@@ -55,7 +55,7 @@ const CategoriesDetails= () => {
     Toast.show({
       type: 'success',
       text1: 'Category deleted',
-      position: 'bottom',
+      position: 'top',
     });
     router.back();
   }
@@ -83,7 +83,7 @@ const CategoriesDetails= () => {
     if(category){
     if(-expenses + income >= 0)
       setPercentage(calculatePercentage(0, category.amount));
-    else setPercentage(calculatePercentage(expenses, category.amount));
+    else setPercentage(calculatePercentage(-expenses + income, category.amount));
     }
   }, [expenses, amount, category, transactions]);
   
@@ -138,7 +138,7 @@ const CategoriesDetails= () => {
           : (
             <View style={globalStyles.block}>
               <View style={globalStyles.centered}>
-                <Text style={globalStyles.text}>{percentage}% spent</Text>
+                <Text style={globalStyles.text}>{percentage}% remaining</Text>
               </View>
               <View style={styles.progressBar}> 
                 {percentage >= 100 ? 
@@ -156,7 +156,7 @@ const CategoriesDetails= () => {
                       (<Text style={globalStyles.h3}>{category.amount}</Text>) :
                       <Text style={globalStyles.h3}>${category.amount - expenses + income}</Text>
                   }
-                  <Text style={globalStyles.text}>Remaining</Text>
+                  <Text style={globalStyles.text}>Balance</Text>
                 </View>
               </View>
             </View>

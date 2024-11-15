@@ -41,7 +41,7 @@ const AccountDetails = () => {
     Toast.show({
       type: 'success',
       text1: 'Transaction deleted',
-      position: 'bottom',
+      position: 'top',
     });
   }
 
@@ -52,7 +52,7 @@ const AccountDetails = () => {
     router.back();
     Toast.show({
       type: 'success',
-      position: 'bottom',
+      position: 'top',
       text1: 'Account deleted',
     });
   }
@@ -147,27 +147,35 @@ const AccountDetails = () => {
           <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
             <View style={globalStyles.transactionContainer}>
               <View style={globalStyles.row}>
-                <View style={[ globalStyles.column, { flex: 1 } ]}>
-                <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+                <View style={[globalStyles.centered, { flex: 2 } ]}>
+                  {transaction.transactionType === -1 ? (
+                  <Feather style={styles.totalExpenses} name="arrow-down-right" size={30} color={'red'}/>
+                  ) : (
+                  <Feather style={styles.totalIncome} name="arrow-up-right" size={30} color={'green'}/>
+                  )}
                 </View>
-                <View style={[ globalStyles.column, { flex: 4 }]}>
-      {transaction.notes ? 
-        <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                <View style={[ globalStyles.column, { flex: 6 }]}>
+                  {transaction.notes ? 
+                    <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
+                    <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
                   <View style={globalStyles.row}>
-                  <Text>{transaction.date}</Text>
-                  <Text> {transaction.time}</Text>
+                    <Text>{transaction.date}</Text>
+                    <Text> {transaction.time}</Text>
                   </View>
                 </View>
-                <View style={[ globalStyles.column, { flex: 2 } ]}>
-                <Text style={globalStyles.expense}>${transaction.amount}</Text>
+                <View style={[{ flex: 3 }, globalStyles.centered ]}>
+                  {transaction.transactionType === -1 ? (   
+                  <Text style={globalStyles.expense}>${transaction.amount}</Text>
+                  ) : (
+                  <Text style={globalStyles.income}>${transaction.amount}</Text>
+                  )}
                 </View>
               </View>
             </View>
           </TouchableOpacity>
-      </SwipeableItem>
-      ))}
-        </ScrollView>
+        </SwipeableItem>
+    ))}
+      </ScrollView>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/transactionsForm', params: {accountId: id}})}>
         <Feather name="plus" size={35} color="white" />
       </TouchableOpacity>

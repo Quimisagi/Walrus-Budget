@@ -5,11 +5,11 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
-import MonthPicker from 'react-native-month-year-picker';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue } from '../utils/numberUtils';
 import { displayDateInFormat } from '../utils/dateUtils';
+import MonthPicker from 'react-native-month-year-picker';
 
 const BudgetForm = () => {
   const navigation = useNavigation();
@@ -135,7 +135,7 @@ const BudgetForm = () => {
           <Text style={{marginLeft: 30}}>{dateInFormat}</Text>
         </TextInput>
       </TouchableOpacity>
-      {showPicker ? (
+      {showPicker && (
         <MonthPicker
           onChange={onChangeDate}
           value={new Date(date + "-05")}
@@ -143,7 +143,7 @@ const BudgetForm = () => {
           maximumDate={new Date(2099, 12)}
           locale="en"
         />
-      ) : null}
+      )}
       <View style={[ globalStyles.inputFieldContainer, globalStyles.row ]}> 
         <View style={[ globalStyles.centered, {flex:1} ]}>
           <MaterialCommunityIcons name="text" size={16} color="black" />

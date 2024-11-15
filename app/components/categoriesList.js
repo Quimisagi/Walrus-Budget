@@ -67,7 +67,7 @@ const categoriesList = () => {
                         color={category.color}
                         icon={category.icon}
                       />
-                      {category.percentage > 100 ? (
+                      {category.percentage < 10 ? (
                         <Text style={[styles.warning, globalStyles.h3]}>{category.percentage}%</Text>
                       ) : (
                         <View>

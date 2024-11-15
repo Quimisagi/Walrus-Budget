@@ -59,14 +59,14 @@ const TransactionList = () => {
                     {transaction.category ? 
                         (
                           <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
-                            <FontAwesome6 name={transaction.category.icon} size={25} color={getContrastColor(transaction.category.color)} />
+                            <FontAwesome6 name={transaction.category.icon} size={20} color={getContrastColor(transaction.category.color)} />
 
                           </View>
                         )
                         : (<View style={[globalStyles.categoryIcon, {backgroundColor: 'gray' }]}/> )}
 
                   </View>
-                  <View style={[ globalStyles.column, { flex: 6 } ]}>
+                  <View style={[ globalStyles.column, { flex: 8 } ]}>
                     <View style={globalStyles.row}>
                       {transaction.category ? 
                         <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
@@ -85,7 +85,7 @@ const TransactionList = () => {
                       <Text> {transaction.time}</Text>
                     </View>
                   </View>
-                  <View style={[ globalStyles.column, { flex: 3 } ]}>
+                  <View style={[ globalStyles.column, { flex: 4 } ]}>
                     <View style={globalStyles.row}>
                       <Text style={globalStyles.secondaryText}></Text>
                     </View>
