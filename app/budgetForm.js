@@ -7,7 +7,7 @@ import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { processMoneyValue } from '../utils/numberUtils';
+import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import { displayDateInFormat } from '../utils/dateUtils';
 import MonthPicker from 'react-native-month-year-picker';
 
@@ -112,15 +112,15 @@ const BudgetForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + begginingBalance.toString()}</Text>
+        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(begginingBalance.toLocaleString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}
         ref={budgetRef}
         autoFocus={true}
-        maxLength={12}
+        maxLength={18}
         keyboardType="numeric"
-        value={"$" + begginingBalance.toString()}
+        value={'$' + begginingBalance.toString()}
         onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
       />
       <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>

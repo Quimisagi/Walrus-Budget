@@ -8,7 +8,7 @@ import { storeData } from '../utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { processMoneyValue } from '../utils/numberUtils';
+import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import {MaterialCommunityIcons } from '@expo/vector-icons';
 
 
@@ -88,7 +88,7 @@ const AccountForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + initialValue.toString()}</Text>
+        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(initialValue.toString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}

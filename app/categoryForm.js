@@ -6,7 +6,7 @@ import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import { storeData } from '../utils/storage';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { processMoneyValue } from '../utils/numberUtils';
+import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { getContrastColor, colors } from '../utils/iconsList';  
@@ -15,13 +15,11 @@ import IconsModal from './components/iconsModal';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Toast from 'react-native-toast-message';
 
-
-
 const CategoryForm = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
   const navigation = useNavigation();
-  const { id, editMode} = params;
+  const { id, editMode } = params;
 
   const [name, setName] = useState('');
   const [color, setColor] = useState(colors[0]);
@@ -50,7 +48,7 @@ const CategoryForm = () => {
       console.error("Error creating category: ", error)
     }
     router.back();
-  }
+  };
 
   const updateCategory = async (category) => {
     try {
@@ -63,7 +61,7 @@ const CategoryForm = () => {
       console.error("Error updating category: ", error)
     }
     router.back();
-  }
+  };
 
   const sendData = async () => {
     const newCategory = {
@@ -73,7 +71,7 @@ const CategoryForm = () => {
       name     : name,
       icon     : icon,
       color    : color,
-    }
+    };
 
     if(editMode){
       newCategory.id = id;
@@ -81,20 +79,18 @@ const CategoryForm = () => {
       return;
     }
     await createCategory(newCategory);
-  }
+  };
 
   const focusBudget = () => {
     if(budgetRef.current){
       budgetRef.current.focus();
     }
-  }
+  };
 
   useEffect(() => {
     if(editMode){
       const category = categories.find(category => category.id === id);
-      console.log(category);
-      if(category === undefined)
-        return;
+      if(category === undefined) return;
       setName(category.name);
       setColor(category.color);
       setIcon(category.icon);
@@ -106,7 +102,6 @@ const CategoryForm = () => {
     const iconColor = getContrastColor(color);
     setIconColor(iconColor);
   }, [color]);
-
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -126,18 +121,17 @@ const CategoryForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + amount.toString()}</Text>
+        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(amount.toLocaleString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}
         ref={budgetRef}
         autoFocus={true}
         keyboardType="numeric"
-        maxLength={12}
+        maxLength={18}
         value={"$" + amount.toString()}
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
-      <View style={globalStyles.hr}/>
       <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 25, justifyContent: 'center'} ]}>
         <View style={[{flex: 1}]}>
           <TouchableOpacity onPress={() => setModalVisible(true)} style={[globalStyles.categoryIcon, styles.categoryButton, {backgroundColor: color}]}>
@@ -145,12 +139,11 @@ const CategoryForm = () => {
               <FontAwesome6 name={icon} size={30} color={iconColor} />
             ) : (
               <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text>
-            )
-            }
+            )}
           </TouchableOpacity>
         </View>
         <View style={{flex: 3, justifyContent:'center'}}>
-          <View style={[ globalStyles.inputFieldContainer, globalStyles.row, styles.name]}> 
+          <View style={[ globalStyles.inputFieldContainer, globalStyles.row, styles.name ]}> 
             <View style={[ globalStyles.centered, {flex:1} ]}>
               <MaterialCommunityIcons name="text" size={16} color="black" />
             </View>
@@ -165,7 +158,7 @@ const CategoryForm = () => {
         </View>
       </View>
       <Text style={globalStyles.label}>Pick a color:</Text>
-      <ColorSelector setColor={(color) => setColor(color)} selectedColor={color}/>
+      <ColorSelector setColor={(color) => setColor(color)} selectedColor={color} />
       <IconsModal
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
@@ -174,7 +167,7 @@ const CategoryForm = () => {
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   categoryButton: {

@@ -8,6 +8,7 @@ import { useGlobal } from '../../utils/globalProvider';
 import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import SwipeableItem from '../../utils/swipeableItem';
+import { formatMoney } from '../../utils/numberUtils';
 
 const AccountsList = () => {
 
@@ -87,7 +88,7 @@ const AccountsList = () => {
                         <Text style={globalStyles.h2}>{account.name}</Text>
                       </View>
                       <View style={{flex: 2}}>
-                        <Text style={globalStyles.amount}>${account.balance}</Text>
+                        <Text style={globalStyles.amount}>${formatMoney(account.balance.toLocaleString())}</Text>
                       </View>
                     </View>
                   </View>

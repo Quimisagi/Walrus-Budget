@@ -9,7 +9,7 @@ import CategoriesList from '../components/categoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
-import { calculateExpenses, calculateIncome } from '../../utils/numberUtils';
+import { calculateExpenses, calculateIncome, formatMoney } from '../../utils/numberUtils';
 
 
 import * as Font from 'expo-font';
@@ -108,35 +108,37 @@ export default function Home() {
             </View>
             <ScrollView scrollEnabled={!isSwiping} style={{ flex: 1 }}>
               <View style={styles.homeContent}>
-                <View style={globalStyles.row}>
-                  <View style={[ globalStyles.column, globalStyles.centered ]}>
-                    <View style={globalStyles.row}>
+                <View style={styles.currentBudget}>
+                  <View style={globalStyles.row}>
+                    <View style={[ globalStyles.column, globalStyles.centered ]}>
+                      <View style={globalStyles.row}>
                       <Text style={globalStyles.h3}>Balance</Text>
-                    </View>
-                    <View style={globalStyles.row}>
-                      <Text style={globalStyles.balance}> ${balance}</Text>
+                      </View>
+                      <View style={globalStyles.row}>
+                      <Text style={globalStyles.balance}> ${formatMoney(balance.toLocaleString())}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-                <View style={[globalStyles.row, styles.homeContent]}>
-                  <View style={[ globalStyles.column, globalStyles.centered ]}>
-                    <View style={globalStyles.row}>
+                  <View style={[globalStyles.row, styles.homeContent]}>
+                    <View style={[ globalStyles.column, globalStyles.centered ]}>
+                      <View style={globalStyles.row}>
                       <Text style={globalStyles.h3}>Expenses</Text>
-                    </View>
-                    <View style={globalStyles.row}>
-                      <Text style={styles.totalExpenses}>${expenses}</Text>
-                    </View>
+                      </View>
+                      <View style={globalStyles.row}>
+                      <Text style={styles.totalExpenses}>${formatMoney(expenses.toLocaleString())}</Text>
+                      </View>
                     <Feather style={styles.totalExpenses} name="arrow-up-right"/>
-                  </View>
-                  <View style={[ globalStyles.column, globalStyles.centered ]}>
-                    <View style={globalStyles.row}>
+                    </View>
+                    <View style={[ globalStyles.column, globalStyles.centered ]}>
+                      <View style={globalStyles.row}>
                       <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Income</Text>
-                    </View>
+                      </View>
 
-                    <View style={globalStyles.row}>
-                      <Text style={styles.totalIncome}>${income}</Text>
-                    </View>
+                      <View style={globalStyles.row}>
+                      <Text style={styles.totalIncome}>${formatMoney(income.toLocaleString())}</Text>
+                      </View>
                     <Feather style={styles.totalIncome} name="arrow-down-left"/>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.homeContent}>
@@ -213,4 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end', // Pushes content to the bottom
   },
+  currentBudget: {
+  },
+
 });

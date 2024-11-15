@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import SwipeableItem from "../../utils/swipeableItem";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from "../../utils/iconsList";
+import { formatMoney } from "../../utils/numberUtils";
 
 const CategoriesDetails= () => {
 
@@ -127,7 +128,7 @@ const CategoriesDetails= () => {
             <View style={[globalStyles.row, globalStyles.block]}>
               <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
                 <Text style={globalStyles.text}>Spent</Text>
-                <Text style={globalStyles.h3}>${expenses}</Text>
+                <Text style={globalStyles.h3}>${formatMoney(expenses.toLocaleString())}</Text>
               </View>
               <View style={[ globalStyles.column, globalStyles.centered, {alignItems: 'flex-end'} ]}>
                 <Text style={globalStyles.h3}>-</Text>
@@ -148,16 +149,18 @@ const CategoriesDetails= () => {
               </View>
               <View style={[globalStyles.row, globalStyles.block]}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                  <Text style={globalStyles.h3}>-${expenses}</Text>
+                  <Text style={globalStyles.h3}>-${formatMoney(expenses.toLocaleString())}</Text>
                   <Text style={globalStyles.text}>Spent</Text>
                 </View>
-                <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
-                  {-expenses + income >= 0 ? 
-                      (<Text style={globalStyles.h3}>{category.amount}</Text>) :
-                      <Text style={globalStyles.h3}>${category.amount - expenses + income}</Text>
+                {category.amount &&
+                  <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
+                    {-expenses + income >= 0 ? 
+                        (<Text style={globalStyles.h3}>${formatMoney(category.amount.toLocaleString())}</Text>) :
+                        <Text style={globalStyles.h3}>-${formatMoney(category.amount.toLocaleString())}</Text>
                   }
-                  <Text style={globalStyles.text}>Balance</Text>
-                </View>
+                  <Text style={globalStyles.text}>Initial value</Text>
+                  </View>
+              }
               </View>
             </View>
           )}
@@ -176,7 +179,8 @@ const CategoriesDetails= () => {
                   <View style={[ globalStyles.column, { flex: 4 }]}>
                     {transaction.notes ? 
                       <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
+                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>
+                    }
                     <View style={globalStyles.row}>
                       <Text>{transaction.date}</Text>
                       <Text> {transaction.time}</Text>
@@ -184,8 +188,8 @@ const CategoriesDetails= () => {
                   </View>
                   <View style={[ globalStyles.column, { flex: 2 } ]}>
                     {transaction.transactionType === -1 ?
-                      <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
-                      <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                      <Text style={globalStyles.expense}>-${formatMoney(transaction.amount.toLocaleString())}</Text> :
+                      <Text style={globalStyles.income}>+${formatMoney(transaction.amount.toLocaleString())}</Text>
                     }
                   </View>
                 </View>

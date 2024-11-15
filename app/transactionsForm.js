@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { processMoneyValue } from '../utils/numberUtils';
+import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import Modal from "react-native-modal";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../utils/iconsList';
@@ -184,14 +184,14 @@ const TransactionsForm = ({}) => {
 
       <View style={globalStyles.block}>
         <TouchableOpacity onPress={focusValue}>
-          <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + amount.toString()}</Text>
+          <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + formatMoney(amount.toString())}</Text>
         </TouchableOpacity>
         <TextInput
           style={globalStyles.inputFieldBInvisible}
           ref={valueRef}
           autoFocus={true}
           keyboardType="numeric"
-          maxLength={12}
+          maxLength={18}
           placeholder="$0.00"
           value={"$" + amount.toString()}
           onChangeText={(text) => setAmount(processMoneyValue(text))}

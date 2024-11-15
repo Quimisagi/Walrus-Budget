@@ -8,6 +8,7 @@ import { getData, storeData } from "../../utils/storage";
 import SwipeableItem from '../../utils/swipeableItem';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../../utils/iconsList';
+import { formatMoney } from '../../utils/numberUtils';
 
 const TransactionList = () => {
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
@@ -92,8 +93,8 @@ const TransactionList = () => {
                     <View style={globalStyles.row}>
                       <View style={[ globalStyles.row, styles.prueba ]}>
                         {transaction.transactionType === -1 ? 
-                          <Text style={globalStyles.expense}>-${transaction.amount}</Text> :
-                          <Text style={globalStyles.income}>+${transaction.amount}</Text>
+                          <Text style={globalStyles.expense}>-${formatMoney(transaction.amount.toLocaleString())}</Text> :
+                          <Text style={globalStyles.income}>+${formatMoney(transaction.amount.toLocaleString())}</Text>
                         }
                       </View>
                     </View>

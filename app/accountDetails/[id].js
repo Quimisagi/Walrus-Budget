@@ -11,6 +11,7 @@ import { calculatePercentage, calculateIncome, calculateExpenses } from "../../u
 import { storeData } from "../../utils/storage"; 
 import Toast from 'react-native-toast-message';
 import SwipeableItem from "../../utils/swipeableItem";
+import { formatMoney } from "../../utils/numberUtils";
 
 const AccountDetails = () => {
   
@@ -128,7 +129,7 @@ const AccountDetails = () => {
       <View style={[globalStyles.row, globalStyles.block]}>
         <View style={[globalStyles.centered, {flex: 1}]}>
           <Text style={globalStyles.h3}>Balance</Text>
-          <Text style={globalStyles.balance}>${account.initialValue + (expenses * -1) + income}</Text>
+          <Text style={globalStyles.balance}>${formatMoney((account.initialValue + (expenses * -1) + income).toLocaleString())}</Text>
         </View>
       </View>
       <View style={[globalStyles.row, globalStyles.block]}>
@@ -165,9 +166,9 @@ const AccountDetails = () => {
                 </View>
                 <View style={[{ flex: 3 }, globalStyles.centered ]}>
                   {transaction.transactionType === -1 ? (   
-                  <Text style={globalStyles.expense}>${transaction.amount}</Text>
+                  <Text style={globalStyles.expense}>${formatMoney(transaction.amount.toLocaleString())}</Text>
                   ) : (
-                  <Text style={globalStyles.income}>${transaction.amount}</Text>
+                  <Text style={globalStyles.income}>${formatMoney(transaction.amount.toLocaleString())}</Text>
                   )}
                 </View>
               </View>
