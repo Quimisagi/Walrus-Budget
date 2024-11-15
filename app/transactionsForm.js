@@ -158,6 +158,7 @@ const TransactionsForm = ({}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: editMode ? "Edit transaction" : "New transaction",
       headerRight: () => (
         <TouchableOpacity
           style={{ margin: 15 }}
@@ -183,18 +184,18 @@ const TransactionsForm = ({}) => {
 
       <View style={globalStyles.block}>
         <TouchableOpacity onPress={focusValue}>
-        <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + amount.toString()}</Text>
+          <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + amount.toString()}</Text>
         </TouchableOpacity>
-      <TextInput
-        style={globalStyles.inputFieldBInvisible}
-        ref={valueRef}
-        autoFocus={true}
-        keyboardType="numeric"
-        maxLength={12}
-        placeholder="$0.00"
-        value={"$" + amount.toString()}
-        onChangeText={(text) => setAmount(processMoneyValue(text))}
-      />
+        <TextInput
+          style={globalStyles.inputFieldBInvisible}
+          ref={valueRef}
+          autoFocus={true}
+          keyboardType="numeric"
+          maxLength={12}
+          placeholder="$0.00"
+          value={"$" + amount.toString()}
+          onChangeText={(text) => setAmount(processMoneyValue(text))}
+        />
       </View>
 
       <View style={globalStyles.block}>

@@ -43,7 +43,7 @@ export default () => {
               }}
             >
               <LinearGradient
-                colors={['#BBE0F2', '#00A5E0']} // Gradient colors
+                colors={['#A9D8EF', '#00A5E0']} // Gradient colors
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{

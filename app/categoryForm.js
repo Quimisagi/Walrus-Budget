@@ -110,6 +110,7 @@ const CategoryForm = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: editMode ? 'Edit category' : 'New category',
       headerRight: () => (
         <TouchableOpacity
           style={{ margin: 15 }}

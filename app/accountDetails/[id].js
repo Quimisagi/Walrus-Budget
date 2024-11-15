@@ -149,9 +149,9 @@ const AccountDetails = () => {
               <View style={globalStyles.row}>
                 <View style={[globalStyles.centered, { flex: 2 } ]}>
                   {transaction.transactionType === -1 ? (
-                  <Feather style={styles.totalExpenses} name="arrow-down-right" size={30} color={'red'}/>
+                  <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
                   ) : (
-                  <Feather style={styles.totalIncome} name="arrow-up-right" size={30} color={'green'}/>
+                  <Feather style={styles.totalIncome} name="arrow-down-right" size={30} color={'green'}/>
                   )}
                 </View>
                 <View style={[ globalStyles.column, { flex: 6 }]}>
