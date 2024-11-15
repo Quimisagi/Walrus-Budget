@@ -135,11 +135,11 @@ const AccountDetails = () => {
       <View style={[globalStyles.row, globalStyles.block]}>
         <View style={[{flex: 1}, globalStyles.centered]}>
           <Text style={globalStyles.h3}>Expenses</Text>
-          <Text style={globalStyles.expense}>$-{expenses}</Text>
+          <Text style={globalStyles.expense}>-${formatMoney(expenses.toLocaleString())}</Text>
         </View>
         <View style={[{flex: 1}, globalStyles.centered]}>
           <Text style={globalStyles.h3}>Income</Text>
-          <Text style={globalStyles.income}>${income}</Text>
+          <Text style={globalStyles.income}>${formatMoney(income.toLocaleString())}</Text>
         </View>
       </View>
       <ScrollView style={globalStyles.block}>

@@ -116,11 +116,11 @@ const CategoriesDetails= () => {
         <View>
           <View style={globalStyles.row}>
             <View style={[ globalStyles.column, {flex: 1} ]}>
-              <View style={[ globalStyles.categoryIcon, globalStyles.centered, {backgroundColor: category.color} ]}>
+              <View style={[styles.categoryIcon, globalStyles.centered, {backgroundColor: category.color} ]}>
                 <FontAwesome6 name={category.icon} size={25} color={() => getContrastColor(category.color)} />
               </View>
             </View>
-            <View style={[ globalStyles.column, { flex: 4} ]}>
+            <View style={[ globalStyles.column, { flex: 4, justifyContent:'center'}]}>
               <Text style={globalStyles.h2}>{category.name}</Text>
             </View>
           </View>
@@ -219,6 +219,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 10,
   },
+    categoryIcon: {
+    width: 50,
+    height: 50,
+    marginLeft: 5,
+    marginRight: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
 });
 
 
