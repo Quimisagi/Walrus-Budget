@@ -1,10 +1,22 @@
-# Expo Router Project
+# 🦭 Walrus Budget
 
-This is a project built using [Expo Router](https://docs.expo.dev/routing/), which provides an easy way to handle routing in an Expo-based application.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f23be802-990f-4493-a8e4-7ce99fbfa225" />
+</p>
+
+Walrus Budget is a mobile app designed to help you track your budget and expenses effortlessly. You can create custom categories, allocate specific budgets to each, and record transactions as they happen. Stay on top of your finances by easily seeing how much money you have left to spend in each category. Take control of your spending and make informed financial decisions with Walrus Budget!Walrus Budget is a mobile app designed to help you track your budget and expenses effortlessly. You can create custom categories, allocate specific budgets to each, and record transactions as they happen. 
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d0c229b7-7d9e-498d-a456-31157c6149ce" width="200" />
+  <img src="https://github.com/user-attachments/assets/55953f6b-1849-4424-bfe5-745bf379a7d8" width="200" />
+</p>
+
+Stay on top of your finances by easily seeing how much money you have left to spend in each category. Take control of your spending and make informed financial decisions with Walrus Budget!
+
 
 ## Getting Started
 
-To get started with the project, follow the steps below:
+To run the project locally, follow the next steps:
 
 ### Prerequisites
 
@@ -17,8 +29,8 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/Quimisagi/Walrus-Budget.git
+   cd WalrusBudget
    ```
 
 2. Install the dependencies:
@@ -31,34 +43,7 @@ Make sure you have the following installed:
 To run the app in development mode:
 
 ```bash
-expo start
+npx expo start
 ```
 
 This will open a development server in your browser. You can scan the QR code with the Expo Go app on your mobile device to view the app.
-
-### Build for Production
-
-To build the app for production, run:
-
-```bash
-expo build:android   # For Android
-expo build:ios       # For iOS
-```
-
-### Project Structure
-
-- `app/` - Contains the routes and pages for the Expo Router.
-- `assets/` - Contains images and other static assets used in the app.
-- `package.json` - Project configuration and dependencies.
-
-### Dependencies
-
-- `expo-router`: Provides routing functionality for Expo apps.
-
-## Contributing
-
-If you wish to contribute to this project, please fork the repository and submit a pull request. Make sure to include tests for new features or bug fixes.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
