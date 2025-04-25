@@ -10,6 +10,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { Feather } from '@expo/vector-icons';
 import { getContrastColor } from '../../utils/iconsList';
 import { formatMoney } from '../../utils/numberUtils';
+import { showCurrency } from '../../utils/currency';
 
 const TransactionList = () => {
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
@@ -20,7 +21,8 @@ const TransactionList = () => {
     setTransactions,
     activeBudgetTransactions,
     activeBudgetCategories,
-    accounts
+    accounts,
+    currency,
   } = useGlobal();
 
   const toEditTransaction = (transaction) => {
@@ -108,9 +110,9 @@ const TransactionList = () => {
                     <View style={globalStyles.row}>
                       <View style={[globalStyles.row, styles.prueba]}>
                         {transaction.transactionType === -1 ? (
-                          <Text style={globalStyles.expense}>-${formatMoney(transaction.amount.toLocaleString())}</Text>
+                          <Text style={globalStyles.expense}>-{showCurrency(currency)}{formatMoney(transaction.amount.toLocaleString())}</Text>
                         ) : (
-                          <Text style={globalStyles.income}>+${formatMoney(transaction.amount.toLocaleString())}</Text>
+                          <Text style={globalStyles.income}>+{showCurrency(currency)}{formatMoney(transaction.amount.toLocaleString())}</Text>
                         )}
                       </View>
                     </View>

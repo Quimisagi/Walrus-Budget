@@ -10,6 +10,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import {MaterialCommunityIcons } from '@expo/vector-icons';
+import {showCurrency} from '../utils/currency';
 
 
 const AccountType = {
@@ -29,7 +30,7 @@ const AccountForm = () => {
   const budgetRef = useRef(null);
 
 
-  const { accounts, setAccounts } = useGlobal();
+  const { accounts, setAccounts, currency } = useGlobal();
 
   const processNumber = (text) => {
     if (text[0] === "$") {
@@ -88,7 +89,7 @@ const AccountForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(initialValue.toString())}</Text>
+        <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(initialValue.toString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}

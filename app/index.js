@@ -26,6 +26,7 @@ export default function Home() {
     setCategories,
     setActiveBudgetTransactions,
     setActiveBudgetCategories,
+    setCurrency,
   } = useGlobal();
 
 
@@ -33,6 +34,10 @@ export default function Home() {
     navigation.setOptions({headerShown: false});
     async function prepare() {
       try {
+        await getData('currency')
+          .then(currency => {
+            setCurrency(currency);
+          });
         await getData('activeBudget')
           .then(activeBudget => {
             if(activeBudget) setActiveBudget(JSON.parse(activeBudget));

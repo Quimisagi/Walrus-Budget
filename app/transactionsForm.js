@@ -15,6 +15,7 @@ import Modal from "react-native-modal";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../utils/iconsList';
 import Toast from 'react-native-toast-message';
+import { showCurrency } from '../utils/currency';
 
 
 
@@ -43,6 +44,7 @@ const TransactionsForm = ({}) => {
     setTransactions,
     accounts,
     activeBudgetCategories,
+    currency
   } = useGlobal();
   const { editMode, transactionId, categoryId, accountId } = params;
   const valueRef = useRef(null)
@@ -226,7 +228,9 @@ const TransactionsForm = ({}) => {
 
       <View style={globalStyles.block}>
         <TouchableOpacity onPress={focusValue}>
-          <Text style={globalStyles.inputFieldB}>{(selection === -1 ? "-$" : "+$") + formatMoney(amount.toString())}</Text>
+          <Text style={globalStyles.inputFieldB}>
+            {(selection === -1 ? "-" : "+") + showCurrency(currency) + formatMoney(amount.toString())}
+          </Text>
         </TouchableOpacity>
         <TextInput
           style={globalStyles.inputFieldBInvisible}

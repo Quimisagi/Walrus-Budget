@@ -9,13 +9,14 @@ import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import SwipeableItem from '../../utils/swipeableItem';
 import { formatMoney } from '../../utils/numberUtils';
+import { showCurrency } from '../../utils/currency';
 
 const AccountsList = () => {
 
   const router = useRouter();
   const navigation = useNavigation();
 
-  const { accounts, setAccounts, transactions } = useGlobal();
+  const { accounts, setAccounts, transactions, currency } = useGlobal();
 
   const [updatedAccounts, setUpdatedAccounts] = useState([]);
 
@@ -88,7 +89,7 @@ const AccountsList = () => {
                         <Text style={globalStyles.h2}>{account.name}</Text>
                       </View>
                       <View style={{flex: 2}}>
-                        <Text style={globalStyles.amount}>${formatMoney(account.balance.toLocaleString())}</Text>
+                        <Text style={globalStyles.amount}>{showCurrency(currency)}{formatMoney(account.balance.toLocaleString())}</Text>
                       </View>
                     </View>
                   </View>

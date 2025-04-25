@@ -10,6 +10,7 @@ import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
 import { calculateExpenses, calculateIncome, formatMoney, calculateBudgetedInCategories } from '../../utils/numberUtils';
+import { showCurrency } from '../../utils/currency';
 
 
 import * as Font from 'expo-font';
@@ -33,6 +34,7 @@ export default function Home() {
     setActiveBudgetCategories,
     isSwiping,
     setIsSwiping,
+    currency,
   } = useGlobal();
 
   const [expenses, setExpenses] = useState(0);
@@ -54,6 +56,7 @@ export default function Home() {
     router.push({ pathname: '/categoryForm', params: { categoryId: category.id, activeBudgetId: activeBudgetId } });
     setModalVisible(false);
   }
+
   useEffect(() => {
     navigation.setOptions({headerShown: false });
   }, []);
@@ -126,15 +129,15 @@ export default function Home() {
                         <View style={{ flex: 4 }} />
                         <View style={[globalStyles.row, globalStyles.centered] }>
                           <Feather style={styles.totalIncome} name="arrow-down-left" />
-                          <Text style={styles.totalIncome}>${formatMoney(income.toLocaleString())}</Text>
+                          <Text style={styles.totalIncome}>{showCurrency(currency)}{formatMoney(income.toLocaleString())}</Text>
                         </View>
                         <View style={{ flex: 4 }} />
                       </View>
 
 
                       {/* Balance amount */}
-                      <View style={globalStyles.row}>
-                        <Text style={globalStyles.balance}>${formatMoney(balance.toLocaleString())}</Text>
+                      <View style={globalStyles.row}> 
+                        <Text style={globalStyles.balance}>{showCurrency(currency)}{formatMoney(balance.toLocaleString())}</Text>
                       </View>
 
 
@@ -143,7 +146,7 @@ export default function Home() {
                         <View style={{ flex: 4 }} />
                         <View style={[ globalStyles.row, globalStyles.centered ] }>
                           <Feather style={styles.totalExpenses} name="arrow-up-right" />
-                          <Text style={styles.totalExpenses}>${formatMoney(expenses.toLocaleString())}</Text>
+                          <Text style={styles.totalExpenses}>{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
                         </View>
                         <View style={{ flex: 4 }} />
                       </View>
@@ -155,7 +158,7 @@ export default function Home() {
                         <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Initial Value</Text>
                       </View>
                       <View style={globalStyles.row}>
-                        <Text style={styles.value}>${formatMoney(initialValue.toLocaleString())}</Text>
+                        <Text style={styles.value}>{showCurrency(currency)}{formatMoney(initialValue.toLocaleString())}</Text>
                       </View>
                     </View>
                     <View style={[ globalStyles.column, globalStyles.centered ]}>
@@ -164,7 +167,7 @@ export default function Home() {
                       </View>
 
                       <View style={globalStyles.row}>
-                        <Text style={styles.value}>${formatMoney(budgetedInCategories.toLocaleString())}</Text>
+                        <Text style={styles.value}>{showCurrency(currency)}{formatMoney(budgetedInCategories.toLocaleString())}</Text>
                       </View>
                     </View>
                   </View>
