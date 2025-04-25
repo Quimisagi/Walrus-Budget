@@ -139,7 +139,7 @@ const CategoriesDetails= () => {
           : (
             <View style={globalStyles.block}>
               <View style={globalStyles.centered}>
-                <Text style={globalStyles.text}>{percentage}% remaining</Text>
+                <Text style={globalStyles.text}>{percentage}% left</Text>
               </View>
               <View style={styles.progressBar}> 
                 {percentage >= 100 ? 
@@ -149,12 +149,12 @@ const CategoriesDetails= () => {
               </View>
               <View style={[globalStyles.row, globalStyles.block]}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                  <Text style={globalStyles.h3}>-${formatMoney(expenses.toLocaleString())}</Text>
+                  <Text style={[ globalStyles.h3, {color: 'red'} ]}>-${formatMoney(expenses.toLocaleString())}</Text>
                   <Text style={globalStyles.text}>Spent</Text>
                 </View>
                 {category.amount &&
                   <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
-                    {-expenses + income >= 0 ? 
+                    {expenses + income >= 0 ? 
                         (<Text style={globalStyles.h3}>${formatMoney(category.amount.toLocaleString())}</Text>) :
                         <Text style={globalStyles.h3}>-${formatMoney(category.amount.toLocaleString())}</Text>
                   }

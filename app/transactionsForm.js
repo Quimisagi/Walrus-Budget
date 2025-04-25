@@ -143,8 +143,6 @@ const TransactionsForm = ({}) => {
     setNotes('');
     setDate(currentDate.toISOString().split('T')[0]);
     setTime(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
-    setCategory({});
-    setAccount({});
   }
 
   const sendData = () => {
