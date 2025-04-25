@@ -37,7 +37,7 @@ const CategoryModal = ({ isVisible, onClose, setCategory }) => {
                     <TouchableOpacity onPress={() => setCategory(category)}>
                       <View style={globalStyles.centered}>
                         {category.icon ? (
-                          <View style={[globalStyles.categoryIcon, { backgroundColor: category.color }]}>
+                          <View style={[styles.categoryIcon, { backgroundColor: category.color }]}>
                             <FontAwesome6 name={category.icon} size={25} color={getContrastColor(category.color)} />
                           </View>
                         ) : null}
@@ -62,9 +62,17 @@ const styles = StyleSheet.create({
   categoryButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 5,
-    margin: 5,
   },
+  categoryIcon: {
+    width: 80,
+    height: 40,
+    marginLeft: 5,
+    marginRight: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   row: {
     flexDirection: 'row',
     justifyContent: 'center', // Center buttons in the row

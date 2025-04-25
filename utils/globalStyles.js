@@ -61,7 +61,7 @@ const globalStyles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   categoryIcon: {
-    width: 40,
+    width: 80,
     height: 40,
     marginLeft: 5,
     marginRight: 10,
