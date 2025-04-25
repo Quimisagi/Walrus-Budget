@@ -14,6 +14,7 @@ import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import Modal from "react-native-modal";
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../utils/iconsList';
+import Toast from 'react-native-toast-message';
 
 
 
@@ -89,20 +90,61 @@ const TransactionsForm = ({}) => {
   };
 
   const createTransaction = async (newTransaction) => {
-    const transactionsTemp = [...transactions];
-    transactionsTemp.push(newTransaction);
-    await storeData('transactions', JSON.stringify(transactionsTemp));
-    setTransactions(transactionsTemp);
-    router.back();
-  }
+    try {
+      const transactionsTemp = [...transactions];
+      transactionsTemp.push(newTransaction);
+      await storeData('transactions', JSON.stringify(transactionsTemp));
+      setTransactions(transactionsTemp);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Transaction created successfully',
+      });
+    } catch (error) {
+      console.error('Error creating transaction:', error);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Failed to create transaction',
+        text2: error.message,
+      });
+    }
+  };
 
   const updateTransaction = async (newTransaction) => {
-    let transactionIndex = transactions.findIndex(transaction => transaction.id === transactionId)
-    const arrayTemp = [...transactions];
-    arrayTemp[transactionIndex] = newTransaction;
-    await storeData('transactions', JSON.stringify(arrayTemp));
-    setTransactions(arrayTemp);
-    router.back();
+    try {
+      const transactionIndex = transactions.findIndex(transaction => transaction.id === transactionId);
+      if (transactionIndex === -1) {
+        throw new Error('Transaction not found');
+      }
+      const arrayTemp = [...transactions];
+      arrayTemp[transactionIndex] = newTransaction;
+      await storeData('transactions', JSON.stringify(arrayTemp));
+      setTransactions(arrayTemp);
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Transaction updated',
+      });
+      router.back();
+    } catch (error) {
+      console.error('Error updating transaction:', error);
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Failed to update transaction',
+        text2: error.message,
+      });
+    }
+  };
+
+  const emptyForm = () => {
+    setAmount(0);
+    setNotes('');
+    setDate(currentDate.toISOString().split('T')[0]);
+    setTime(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
+    setCategory({});
+    setAccount({});
   }
 
   const sendData = () => {
@@ -122,6 +164,7 @@ const TransactionsForm = ({}) => {
       return;
     }
     else createTransaction(newTransaction);
+    emptyForm();
   }
 
   const focusValue = () => {
@@ -163,8 +206,9 @@ const TransactionsForm = ({}) => {
         <TouchableOpacity
           style={{ margin: 15 }}
           onPress={sendData}
+          disabled={amount <= 0 }
         >
-          <AntDesign name="check" size={24} color="black" />
+          <AntDesign name="check" size={24} color= {amount <= 0 ? "gray" : "black"}/>
         </TouchableOpacity>
       ),
 
@@ -289,22 +333,22 @@ const TransactionsForm = ({}) => {
         <View style={globalStyles.modal}>
           <Text style={globalStyles.h2}>Select an account</Text>
           <View style={globalStyles.block}>
-            {accounts.map(account => (
-              <View key={account.id} style={styles.accountButton}>
-                <Pressable onPress={() => { setAccount(account); setAccountModalVisible(false)}}>
-                  <View style={globalStyles.row}>
-                    <View style={{flow: 3}}>
-                      <View>
-                        <Text style={globalStyles.h3}>{account.name}</Text>
-                      </View>
+            {accounts.length > 0 ? (
+              accounts.map(account => (
+                <View key={account.id} style={styles.accountButton}>
+                  <Pressable onPress={() => { setAccount(account); setAccountModalVisible(false); }}>
+                    <View style={[globalStyles.row, styles.accountRow]}>
+                      <Text style={[globalStyles.h3, styles.accountName]}>{account.name}</Text>
+                      <Text style={[globalStyles.h3, styles.accountValue]}> - (${account.initialValue})</Text>
                     </View>
-                    <View style={{flow: 1}}>
-                      <Text style={globalStyles.h3}> - (${account.initialValue})</Text>
-                    </View>
-                  </View>
-                </Pressable>
+                  </Pressable>
+                </View>
+              ))
+            ) : (
+              <View style={styles.noAccountsMessage}>
+                <Text style={globalStyles.h3}>No accounts registered</Text>
               </View>
-            ))}
+            )}
           </View>
         </View>
       </Modal>
