@@ -7,6 +7,7 @@ import { useGlobal } from '../../utils/globalProvider';
 import { getData, storeData } from "../../utils/storage"; 
 import SwipeableItem from '../../utils/swipeableItem';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { Feather } from '@expo/vector-icons';
 import { getContrastColor } from '../../utils/iconsList';
 import { formatMoney } from '../../utils/numberUtils';
 
@@ -54,53 +55,69 @@ const TransactionList = () => {
         {transactionsWithCategories.map((transaction, index) => (
           <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
             <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
+
               <View style={globalStyles.transactionContainer}>
                 <View style={globalStyles.row}>
-                  <View style={[ globalStyles.column, { flex: 2} ]}>
-                    {transaction.category ? 
-                        (
-                          <View style={[globalStyles.categoryIcon, {backgroundColor: transaction.category.color }]}>
-                            <FontAwesome6 name={transaction.category.icon} size={20} color={getContrastColor(transaction.category.color)} />
+                  {/* Column for icon */}
+                  <View style={[globalStyles.column, { flex: 2 }]}>
+                    {transaction.category ? (
+                      <View style={[globalStyles.categoryIcon, { backgroundColor: transaction.category.color }]}>
+                        <FontAwesome6
+                          name={transaction.category.icon}
+                          size={20}
+                          color={getContrastColor(transaction.category.color)}
+                        />
+                      </View>
+                    ) : (
+                      <View style={[globalStyles.categoryIcon, {justifyContent: 'center', alignItems: 'center' }]}>
+                        {transaction.transactionType === -1 ? (
+                          <Feather name="arrow-up-right" size={40} color="red" />
+                        ) : (
+                          <Feather name="arrow-down-left" size={40} color="green" />
+                        )}
+                      </View>
+                    )}
+                  </View> 
 
-                          </View>
-                        )
-                        : (<View style={[globalStyles.categoryIcon, {backgroundColor: 'gray' }]}/> )}
+                  {/* Column for details */}
+                  <View style={[globalStyles.column, { flex: 8 }]}>
+                    <View style={globalStyles.row}>
+                      {transaction.category ? (
+                        <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text>
+                      ) : null}
+                      {transaction.account ? (
+                        <Text style={globalStyles.secondaryText}>・{transaction.account.name}</Text>
+                      ) : null}
+                    </View>
+                    {transaction.notes ? (
+                      <Text style={globalStyles.h3}>{transaction.notes}</Text>
+                    ) : (
+                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>
+                    )}
+                    <View style={globalStyles.row}>
+                      <Text>{transaction.date}</Text>
+                      <Text>{transaction.time}</Text>
+                    </View>
+                  </View>
 
-                  </View>
-                  <View style={[ globalStyles.column, { flex: 8 } ]}>
-                    <View style={globalStyles.row}>
-                      {transaction.category ? 
-                        <Text style={globalStyles.secondaryText}>{transaction.category.name}</Text> : 
-                        <Text style={globalStyles.secondaryText}>(No category)</Text>
-                      }
-                      {transaction.account ?
-                          (<Text style={globalStyles.secondaryText}>・{transaction.account.name}</Text>) 
-                          : null
-                      }
-                    </View>
-                    {transaction.notes ? 
-                      <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>}
-                    <View style={globalStyles.row}>
-                      <Text>{transaction.date} </Text>
-                      <Text> {transaction.time}</Text>
-                    </View>
-                  </View>
-                  <View style={[ globalStyles.column, { flex: 4 } ]}>
+                  {/* Column for amount */}
+                  <View style={[globalStyles.column, { flex: 4 }]}>
                     <View style={globalStyles.row}>
                       <Text style={globalStyles.secondaryText}></Text>
                     </View>
                     <View style={globalStyles.row}>
-                      <View style={[ globalStyles.row, styles.prueba ]}>
-                        {transaction.transactionType === -1 ? 
-                          <Text style={globalStyles.expense}>-${formatMoney(transaction.amount.toLocaleString())}</Text> :
+                      <View style={[globalStyles.row, styles.prueba]}>
+                        {transaction.transactionType === -1 ? (
+                          <Text style={globalStyles.expense}>-${formatMoney(transaction.amount.toLocaleString())}</Text>
+                        ) : (
                           <Text style={globalStyles.income}>+${formatMoney(transaction.amount.toLocaleString())}</Text>
-                        }
+                        )}
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
+
             </TouchableOpacity>
           </SwipeableItem>
         ))}
