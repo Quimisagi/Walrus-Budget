@@ -9,7 +9,7 @@ import CategoriesList from '../components/categoriesList';
 import TransactionList from '../components/transactionsList';
 import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
-import { calculateExpenses, calculateIncome, formatMoney } from '../../utils/numberUtils';
+import { calculateExpenses, calculateIncome, formatMoney, calculateBudgetedInCategories } from '../../utils/numberUtils';
 
 
 import * as Font from 'expo-font';
@@ -38,6 +38,8 @@ export default function Home() {
   const [expenses, setExpenses] = useState(0);
   const [income, setIncome] = useState(0);
   const [balance, setBalance] = useState(0);
+  const [initialValue, setInitialValue] = useState(0);
+  const [budgetedInCategories, setBudgetedInCategories] = useState(0);
 
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -58,6 +60,8 @@ export default function Home() {
 
   useEffect(() => {
     if(activeBudget){
+      setInitialValue(activeBudget.begginingBalance);
+      setBudgetedInCategories(calculateBudgetedInCategories(activeBudgetCategories));
       setExpenses(calculateExpenses(activeBudgetTransactions));
       setIncome(calculateIncome(activeBudgetTransactions));
       setBalance(calculateBalance(activeBudget.begginingBalance, activeBudgetTransactions));
@@ -110,34 +114,58 @@ export default function Home() {
               <View style={styles.homeContent}>
                 <View style={styles.currentBudget}>
                   <View style={globalStyles.row}>
-                    <View style={[ globalStyles.column, globalStyles.centered ]}>
+                    <View style={[globalStyles.column, globalStyles.centered]}>
+
+                      {/* Balance title */}
                       <View style={globalStyles.row}>
-                      <Text style={globalStyles.h3}>Balance</Text>
+                        <Text style={globalStyles.h3}>Balance</Text>
                       </View>
+
+                      {/* Income */}
+                      <View style={[globalStyles.row, globalStyles.centered, { marginBottom: -10, marginTop: 10 }]}>
+                        <View style={{ flex: 4 }} />
+                        <View style={[globalStyles.row, globalStyles.centered] }>
+                          <Feather style={styles.totalIncome} name="arrow-down-left" />
+                          <Text style={styles.totalIncome}>${formatMoney(income.toLocaleString())}</Text>
+                        </View>
+                        <View style={{ flex: 4 }} />
+                      </View>
+
+
+                      {/* Balance amount */}
                       <View style={globalStyles.row}>
-                      <Text style={globalStyles.balance}> ${formatMoney(balance.toLocaleString())}</Text>
+                        <Text style={globalStyles.balance}>${formatMoney(balance.toLocaleString())}</Text>
+                      </View>
+
+
+                      {/* Expenses */}
+                      <View style={[globalStyles.row, globalStyles.centered]}>
+                        <View style={{ flex: 4 }} />
+                        <View style={[ globalStyles.row, globalStyles.centered ] }>
+                          <Feather style={styles.totalExpenses} name="arrow-up-right" />
+                          <Text style={styles.totalExpenses}>${formatMoney(expenses.toLocaleString())}</Text>
+                        </View>
+                        <View style={{ flex: 4 }} />
                       </View>
                     </View>
                   </View>
                   <View style={[globalStyles.row, styles.homeContent]}>
                     <View style={[ globalStyles.column, globalStyles.centered ]}>
                       <View style={globalStyles.row}>
-                      <Text style={globalStyles.h3}>Expenses</Text>
+                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Initial Value</Text>
                       </View>
                       <View style={globalStyles.row}>
-                      <Text style={styles.totalExpenses}>${formatMoney(expenses.toLocaleString())}</Text>
+                        <Text style={styles.value}>${formatMoney(initialValue.toLocaleString())}</Text>
                       </View>
-                    <Feather style={styles.totalExpenses} name="arrow-up-right"/>
                     </View>
                     <View style={[ globalStyles.column, globalStyles.centered ]}>
                       <View style={globalStyles.row}>
-                      <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Income</Text>
+                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Budgeted</Text>
                       </View>
 
                       <View style={globalStyles.row}>
-                      <Text style={styles.totalIncome}>${formatMoney(income.toLocaleString())}</Text>
+                        <Text style={styles.value}>${formatMoney(budgetedInCategories.toLocaleString())}</Text>
                       </View>
-                    <Feather style={styles.totalIncome} name="arrow-down-left"/>
                     </View>
                   </View>
                 </View>
@@ -196,11 +224,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'PlusJakarta',
     color: 'red',
+    textAlign: 'center',
   },
   totalIncome: {
     fontSize: 18,
     fontFamily: 'PlusJakarta',
     color: 'green',
+  },
+  value: {
+    fontSize: 18,
+    fontFamily: 'PlusJakarta',
   },
   budgetSelectMenu: {
     borderRadius: 5,

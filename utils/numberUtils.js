@@ -59,6 +59,15 @@ export const setupCategories = (categories, transactions) => {
   return categories;
 }
 
+export const calculateBudgetedInCategories = (categories) => {
+  if(!categories) return;
+  let totalBudgeted = 0;
+  categories.map(category => {
+    totalBudgeted += category.amount;
+  });
+  return totalBudgeted;
+}
+
 export const formatMoney = (text) => {
   // Remove any non-numeric characters except for the decimal point
   const cleanedText = text.replace(/[^0-9.]/g, '');
