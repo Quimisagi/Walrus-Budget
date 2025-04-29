@@ -73,9 +73,9 @@ const TransactionList = () => {
                     ) : (
                       <View style={[globalStyles.categoryIcon, {justifyContent: 'center', alignItems: 'center' }]}>
                         {transaction.transactionType === -1 ? (
-                          <Feather name="arrow-up-right" size={40} color="red" />
+                          <Feather name="arrow-up-right" size={40} color="#FB5A4B" />
                         ) : (
-                          <Feather name="arrow-down-left" size={40} color="green" />
+                          <Feather name="arrow-down-left" size={40} color="#1C9B4F" />
                         )}
                       </View>
                     )}
@@ -97,8 +97,10 @@ const TransactionList = () => {
                       <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>
                     )}
                     <View style={globalStyles.row}>
-                      <Text>{transaction.date}</Text>
-                      <Text>{transaction.time}</Text>
+                      <Feather name="calendar" size={12} color="#9095a0" style={{ marginRight: 5, marginTop: 3 }} />
+                      <Text style={styles.date}>{transaction.date}</Text>
+                      <Feather name="clock" size={12} color="#9095a0" style={{ marginHorizontal: 5, marginTop: 3 }} />
+                      <Text style={styles.date}>{transaction.time}</Text>
                     </View>
                   </View>
 
@@ -141,6 +143,11 @@ const styles = StyleSheet.create({
   },
   transactionsContainer: {
     padding: 10,
+  },
+  date: {
+    fontSize: 12,
+    fontFamily: 'PlusJakarta',
+    color: '#9095a0',
   },
 
 });

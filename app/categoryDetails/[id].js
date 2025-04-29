@@ -150,7 +150,7 @@ const CategoriesDetails= () => {
               </View>
               <View style={[globalStyles.row, globalStyles.block]}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                  <Text style={[ globalStyles.h3, {color: 'red'} ]}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
+                  <Text style={[ globalStyles.h3, {color: 'tomato'} ]}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
                   <Text style={globalStyles.text}>Spent</Text>
                 </View>
                 {category.amount &&
@@ -175,7 +175,7 @@ const CategoriesDetails= () => {
               <View style={globalStyles.transactionContainer}>
                 <View style={globalStyles.row}>
                   <View style={[ globalStyles.column, { flex: 1 } ]}>
-                    <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'red'}/>
+                    <Feather style={styles.totalExpenses} name="arrow-up-right" size={30} color={'tomato'}/>
                   </View>
                   <View style={[ globalStyles.column, { flex: 4 }]}>
                     {transaction.notes ? 

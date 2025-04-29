@@ -36,7 +36,8 @@ export default function Home() {
       try {
         await getData('currency')
           .then(currency => {
-            setCurrency(currency);
+            if(currency) setCurrency(currency);
+            else setCurrency('USD');
           });
         await getData('activeBudget')
           .then(activeBudget => {

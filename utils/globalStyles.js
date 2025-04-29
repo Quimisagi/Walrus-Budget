@@ -195,12 +195,12 @@ const globalStyles = StyleSheet.create({
     padding: 30,
   },
   expense: {
-    color: 'red',
+    color: '#FB5A4B',
     fontSize: 14,
     fontFamily: 'PlusJakarta',
   },
   income: {
-    color: 'green',
+    color: '#1C9B4F',
     fontSize: 14,
     fontFamily: 'PlusJakarta',
   },
@@ -218,6 +218,18 @@ const globalStyles = StyleSheet.create({
   block: {
     marginTop: 20,
   },
+  mainActionButton: {
+    backgroundColor: '#D6F4FF',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    height: 50,
+  },
+  mainActionButtonText: {
+    marginTop: 4,
+    color: '#00A5E0',
+  },
+
 
 });
 

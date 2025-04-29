@@ -69,7 +69,7 @@ export default function Home() {
       setIncome(calculateIncome(activeBudgetTransactions));
       setBalance(calculateBalance(activeBudget.begginingBalance, activeBudgetTransactions));
     } 
-  }, [activeBudget, budgets, transactions, activeBudgetTransactions]);
+  }, [activeBudget, budgets, transactions, activeBudgetTransactions, activeBudgetCategories]);
 
   useEffect(() => {
     if(activeBudget){
@@ -128,8 +128,8 @@ export default function Home() {
                       <View style={[globalStyles.row, globalStyles.centered, { marginBottom: -10, marginTop: 10 }]}>
                         <View style={{ flex: 4 }} />
                         <View style={[globalStyles.row, globalStyles.centered] }>
-                          <Feather style={styles.totalIncome} name="arrow-down-left" />
-                          <Text style={styles.totalIncome}>{showCurrency(currency)}{formatMoney(income.toLocaleString())}</Text>
+                          <Feather style={[ styles.totalIncome, {paddingTop: 5, marginHorizontal: 5} ]} name="arrow-down-left" />
+                          <Text style={styles.totalIncome}>+{showCurrency(currency)}{formatMoney(income.toLocaleString())}</Text>
                         </View>
                         <View style={{ flex: 4 }} />
                       </View>
@@ -145,24 +145,24 @@ export default function Home() {
                       <View style={[globalStyles.row, globalStyles.centered]}>
                         <View style={{ flex: 4 }} />
                         <View style={[ globalStyles.row, globalStyles.centered ] }>
-                          <Feather style={styles.totalExpenses} name="arrow-up-right" />
-                          <Text style={styles.totalExpenses}>{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
+                          <Feather style={[ styles.totalExpenses, {paddingTop: 5, marginHorizontal: 5} ]} name="arrow-up-right" />
+                          <Text style={styles.totalExpenses}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
                         </View>
                         <View style={{ flex: 4 }} />
                       </View>
                     </View>
                   </View>
                   <View style={[globalStyles.row, styles.homeContent]}>
-                    <View style={[ globalStyles.column, globalStyles.centered ]}>
-                      <View style={globalStyles.row}>
+                    <View style={[ globalStyles.column, globalStyles.centered, styles.circleSection ]}>
+                      <View style={[ globalStyles.row ]}>
                         <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Initial Value</Text>
                       </View>
                       <View style={globalStyles.row}>
                         <Text style={styles.value}>{showCurrency(currency)}{formatMoney(initialValue.toLocaleString())}</Text>
                       </View>
                     </View>
-                    <View style={[ globalStyles.column, globalStyles.centered ]}>
-                      <View style={globalStyles.row}>
+                    <View style={[ globalStyles.column, globalStyles.centered, styles.circleSection ]}>
+                      <View style={[ globalStyles.row]}>
                         <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Budgeted</Text>
                       </View>
 
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
   totalExpenses: {
     fontSize: 18,
     fontFamily: 'PlusJakarta',
-    color: 'red',
+    color: '#FB5A4B',
     textAlign: 'center',
   },
   totalIncome: {
     fontSize: 18,
     fontFamily: 'PlusJakarta',
-    color: 'green',
+    color: '#1C9B4F',
   },
   value: {
     fontSize: 18,
@@ -251,7 +251,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end', // Pushes content to the bottom
   },
-  currentBudget: {
+  circleSection: {
+    borderRadius: 100,
+    width: 80,
+    height: 80,
+    backgroundColor: '#E7E7E7',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
 });

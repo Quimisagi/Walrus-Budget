@@ -83,24 +83,16 @@ export const colors = [
   "#2F2A2A",
   "#800000", // Maroon
   "#DC143C", // Crimson
-  "#FF4500", // Orange Red
   "#FF5733", // Reddish Orange
   "#FF8C00", // Dark Orange
-  "#FF6347", // Tomato
   "#FFD700", // Gold
   "#ADFF2F", // Green Yellow
   "#32CD32", // Lime Green
   "#073B11",
-  "#2E8B57", // Sea Green
-  "#66FF99", // Pastel Green
   "#00FFFF", // Cyan
-  "#00CED1", // Dark Turquoise
-  "#20B2AA",  // Light Sea Green,
   "#3366FF", // Vivid Blue
   "#FF69B4", // Hot Pink
-  "#9932CC", // Dark Orchid
-  "#8A2BE2", // Blue Violet
-  "#800080", // Purple,
-  "#ADA1A9"
+  "#9661DC", // Medium Purple
+  "#BCBDBF"
 ]
 

@@ -14,6 +14,7 @@ import ColorSelector from './components/colorSelector';
 import IconsModal from './components/iconsModal';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Toast from 'react-native-toast-message';
+import { showCurrency } from '../utils/currency';
 
 const CategoryForm = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const CategoryForm = () => {
   const [amount, setAmount] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { activeBudget, budgets, setBudgets, categories, setCategories } = useGlobal();
+  const { activeBudget, categories, setCategories, currency } = useGlobal();
   const budgetRef = useRef(null);
 
   const [iconColor, setIconColor] = useState('black');
@@ -121,7 +122,7 @@ const CategoryForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(amount.toLocaleString())}</Text>
+        <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(amount.toLocaleString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}

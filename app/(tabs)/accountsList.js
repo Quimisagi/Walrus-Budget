@@ -62,7 +62,7 @@ const AccountsList = () => {
       </View>
       <ScrollView>
         <TouchableOpacity
-          style={[globalStyles.row, styles.addNewAccount]}
+          style={[globalStyles.row, globalStyles.mainActionButton]}
           onPress={() => router.push({ pathname: '/accountForm'})}
         >
           <View style={{flex: 4}}>
@@ -71,7 +71,7 @@ const AccountsList = () => {
             <Ionicons name="add-circle-outline" size={30} color={'#00A5E0'} />
           </View>
           <View style={{flex: 6}}>
-            <Text style={[globalStyles.h3, styles.addNewAccountText]}>Add new account</Text>
+            <Text style={[globalStyles.h3, globalStyles.mainActionButtonText]}>Add new account</Text>
           </View>
           <View style={{flex: 4}}>
           </View>
@@ -111,18 +111,6 @@ const styles = StyleSheet.create({
     padding: 30,
     flex: 1
   },
-  addNewAccount: {
-    backgroundColor: '#D6F4FF',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-    height: 50,
-  },
-  addNewAccountText: {
-    marginTop: 2,
-    color: '#00A5E0',
-  },
-
   button: {
     width: 30,
     height: 30, 

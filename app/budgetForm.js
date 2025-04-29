@@ -10,6 +10,7 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import { displayDateInFormat } from '../utils/dateUtils';
 import MonthPicker from 'react-native-month-year-picker';
+import { showCurrency } from '../utils/currency';
 
 const BudgetForm = () => {
   const navigation = useNavigation();
@@ -20,7 +21,7 @@ const BudgetForm = () => {
   const [name, setName] = useState("");
   const [dateInFormat, setDateInFormat] = useState(displayDateInFormat(date));
   const [showPicker, setShowPicker] = useState(false);
-  const { budgets, setBudgets, setActiveBudget } = useGlobal();
+  const { budgets, setBudgets, setActiveBudget, currency } = useGlobal();
   const { id, editMode } = useLocalSearchParams();
 
   const onChangeDate = (event, selectedDate) => {
@@ -112,7 +113,7 @@ const BudgetForm = () => {
     <View style={globalStyles.container}>
       <Text style={globalStyles.label}>Budgeted value:</Text>
       <TouchableOpacity onPress={focusBudget}>
-        <Text style={globalStyles.inputFieldB}>{'$' + formatMoney(begginingBalance.toLocaleString())}</Text>
+        <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(begginingBalance.toLocaleString())}</Text>
       </TouchableOpacity>
       <TextInput
         style={globalStyles.inputFieldBInvisible}
