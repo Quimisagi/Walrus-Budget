@@ -134,12 +134,10 @@ export default function Home() {
                         <View style={{ flex: 4 }} />
                       </View>
 
-
                       {/* Balance amount */}
                       <View style={globalStyles.row}> 
                         <Text style={globalStyles.balance}>{showCurrency(currency)}{formatMoney(balance.toLocaleString())}</Text>
                       </View>
-
 
                       {/* Expenses */}
                       <View style={[globalStyles.row, globalStyles.centered]}>

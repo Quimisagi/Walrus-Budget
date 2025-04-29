@@ -70,7 +70,7 @@ export const calculateBudgetedInCategories = (categories) => {
 
 export const formatMoney = (text) => {
   // Remove any non-numeric characters except for the decimal point
-  const cleanedText = text.replace(/[^0-9.]/g, '');
+  const cleanedText = text.replace(/(?!^-)[^0-9.]/g, '');
 
   // Convert to a number and format with commas
   const value = parseFloat(cleanedText) || 0;
