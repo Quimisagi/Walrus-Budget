@@ -54,7 +54,7 @@ const TransactionList = () => {
     <View style={styles.transactionsContainer}>
       <Text style={globalStyles.h2}>Transactions</Text>
       <View style={globalStyles.block}>
-        {transactionsWithCategories.map((transaction, index) => (
+        {[...transactionsWithCategories].reverse().map((transaction, index) => (
           <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
             <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
 

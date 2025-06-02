@@ -97,11 +97,11 @@ const TransactionsForm = ({}) => {
       transactionsTemp.push(newTransaction);
       await storeData('transactions', JSON.stringify(transactionsTemp));
       setTransactions(transactionsTemp);
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: 'Transaction created successfully',
-      });
+      // Toast.show({
+      //   type: 'success',
+      //   position: 'top',
+      //   text1: 'Transaction created successfully',
+      // });
     } catch (error) {
       console.error('Error creating transaction:', error);
       Toast.show({
@@ -159,6 +159,11 @@ const TransactionsForm = ({}) => {
       budgetId             : activeBudget.id,
       transactionType      : selection,
     };
+    Toast.show({
+      type: 'info',
+      position: 'top',
+      text1: 'Saving transaction...' + newTransaction.id,
+    }); 
     if(editMode) await updateTransaction(newTransaction);
     else await createTransaction(newTransaction);
     emptyForm();

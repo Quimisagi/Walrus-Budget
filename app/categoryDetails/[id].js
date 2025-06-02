@@ -169,7 +169,7 @@ const CategoriesDetails= () => {
         </View>
       ) : null}
       <View style={globalStyles.block}>
-        {filteredTransactions.map((transaction) => (
+        {[...filteredTransactions].reverse().map((transaction) => (
           <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>
             <TouchableOpacity onPress={() => toEditTransaction(transaction)}>
               <View style={globalStyles.transactionContainer}>
