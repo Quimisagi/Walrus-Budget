@@ -111,7 +111,13 @@ export default function Home() {
                   </View>
                 </TouchableOpacity>
               </View>
-              <View style={{flex: 1}}></View>
+              <View style={{flex: 1}}>
+                {/* <TouchableOpacity */} 
+                {/*   style={{flex : 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center'}} */}
+                {/* > */}
+                {/*   <FontAwesome6 name="copy" size={25} color="black" /> */}
+                {/* </TouchableOpacity> */}
+              </View>
             </View>
             <ScrollView scrollEnabled={!isSwiping} style={{ flex: 1 }}>
               <View style={styles.homeContent}>

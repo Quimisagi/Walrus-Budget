@@ -121,7 +121,7 @@ const TransactionsForm = ({}) => {
       }
       const arrayTemp = [...transactions];
       arrayTemp[transactionIndex] = newTransaction;
-      await storeData('transactions', JSON.stringify(arrayTemp));
+      // await storeData('transactions', JSON.stringify(arrayTemp));
       setTransactions(arrayTemp);
       Toast.show({
         type: 'success',
@@ -147,7 +147,7 @@ const TransactionsForm = ({}) => {
     setTime(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
   }
 
-  const sendData = () => {
+  const sendData = async () => {
     let newTransaction = {
       id                   : uuidv4(),
       amount               : amount,
@@ -159,11 +159,8 @@ const TransactionsForm = ({}) => {
       budgetId             : activeBudget.id,
       transactionType      : selection,
     };
-    if(editMode){
-      updateTransaction(newTransaction);
-      return;
-    }
-    else createTransaction(newTransaction);
+    if(editMode) await updateTransaction(newTransaction);
+    else await createTransaction(newTransaction);
     emptyForm();
   }
 

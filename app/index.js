@@ -41,7 +41,7 @@ export default function Home() {
           });
         await getData('activeBudget')
           .then(activeBudget => {
-            if(activeBudget) setActiveBudget(JSON.parse(activeBudget));
+            if(activeBudget) setActiveBudget(activeBudget);
             else setActiveBudget({});
           })
           .catch(error => {
@@ -50,7 +50,6 @@ export default function Home() {
         await getData('budgets')
           .then(budgets => {
             if(budgets){
-              budgets = JSON.parse(budgets);
               setBudgets(budgets);
               budgetsTemp = budgets;
             }
@@ -64,19 +63,25 @@ export default function Home() {
         await getData('transactions')
           .then(transactions => {
             if(transactions){
-              transactions = JSON.parse(transactions);
-              setTransactions(transactions);
+              try {
+                setTransactions(transactions);
+              } catch (error) {
+                console.log(transactions);
+                console.error("Failed to parse transactions:", error);
+                setTransactions([]);
+              }
             }
             else{
               setTransactions([]);
             }
           })
           .catch(error => {
+            console.error("Failed to get transactions from storage:", error);
+            setTransactions([]);
           });
         await getData('categories')
           .then(categories => {
             if(categories){
-              categories = JSON.parse(categories);
               setCategories(categories);
             }
             else{
@@ -88,7 +93,6 @@ export default function Home() {
         await getData('accounts')
           .then(accounts => {
             if(accounts){
-              accounts = JSON.parse(accounts);
               setAccounts(accounts);
             }
             else{
