@@ -8,7 +8,7 @@ import { storeData } from '../utils/storage';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import { getContrastColor, colors } from '../utils/iconsList';  
 import ColorSelector from './components/colorSelector';
 import IconsModal from './components/iconsModal';
@@ -66,7 +66,7 @@ const CategoryForm = () => {
 
   const sendData = async () => {
     const newCategory = {
-      id       : uuidv4(),
+      id       : uuid.v4(),
       budgetId : activeBudget.id,
       amount   : amount,
       name     : name,

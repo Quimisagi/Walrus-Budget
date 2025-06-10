@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import { storeData, getData } from '../utils/storage';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
@@ -40,7 +40,7 @@ const BudgetForm = () => {
   const createBudget = async () => {
     try {
       let newBudget = {
-        id                  : uuidv4(),
+        id                  : uuid.v4(),
         begginingBalance    : begginingBalance,
         name                : name,
         date                : date,

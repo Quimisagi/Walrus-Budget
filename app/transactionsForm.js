@@ -6,7 +6,7 @@ import { useGlobal } from '../utils/globalProvider';
 import CategoryModal from './components/categoryModal';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -97,11 +97,11 @@ const TransactionsForm = ({}) => {
       transactionsTemp.push(newTransaction);
       await storeData('transactions', JSON.stringify(transactionsTemp));
       setTransactions(transactionsTemp);
-      // Toast.show({
-      //   type: 'success',
-      //   position: 'top',
-      //   text1: 'Transaction created successfully',
-      // });
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Transaction created successfully',
+      });
     } catch (error) {
       console.error('Error creating transaction:', error);
       Toast.show({
@@ -147,27 +147,28 @@ const TransactionsForm = ({}) => {
     setTime(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
   }
 
-  const sendData = async () => {
+const sendData = async () => {
+  try {
     let newTransaction = {
-      id                   : uuidv4(),
-      amount               : amount,
-      notes                : notes,
-      date                 : date,
-      time                 : time,
-      categoryId           : category ? category.id : undefined,
-      accountId            : account ? account.id : undefined,
-      budgetId             : activeBudget.id,
-      transactionType      : selection,
+      id: uuid.v4(),
+      amount,
+      notes,
+      date,
+      time,
+      categoryId: category?.id,
+      accountId: account?.id,
+      budgetId: activeBudget?.id,
+      transactionType: selection,
     };
-    Toast.show({
-      type: 'info',
-      position: 'top',
-      text1: 'Saving transaction...' + newTransaction.id,
-    }); 
-    if(editMode) await updateTransaction(newTransaction);
+
+    if (editMode) await updateTransaction(newTransaction);
     else await createTransaction(newTransaction);
+
     emptyForm();
+  } catch (e) {
+    alert('Error: ' + e.message);
   }
+};
 
   const focusValue = () => {
     if(valueRef.current){

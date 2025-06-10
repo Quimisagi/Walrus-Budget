@@ -7,7 +7,7 @@ import { useGlobal } from '../utils/globalProvider';
 import { storeData } from '../utils/storage';
 import { AntDesign } from '@expo/vector-icons';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import { processMoneyValue, formatMoney } from '../utils/numberUtils';
 import {MaterialCommunityIcons } from '@expo/vector-icons';
 import {showCurrency} from '../utils/currency';
@@ -46,7 +46,7 @@ const AccountForm = () => {
   const sendData = async () => {
     try {
       let newAccount = {
-        id                  : uuidv4(),
+        id                  : uuid.v4(),
         initialValue        : initialValue,
         name                : name,
         type                : type,
