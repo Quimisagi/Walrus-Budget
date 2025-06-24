@@ -14,6 +14,7 @@ import { showCurrency } from '../../utils/currency';
 import 'react-native-get-random-values'; // Needed for uuid
 import uuid from 'react-native-uuid';
 import { storeData } from '../../utils/storage';
+import ConfirmBudgetNameModal from '../components/confirmBudgetNameModal'; // Import the new modal
 
 
 import * as Font from 'expo-font';
@@ -49,7 +50,9 @@ export default function Home() {
   const [initialValue, setInitialValue] = useState(0);
   const [budgetedInCategories, setBudgetedInCategories] = useState(0);
 
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isCategoryModalVisible, setCategoryModalVisible] = useState(false); // Renamed for clarity
+  const [isNameModalVisible, setIsNameModalVisible] = useState(false);
+  const [newBudgetNameInput, setNewBudgetNameInput] = useState('');
 
   const calculateBalance = (balance, transactions) => {
     transactions.forEach(transaction => {
@@ -59,8 +62,8 @@ export default function Home() {
   }
 
   const toAddCategory = (category ) => {
-    router.push({ pathname: '/categoryForm', params: { categoryId: category.id, activeBudgetId: activeBudgetId } });
-    setModalVisible(false);
+    router.push({ pathname: '/categoryForm', params: { categoryId: category.id, activeBudgetId: activeBudget.id } });
+    setCategoryModalVisible(false);
   }
 
   useEffect(() => {
@@ -89,16 +92,23 @@ export default function Home() {
     }
   }, [categories, activeBudget]);
 
-  const copyBudget = async () => {
+  const copyBudget = async (confirmedName) => {
     if (!activeBudget) {
       console.log("No active budget to copy.");
+      return;
+    }
+
+    if (!confirmedName || confirmedName.trim() === '') {
+      console.log("Budget name cannot be empty.");
+      // Optionally, alert the user, though the modal should prevent this.
       return;
     }
 
     try {
       const currentDate = new Date();
       const newBudgetId = uuid.v4();
-      const newBudgetName = activeBudget.name ? `${activeBudget.name} (Copy)` : `Budget Copy ${currentDate.toLocaleDateString()}`;
+      // Use the name from the modal confirmation
+      const newBudgetName = confirmedName;
 
       // Create new categories with new IDs and updated budgetId
       const newAllocatedCategories = activeBudgetCategories.map(category => ({
@@ -176,7 +186,15 @@ export default function Home() {
               <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <TouchableOpacity
                   style={{flex : 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center'}}
-                  onPress={() => copyBudget()}
+                  onPress={() => {
+                    if (activeBudget) {
+                      const suggestedName = activeBudget.name ? `${activeBudget.name} (Copy)` : `Budget Copy ${new Date().toLocaleDateString()}`;
+                      setNewBudgetNameInput(suggestedName);
+                      setIsNameModalVisible(true);
+                    } else {
+                      alert("No active budget to copy.");
+                    }
+                  }}
                 >
                   <FontAwesome6 name="copy" size={25} color="black" />
                 </TouchableOpacity>
@@ -241,19 +259,28 @@ export default function Home() {
                 </View>
                 <View style={styles.homeContent}>
                   <CategoriesList
-                    openModal={() => setModalVisible(true)}
+                    openModal={() => setCategoryModalVisible(true)}
                   />
                   <TransactionList/>
                   <CategoryModal
-                    isVisible={isModalVisible}
-                    onClose={() => setModalVisible(false)}
+                    isVisible={isCategoryModalVisible}
+                    onClose={() => setCategoryModalVisible(false)}
                     setCategory={(category) => toAddCategory(category)}
-                    categories={activeBudget.allocatedCategories}
+                    categories={activeBudget?.allocatedCategories || []}
                     filterSelected={false}
                   />
                 </View>
               </View>
             </ScrollView>
+            <ConfirmBudgetNameModal
+              isVisible={isNameModalVisible}
+              onClose={() => setIsNameModalVisible(false)}
+              onConfirm={(name) => {
+                copyBudget(name); // We'll modify copyBudget to accept name next
+                setIsNameModalVisible(false);
+              }}
+              initialName={newBudgetNameInput}
+            />
           </View>
         )}
       </View>
