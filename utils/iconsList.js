@@ -80,19 +80,20 @@ export const icons = [
 ];
 
 export const colors = [
-  "#2F2A2A",
-  "#800000", // Maroon
-  "#DC143C", // Crimson
-  "#FF5733", // Reddish Orange
-  "#FF8C00", // Dark Orange
-  "#FFD700", // Gold
-  "#ADFF2F", // Green Yellow
-  "#32CD32", // Lime Green
-  "#073B11",
-  "#00FFFF", // Cyan
-  "#3366FF", // Vivid Blue
-  "#FF69B4", // Hot Pink
-  "#9661DC", // Medium Purple
-  "#BCBDBF"
-]
-
+  "#FF6B6B", // Soft Red
+  "#FF1744", // Neon Red
+  "#FF8E00", // Vivid Orange
+  "#FF6D00", // Deep Orange
+  "#FFD93D", // Warm Yellow
+  "#00E676", // Bright Green
+  "#A2D729", // Lime Green
+  "#00C49A", // Teal Green
+  "#00B0FF", // Vivid Blue
+  "#7FBFFA", // Bright Sky Blue
+  "#3D5AFE", // Indigo Blue
+  "#5E35B1", // Deep Purple
+  "#D500F9", // Neon Purple
+  "#FF4081", // Vivid Pink
+  "#FFABAB", // Pastel Red
+  "#F48FB1"  // Pastel Pink
+];

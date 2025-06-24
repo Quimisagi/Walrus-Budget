@@ -13,23 +13,57 @@ const ColorSelector = ({ setColor, selectedColor }) => {
     setIconColor(getContrastColor(selectedColor))
   } , [selectedColor])
 
-  return (
-    <View>
-      <ScrollView horizontal={true} style={{flexDirection: 'row'}}>
-        { colors ? 
-            (
-              colors.map((color, index) => (
-                <TouchableOpacity onPress={() => setColor(color) } key={index}>
-                  <View style={[styles.item, selectedColor === color ? styles.selectedItem : null, {backgroundColor: color}]}>
-                    { selectedColor === color ? <FontAwesome6 name={"check"} size={22.5} color={iconColor} /> : null}
+return (
+  <View>
+    <ScrollView horizontal>
+      <View style={{ flexDirection: 'column' }}>
+        {/* First Row */}
+        <View style={{ flexDirection: 'row' }}>
+          {colors &&
+            colors
+              .filter((_, i) => i % 2 === 0)
+              .map((color, index) => (
+                <TouchableOpacity onPress={() => setColor(color)} key={`top-${index}`}>
+                  <View
+                    style={[
+                      styles.item,
+                      selectedColor === color ? styles.selectedItem : null,
+                      { backgroundColor: color },
+                    ]}
+                  >
+                    {selectedColor === color && (
+                      <FontAwesome6 name="check" size={22.5} color={iconColor} />
+                    )}
                   </View>
                 </TouchableOpacity>
-              ))
-            ) : null
-        }
-      </ScrollView>
-    </View>
-  )
+              ))}
+        </View>
+
+        {/* Second Row */}
+        <View style={{ flexDirection: 'row' }}>
+          {colors &&
+            colors
+              .filter((_, i) => i % 2 !== 0)
+              .map((color, index) => (
+                <TouchableOpacity onPress={() => setColor(color)} key={`bottom-${index}`}>
+                  <View
+                    style={[
+                      styles.item,
+                      selectedColor === color ? styles.selectedItem : null,
+                      { backgroundColor: color },
+                    ]}
+                  >
+                    {selectedColor === color && (
+                      <FontAwesome6 name="check" size={22.5} color={iconColor} />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              ))}
+        </View>
+      </View>
+    </ScrollView>
+  </View>
+);
 }
 
 const styles = StyleSheet.create({
