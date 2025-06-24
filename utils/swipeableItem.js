@@ -1,13 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { PanGestureHandler, GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useRef, useState } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { GestureHandlerRootView, Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
-import { useRef, useState } from 'react';
 import { useGlobal } from './globalProvider';
 
 import Animated, {
-  useAnimatedGestureHandler,
   useSharedValue,
   withTiming,
   useAnimatedStyle,
@@ -15,16 +12,14 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-const TRANSLATE_X_THRESHOLD = SCREEN_WIDTH * 0.2;
+const TRANSLATE_X_THRESHOLD = SCREEN_WIDTH * 0.3;
 
 const SwipeableItem = ({ children, height, onDelete }) => {
   const { isSwiping, setIsSwiping } = useGlobal();
   const translateX = useSharedValue(0);
   const itemHeight = useSharedValue(0);
-  const opacity = useSharedValue(1);
 
   const itemRef = useRef();
-
   const [heightReady, setHeightReady] = useState(false);
 
   const onLayout = (event) => {
@@ -33,40 +28,36 @@ const SwipeableItem = ({ children, height, onDelete }) => {
     setHeightReady(true);
   };
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (event) => {
-      // setIsSwiping(true);
-    },
-    onActive: (event, gestureState) => {
-      translateX.value = event.translationX;
-    },
-    onCancel: (event) => {
-      translateX.value = withTiming(0);
-    },
-
-    onEnd: (event) => {
-      // setIsSwiping(false);
-      if (Math.abs(event.translationX) > TRANSLATE_X_THRESHOLD) {
-        translateX.value = withTiming(SCREEN_WIDTH * -1);
+  const pan = Gesture.Pan()
+    .minDistance(5)
+    .onUpdate((event) => {
+      translateX.value = Math.min(0, event.translationX);
+      if(event.translationX > -TRANSLATE_X_THRESHOLD * 0.1 && !isSwiping) {
+        runOnJS(setIsSwiping)(true);
+      }
+    })
+    .onEnd((event) => {
+      runOnJS(setIsSwiping)(false);
+      if (event.translationX < -TRANSLATE_X_THRESHOLD) {
+        translateX.value = withTiming(-SCREEN_WIDTH);
         itemHeight.value = withTiming(0, undefined, (isFinished) => {
           if (isFinished) {
             runOnJS(onDelete)();
           }
-        }
-        );
+        });
       } else {
         translateX.value = withTiming(0);
       }
-    },
-  });
+    });
 
   const rStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
 
   const rIconStyle = useAnimatedStyle(() => ({
-    opacity: withTiming( Math.abs(translateX.value) > TRANSLATE_X_THRESHOLD ? 1 : 0 ),
+    opacity: withTiming(Math.abs(translateX.value) > TRANSLATE_X_THRESHOLD ? 1 : 0),
   }));
+
   const rHeightStyle = useAnimatedStyle(() => ({
     height: withTiming(itemHeight.value),
   }));
@@ -74,28 +65,24 @@ const SwipeableItem = ({ children, height, onDelete }) => {
   return (
     <GestureHandlerRootView>
       <Animated.View style={rHeightStyle}>
-        <Animated.View style={[ styles.deleteButton, rIconStyle ]}>
+        <Animated.View style={[styles.deleteButton, rIconStyle]}>
           <FontAwesome name="trash-o" size={24} color="red" />
         </Animated.View>
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View
-            style={rStyle}
-          >
+        <GestureDetector gesture={pan}>
+          <Animated.View style={rStyle}>
             {children}
           </Animated.View>
-        </PanGestureHandler>
+        </GestureDetector>
       </Animated.View>
-      {!heightReady ? 
-          (
-            <View style={styles.transparent} onLayout={onLayout} ref={itemRef}>
-              {children}
-            </View>
-          ) :
-          null
-      }
+      {!heightReady ? (
+        <View style={styles.transparent} onLayout={onLayout} ref={itemRef}>
+          {children}
+        </View>
+      ) : null}
     </GestureHandlerRootView>
   );
-}
+};
+
 const styles = StyleSheet.create({
   deleteButton: {
     width: 70,
