@@ -11,12 +11,11 @@ const ConfirmBudgetNameModal = ({ isVisible, onClose, onConfirm, initialName }) 
 
   const handleConfirm = () => {
     if (name.trim() === '') {
-      // Optionally, show an alert or prevent confirmation if the name is empty
       alert("Budget name cannot be empty.");
       return;
     }
     onConfirm(name);
-    onClose(); // Close modal after confirmation
+    onClose(); 
   };
 
   return (
@@ -41,7 +40,7 @@ const ConfirmBudgetNameModal = ({ isVisible, onClose, onConfirm, initialName }) 
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.confirmButton]} onPress={handleConfirm}>
-              <Text style={styles.buttonText}>Confirm</Text>
+              <Text style={styles.buttonText1}>Confirm</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -80,18 +79,22 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     borderRadius: 5,
-    flex: 1, // Make buttons take equal width
-    marginHorizontal: 5, // Add some space between buttons
-    alignItems: 'center', // Center text in button
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: 'center',
   },
   confirmButton: {
-    backgroundColor: '#4CAF50', // Green for confirm
+    backgroundColor: '#00A5E0',
   },
   cancelButton: {
-    backgroundColor: '#f44336', // Red for cancel
+    backgroundColor: '#E6E6E6',
+  },
+  buttonText1: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
   },
 });

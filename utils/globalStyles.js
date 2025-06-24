@@ -229,6 +229,28 @@ const globalStyles = StyleSheet.create({
     marginTop: 4,
     color: '#00A5E0',
   },
+  cancelButton: {
+    backgroundColor: '#E6E6E6',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    height: 50,
+  },
+  cancelButtonText: {
+    marginTop: 4,
+    color: '#000000',
+  },
+  confirmButton: {
+    backgroundColor: '#00A5E0',
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
+    height: 50,
+  },
+  confirmButtonText: {
+    marginTop: 4,
+    color: '#FFFFFF',
+  },
 
 
 });

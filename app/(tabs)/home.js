@@ -13,8 +13,9 @@ import { calculateExpenses, calculateIncome, formatMoney, calculateBudgetedInCat
 import { showCurrency } from '../../utils/currency';
 import 'react-native-get-random-values'; // Needed for uuid
 import uuid from 'react-native-uuid';
-import { storeData } from '../../utils/storage';
-import ConfirmBudgetNameModal from '../components/confirmBudgetNameModal'; // Import the new modal
+import { getData, storeData } from '../../utils/storage';
+import ConfirmBudgetNameModal from '../components/confirmBudgetNameModal'; 
+
 
 
 import * as Font from 'expo-font';
@@ -188,7 +189,7 @@ export default function Home() {
                   style={{flex : 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center'}}
                   onPress={() => {
                     if (activeBudget) {
-                      const suggestedName = activeBudget.name ? `${activeBudget.name} (Copy)` : `Budget Copy ${new Date().toLocaleDateString()}`;
+                      const suggestedName = activeBudget.name ? `${activeBudget.name} (Copy)` : `${displayDateInFormat(new Date().getFullYear() + "-" + (new Date().getMonth() + 1))}`;
                       setNewBudgetNameInput(suggestedName);
                       setIsNameModalVisible(true);
                     } else {
