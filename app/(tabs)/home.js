@@ -11,6 +11,9 @@ import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
 import { calculateExpenses, calculateIncome, formatMoney, calculateBudgetedInCategories } from '../../utils/numberUtils';
 import { showCurrency } from '../../utils/currency';
+import 'react-native-get-random-values'; // Needed for uuid
+import uuid from 'react-native-uuid';
+import { storeData } from '../../utils/storage';
 
 
 import * as Font from 'expo-font';
@@ -35,6 +38,9 @@ export default function Home() {
     isSwiping,
     setIsSwiping,
     currency,
+    setBudgets, // Added for updating global state
+    setCategories, // Added for updating global state
+    setActiveBudget, // Added for setting the new budget as active
   } = useGlobal();
 
   const [expenses, setExpenses] = useState(0);
@@ -83,6 +89,62 @@ export default function Home() {
     }
   }, [categories, activeBudget]);
 
+  const copyBudget = async () => {
+    if (!activeBudget) {
+      console.log("No active budget to copy.");
+      return;
+    }
+
+    try {
+      const currentDate = new Date();
+      const newBudgetId = uuid.v4();
+      const newBudgetName = activeBudget.name ? `${activeBudget.name} (Copy)` : `Budget Copy ${currentDate.toLocaleDateString()}`;
+
+      // Create new categories with new IDs and updated budgetId
+      const newAllocatedCategories = activeBudgetCategories.map(category => ({
+        ...category,
+        id: uuid.v4(), // New unique ID for the copied category
+        budgetId: newBudgetId, // Link to the new budget
+        currentAmount: 0, // Reset current amount for the new budget's category
+        // transactions field is intentionally omitted to not copy transactions
+      }));
+
+      const newBudget = {
+        id: newBudgetId,
+        begginingBalance: activeBudget.begginingBalance,
+        name: newBudgetName,
+        date: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`,
+        allocatedCategories: newAllocatedCategories.map(cat => cat.id) // Store only category IDs as per original budgetForm structure (if applicable, or adjust if storing full objects)
+      };
+       // It seems budgetForm.js initializes allocatedCategories as an empty array,
+       // but categories are linked via category.budgetId.
+       // For consistency, let's ensure newBudget.allocatedCategories is an array of the new category IDs.
+       // The global state and storage for categories will be updated separately.
+
+      // Update global state and storage for budgets
+      const updatedBudgets = [...budgets, newBudget];
+      setBudgets(updatedBudgets);
+      await storeData('budgets', JSON.stringify(updatedBudgets));
+
+      // Update global state and storage for categories
+      const updatedCategories = [...categories, ...newAllocatedCategories];
+      setCategories(updatedCategories);
+      await storeData('categories', JSON.stringify(updatedCategories));
+
+      // Set the new budget as active
+      setActiveBudget(newBudget);
+      await storeData('activeBudget', JSON.stringify(newBudget));
+
+      //setActiveBudgetCategories will be updated by useEffect when activeBudget changes
+
+      console.log("Budget copied successfully:", newBudget.name);
+      router.push({ pathname: '/home' }); // Refresh or navigate to ensure UI updates
+
+    } catch (error) {
+      console.error("Error copying budget:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.main}>
@@ -111,12 +173,13 @@ export default function Home() {
                   </View>
                 </TouchableOpacity>
               </View>
-              <View style={{flex: 1}}>
-                {/* <TouchableOpacity */} 
-                {/*   style={{flex : 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center'}} */}
-                {/* > */}
-                {/*   <FontAwesome6 name="copy" size={25} color="black" /> */}
-                {/* </TouchableOpacity> */}
+              <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <TouchableOpacity
+                  style={{flex : 1, marginLeft: 10, alignItems: 'center', justifyContent: 'center'}}
+                  onPress={() => copyBudget()}
+                >
+                  <FontAwesome6 name="copy" size={25} color="black" />
+                </TouchableOpacity>
               </View>
             </View>
             <ScrollView scrollEnabled={!isSwiping} style={{ flex: 1 }}>
