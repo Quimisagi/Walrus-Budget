@@ -48,7 +48,8 @@
     "category_name": "Category name",
     "account_name": "Account name",
     "confrim_button": "Confirm",
-    "cancel_button": "Cancel"
+    "cancel_button": "Cancel",
+    "active_budget": "Active budget"
   },
   "months": {
     "january": "January",

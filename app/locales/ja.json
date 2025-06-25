@@ -48,7 +48,8 @@
     "category_name": "カテゴリ名",
     "account_name": "アカウント名",
     "confrim_button": "確認",
-    "cancel_button": "キャンセル"
+    "cancel_button": "キャンセル",
+    "active_budget": "アクティブな予算"
   },
   "months": {
     "january": "1月",
