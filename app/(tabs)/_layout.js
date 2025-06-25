@@ -10,10 +10,7 @@ export default () => {
   return (
     <Tabs
       screenOptions={{
-        showLabel: true,
-        tabBarLabelStyle: {
-          fontFamily: 'Poppins',
-        },
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -49,7 +46,7 @@ export default () => {
               }}
             >
               <LinearGradient
-                colors={['#A9D8EF', '#00A5E0']}
+                colors={['#6FDBFF', '#00A5E0']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{
@@ -63,7 +60,7 @@ export default () => {
                 <Ionicons
                   name="add-circle-outline"
                   size={50}
-                  color={focused ? '#FFF' : '#000'}
+                  color={focused ? '#FFF' : '#FFF'}
                 />
               </LinearGradient>
             </TouchableOpacity>

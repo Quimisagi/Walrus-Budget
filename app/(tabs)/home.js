@@ -175,7 +175,7 @@ export default function Home() {
               <View style={{flex: 5}}>
                 <TouchableOpacity onPress={() => router.push({ pathname: '/budgetsList' })}>
                   <View style={[globalStyles.row, styles.budgetSelectMenu, globalStyles.centered]}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: -15}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: -21}}>
                       <Ionicons name="caret-down" size={18} color="black" style={{marginRight: 5}} />
                       <Text style={globalStyles.h2}>
                         {activeBudget.name ? activeBudget.name : displayDateInFormat(activeBudget.date)}
