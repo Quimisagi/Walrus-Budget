@@ -1,0 +1,67 @@
+{
+  "settings": {
+    "currency": "Divisa",
+    "deleteEverything": "ELIMINAR TODO",
+    "language": "Idioma"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "accounts": "Cuentas"
+  },
+  "screens": {
+    "newBudget": "Nuevo presupuesto",
+    "newTransaction": "Nueva transacción",
+    "budgets": "Presupuestos",
+    "newCategory": "Nueva categoría",
+    "newAccount": "Nueva cuenta"
+  },
+  "general": {
+    "categories": "Categorías",
+    "accounts": "Cuentas",
+    "transactions": "Transacciones",
+    "initialValue": "Valor inicial",
+    "budgeted": "Presupuestado",
+    "balance": "Saldo",
+    "expense": "Gasto",
+    "income": "Ingreso",
+    "date": "Fecha",
+    "description": "Descripción",
+    "amount": "Cantidad",
+    "time": "Hora",
+    "no_category": "Sin categoría",
+    "no_account": "Sin cuenta",
+    "transaction_success": "Transacción creada exitosamente",
+    "category_success": "Categoría creada exitosamente",
+    "account_success": "Cuenta creada exitosamente",
+    "budget_success": "Presupuesto creado exitosamente",
+    "transaction_delete_success": "Transacción eliminada exitosamente",
+    "category_delete_success": "Categoría eliminada exitosamente",
+    "account_delete_success": "Cuenta eliminada exitosamente",
+    "budget_delete_success": "Presupuesto eliminado exitosamente",
+    "transaction_failed": "Error al crear la transacción",
+    "category_failed": "Error al crear la categoría",
+    "account_failed": "Error al crear la cuenta",
+    "budget_failed": "Error al crear el presupuesto",
+    "add": "Agregar",
+    "budgeted_value": "Valor presupuestado",
+    "pick_color": "Elegir color",
+    "category_name": "Nombre de la categoría",
+    "account_name": "Nombre de la cuenta",
+    "confrim_button": "Confirmar",
+    "cancel_button": "Cancelar"
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  }
+}

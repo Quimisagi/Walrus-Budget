@@ -3,18 +3,23 @@ import { Tabs } from 'expo-router';
 import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export default () => {
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
-        showLabel: false,
+        showLabel: true,
+        tabBarLabelStyle: {
+          fontFamily: 'Poppins',
+        },
       }}
     >
-      <Tabs.Screen 
-        name="home" 
+      <Tabs.Screen
+        name="home"
         options={{
-          title: '',
+          title: t('tabs.home'),
           tabBarIcon: ({ focused }) => (
             <FontAwesome6
               style={styles.button}
@@ -25,6 +30,7 @@ export default () => {
           ),
         }}
       />
+
       <Tabs.Screen
         name="transactionsPlaceholder"
         options={{
@@ -43,7 +49,7 @@ export default () => {
               }}
             >
               <LinearGradient
-                colors={['#A9D8EF', '#00A5E0']} // Gradient colors
+                colors={['#A9D8EF', '#00A5E0']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={{
@@ -64,10 +70,11 @@ export default () => {
           ),
         }}
       />
-      <Tabs.Screen 
-        name="accountsList" 
+
+      <Tabs.Screen
+        name="accountsList"
         options={{
-          title: '',
+          title: t('tabs.accounts'),
           tabBarIcon: ({ focused }) => (
             <FontAwesome6
               style={styles.button}
