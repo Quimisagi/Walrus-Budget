@@ -15,9 +15,8 @@ import { showCurrency } from '../../utils/currency';
 import 'react-native-get-random-values'; // Needed for uuid
 import uuid from 'react-native-uuid';
 import { getData, storeData } from '../../utils/storage';
-import ConfirmBudgetNameModal from '../components/confirmBudgetNameModal'; 
-
-
+import ConfirmBudgetNameModal from '../components/confirmBudgetNameModal';
+import SettingsModal from '../components/SettingsModal'; // Import the SettingsModal
 
 import * as Font from 'expo-font';
 
@@ -56,6 +55,7 @@ export default function Home() {
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false); // Renamed for clarity
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [newBudgetNameInput, setNewBudgetNameInput] = useState('');
+  const [isSettingsModalVisible, setSettingsModalVisible] = useState(false); // State for SettingsModal
 
   const calculateBalance = (balance, transactions) => {
     transactions.forEach(transaction => {
@@ -168,9 +168,9 @@ export default function Home() {
         ) : (
           <View style={{ flex: 1 }}>
             <View style={[ globalStyles.row, globalStyles.centered ]}>
-              <TouchableOpacity 
-                style={{flex : 1, marginLeft: 5}}
-                onPress={() => router.push({ pathname: '/settings' })}
+              <TouchableOpacity
+                style={{flex : 1, marginLeft: 5, alignItems: 'center', justifyContent: 'center'}} // Added alignment for icon
+                onPress={() => setSettingsModalVisible(true)} // Open SettingsModal
               >
                 <FontAwesome6 name="wrench" size={25} color="black" />
               </TouchableOpacity>
@@ -284,6 +284,10 @@ export default function Home() {
                 setIsNameModalVisible(false);
               }}
               initialName={newBudgetNameInput}
+            />
+            <SettingsModal
+              isVisible={isSettingsModalVisible}
+              onClose={() => setSettingsModalVisible(false)}
             />
           </View>
         )}
