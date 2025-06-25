@@ -35,6 +35,7 @@ const Settings = () => {
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'es', name: 'Español' },
+    { code: 'ja', name: '日本語' },
   ];
 
   return (

@@ -14,6 +14,9 @@ i18n
       es: {
         translation: es,
       },
+      ja: {
+        translation: require('./locales/ja.json'), 
+      },
     },
     lng: 'en', // Default language
     fallbackLng: 'en',
