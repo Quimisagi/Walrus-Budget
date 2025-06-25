@@ -1,0 +1,67 @@
+{
+  "settings": {
+    "currency": "通貨",
+    "deleteEverything": "すべて削除",
+    "language": "言語"
+  },
+  "tabs": {
+    "home": "ホーム",
+    "accounts": "アカウント"
+  },
+  "screens": {
+    "newBudget": "新しい予算",
+    "newTransaction": "新しい取引",
+    "budgets": "予算",
+    "newCategory": "新しいカテゴリ",
+    "newAccount": "新しいアカウント"
+  },
+  "general": {
+    "categories": "カテゴリ",
+    "accounts": "アカウント",
+    "transactions": "取引",
+    "initialValue": "初期値",
+    "budgeted": "予算設定済み",
+    "balance": "残高",
+    "expense": "支出",
+    "income": "収入",
+    "date": "日付",
+    "description": "説明",
+    "amount": "金額",
+    "time": "時間",
+    "no_category": "カテゴリなし",
+    "no_account": "アカウントなし",
+    "transaction_success": "取引が正常に作成されました",
+    "category_success": "カテゴリが正常に作成されました",
+    "account_success": "アカウントが正常に作成されました",
+    "budget_success": "予算が正常に作成されました",
+    "transaction_delete_success": "取引が正常に削除されました",
+    "category_delete_success": "カテゴリが正常に削除されました",
+    "account_delete_success": "アカウントが正常に削除されました",
+    "budget_delete_success": "予算が正常に削除されました",
+    "transaction_failed": "取引の作成に失敗しました",
+    "category_failed": "カテゴリの作成に失敗しました",
+    "account_failed": "アカウントの作成に失敗しました",
+    "budget_failed": "予算の作成に失敗しました",
+    "add": "追加",
+    "budgeted_value": "予算値",
+    "pick_color": "色を選択",
+    "category_name": "カテゴリ名",
+    "account_name": "アカウント名",
+    "confrim_button": "確認",
+    "cancel_button": "キャンセル"
+  },
+  "months": {
+    "january": "1月",
+    "february": "2月",
+    "march": "3月",
+    "april": "4月",
+    "may": "5月",
+    "june": "6月",
+    "july": "7月",
+    "august": "8月",
+    "september": "9月",
+    "october": "10月",
+    "november": "11月",
+    "december": "12月"
+  }
+}
