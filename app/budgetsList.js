@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
 import globalStyles from '../utils/globalStyles';
+import { useTranslation } from 'react-i18next';
 import { useRouter} from "expo-router";
 import { getData, storeData } from "../utils/storage"; 
 import { useGlobal } from '../utils/globalProvider';
@@ -8,10 +9,10 @@ import { Feather, AntDesign } from '@expo/vector-icons';
 import { displayDateInFormat } from '../utils/dateUtils';
 
 const BudgetsList = () => {
-
+  const { t } = useTranslation();
   const router = useRouter();
 
-  const { budgets, setBudgets, setActiveBudget} = useGlobal();
+  const { budgets, setBudgets, setActiveBudget, currency} = useGlobal();
 
   const goToEditBudget = (id) => {
     router.push({pathname: 'budgetForm', params: { editMode: true, id: id } });
@@ -46,8 +47,8 @@ const BudgetsList = () => {
                       <View style={{flex: 3}}>
                         <Text style={globalStyles.h2}>{ budget.name ? budget.name : displayDateInFormat(budget.date)}</Text>
                         <View style={globalStyles.row}>
-                          <Text style={globalStyles.text}>Budgeted: </Text>
-                          <Text style={globalStyles.text}>${budget.begginingBalance}</Text>
+                          <Text style={globalStyles.text}>{t('general.budgeted')}: </Text>
+                          <Text style={globalStyles.text}>{showCurrency(currency)}{budget.begginingBalance}</Text>
                         </View>
                       </View>
                       <View style={[ {flex: 1, marginRight: 'auto'}]}>
@@ -59,7 +60,7 @@ const BudgetsList = () => {
               ))
             ) : 
             (
-              <Text>No budgets</Text>
+              <Text>No budgets</Text> // Left as is - consider new key 'general.no_budgets_found'
             ) 
         }
       </ScrollView>

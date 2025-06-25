@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useLayoutEffect, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
@@ -21,6 +22,7 @@ const AccountType = {
 }
 
 const AccountForm = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -87,7 +89,7 @@ const AccountForm = () => {
 
   return(
     <View style={globalStyles.container}>
-      <Text style={globalStyles.label}>Budgeted value:</Text>
+      <Text style={globalStyles.label}>{t('general.budgeted_value')}</Text>
       <TouchableOpacity onPress={focusBudget}>
         <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(initialValue.toString())}</Text>
       </TouchableOpacity>
@@ -97,7 +99,7 @@ const AccountForm = () => {
         autoFocus={true}
         keyboardType="numeric"
         maxLength={12}
-        value={"$" + initialValue.toString()}
+        value={initialValue.toString()} // Removed $ for consistency with processMoneyValue
         onChangeText={(text) => setInitialValue(processMoneyValue(text))}
       />
       <View style={[ globalStyles.inputFieldContainer, globalStyles.row, styles.name]}> 
@@ -106,7 +108,7 @@ const AccountForm = () => {
         </View>
         <TextInput
           style={[ globalStyles.inputField, {flex: 9}]}
-          placeholder='Account name'
+          placeholder={t('general.account_name')}
           value={name}
           maxLength={24}
           onChangeText={(text) => { setName(text); }}

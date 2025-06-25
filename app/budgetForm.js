@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { StyleSheet, Image, Text, View, TextInput, Button, Modal, TouchableOpacity } from 'react-native';
 import { storeData, getData } from '../utils/storage';
+import { useTranslation } from 'react-i18next';
 import 'react-native-get-random-values';
 import uuid from 'react-native-uuid';
 import globalStyles from '../utils/globalStyles';
@@ -13,6 +14,7 @@ import MonthPicker from 'react-native-month-year-picker';
 import { showCurrency } from '../utils/currency';
 
 const BudgetForm = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const budgetRef = useRef(null);
   const [begginingBalance, setBegginingBalance] = useState(0);
@@ -111,7 +113,7 @@ const BudgetForm = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.label}>Budgeted value:</Text>
+      <Text style={globalStyles.label}>{t('general.budgeted_value')}</Text>
       <TouchableOpacity onPress={focusBudget}>
         <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(begginingBalance.toLocaleString())}</Text>
       </TouchableOpacity>
@@ -121,7 +123,7 @@ const BudgetForm = () => {
         autoFocus={true}
         maxLength={18}
         keyboardType="numeric"
-        value={'$' + begginingBalance.toString()}
+        value={begginingBalance.toString()} // Removed $ for consistency
         onChangeText={(text) => setBegginingBalance(processMoneyValue(text))}
       />
       <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setShowPicker(true) }}>
@@ -139,10 +141,10 @@ const BudgetForm = () => {
       {showPicker && (
         <MonthPicker
           onChange={onChangeDate}
-          value={new Date(date + "-05")}
-          minimumDate={new Date(2000, 1)}
-          maximumDate={new Date(2099, 12)}
-          locale="en"
+          value={new Date(date + "-05")} // Assuming date is 'YYYY-MM'
+          minimumDate={new Date(2000, 0)} // Month is 0-indexed
+          maximumDate={new Date(2099, 11)} // Month is 0-indexed
+          locale="en" // This could also be dynamic based on current language
         />
       )}
       <View style={[ globalStyles.inputFieldContainer, globalStyles.row ]}> 
@@ -151,7 +153,7 @@ const BudgetForm = () => {
         </View>
         <TextInput
           style={[ globalStyles.inputField, {flex: 9}]}
-          placeholder='Custom name (optional)'
+          placeholder='Custom name (optional)' // Left as is, requires new key budgetForm.customNamePlaceholder
           value={name}
           onChangeText={(text) => { setName(text); }}
         />
