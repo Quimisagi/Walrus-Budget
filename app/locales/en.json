@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "currency": "Currency",
+    "deleteEverything": "DELETE EVERYTHING",
+    "language": "Language"
+  },
+  "tabs": {
+    "home": "Home",
+    "accounts": "Accounts"
+  },
+  "screens": {
+    "newBudget": "New budget",
+    "newTransaction": "New transaction",
+    "budgets": "Budgets",
+    "newCategory": "New category",
+    "newAccount": "New account"
+  }
+}

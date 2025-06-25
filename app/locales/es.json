@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "currency": "Divisa",
+    "deleteEverything": "ELIMINAR TODO",
+    "language": "Idioma"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "accounts": "Cuentas"
+  },
+  "screens": {
+    "newBudget": "Nuevo presupuesto",
+    "newTransaction": "Nueva transacción",
+    "budgets": "Presupuestos",
+    "newCategory": "Nueva categoría",
+    "newAccount": "Nueva cuenta"
+  }
+}
