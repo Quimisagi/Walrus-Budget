@@ -7,7 +7,7 @@ import { router } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
 import { Ionicons } from '@expo/vector-icons';
 import CircularProgress from '../../utils/circularProgress';
-import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils';
+import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils'; 
 
 const categoriesList = () => {
   const { t } = useTranslation();
@@ -46,7 +46,7 @@ const categoriesList = () => {
   return (
     <View style={styles.categoriesContainer}>
       <View> 
-        <Text style={globalStyles.h2}>Categories</Text>
+        <Text style={globalStyles.h2}>{t('general.categories')}</Text>
         <View style={globalStyles.block}>
           <ScrollView horizontal={true}>
             <TouchableOpacity onPress={goToAddCategory}>

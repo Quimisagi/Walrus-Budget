@@ -11,8 +11,11 @@ import { Feather } from '@expo/vector-icons';
 import { getContrastColor } from '../../utils/iconsList';
 import { formatMoney } from '../../utils/numberUtils';
 import { showCurrency } from '../../utils/currency';
+import { useTranslation } from 'react-i18next';
 
 const TransactionList = () => {
+  const { t } = useTranslation();
+
   const [transactionsWithCategories, setTransactionsWithCategories] = useState([]);
 
   const { 
@@ -52,7 +55,7 @@ const TransactionList = () => {
     , [activeBudgetTransactions, activeBudgetCategories, accounts]);
   return (
     <View style={styles.transactionsContainer}>
-      <Text style={globalStyles.h2}>Transactions</Text>
+      <Text style={globalStyles.h2}>{t('general.transactions')}</Text>
       <View style={globalStyles.block}>
         {[...transactionsWithCategories].reverse().map((transaction, index) => (
           <SwipeableItem key={transaction.id} onDelete={() => deleteTransaction(transaction.id)}>

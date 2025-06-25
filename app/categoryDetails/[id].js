@@ -141,28 +141,30 @@ const CategoriesDetails= () => {
           : (
             <View style={globalStyles.block}>
               <View style={globalStyles.centered}>
-                <Text style={globalStyles.text}>{percentage}% left</Text> {/* No key for "left", leave as is */}
+                <Text style={globalStyles.text}>{percentage}% left</Text>
               </View>
               <View style={styles.progressBar}> 
-                {percentage >= 100 ? 
-                  <View style={[styles.totalBar, {width: '100%', backgroundColor: category.color}]}/> : 
-                  <View style={[styles.totalBar, {width: `${percentage}%`, backgroundColor: category.color}]}/>
-                }
+                <View style={[styles.totalBar, { width: percentage >= 100 ? '100%' : `${percentage}%`, backgroundColor: category.color }]} />
               </View>
+
               <View style={[globalStyles.row, globalStyles.block]}>
-                <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                  <Text style={[ globalStyles.h3, {color: 'tomato'} ]}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
-                  <Text style={globalStyles.text}>{t('general.expense')}</Text> {/* "Spent" */}
+                <View style={[globalStyles.column, { alignItems: 'flex-start' }]}>
+                  <Text style={[globalStyles.h3, {color: 'tomato'}]}>
+                    -{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}
+                  </Text>
+                  <Text style={globalStyles.text}>{t('general.expense')}</Text>
                 </View>
-                {category.amount &&
-                  <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
-                    {expenses + income >= 0 ? 
-                        (<Text style={globalStyles.h3}>{showCurrency(currency)}{formatMoney(category.amount.toLocaleString())}</Text>) :
-                        <Text style={globalStyles.h3}>-{showCurrency(currency)}{formatMoney(category.amount.toLocaleString())}</Text>
-                  }
-                  <Text style={globalStyles.text}>{t('general.initialValue')}</Text>
+
+                {category.amount != null && (
+                  <View style={[globalStyles.column, { alignItems: 'flex-end' }]}>
+                    <Text style={globalStyles.h3}>
+                      {expenses + income >= 0
+                        ? `${showCurrency(currency)}${formatMoney(category.amount.toLocaleString())}`
+                        : `-${showCurrency(currency)}${formatMoney(category.amount.toLocaleString())}`}
+                    </Text>
+                    <Text style={globalStyles.text}>{t('general.initialValue')}</Text>
                   </View>
-              }
+                )}
               </View>
             </View>
           )}
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 10,
   },
-    categoryIcon: {
+  categoryIcon: {
     width: 50,
     height: 50,
     marginLeft: 5,

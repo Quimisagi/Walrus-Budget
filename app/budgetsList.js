@@ -7,6 +7,8 @@ import { getData, storeData } from "../utils/storage";
 import { useGlobal } from '../utils/globalProvider';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { displayDateInFormat } from '../utils/dateUtils';
+import { showCurrency } from '../utils/currency';
+
 
 const BudgetsList = () => {
   const { t } = useTranslation();

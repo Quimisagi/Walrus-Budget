@@ -16,8 +16,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../utils/iconsList';
 import Toast from 'react-native-toast-message';
 import { showCurrency } from '../utils/currency';
-
-
+import { useTranslation } from 'react-i18next'; // ✅ added
 
 const TransactionType = {
   EXPENSE: -1,
@@ -25,6 +24,7 @@ const TransactionType = {
 };
 
 const TransactionsForm = ({}) => {
+  const { t } = useTranslation(); // ✅ added
   const params = useLocalSearchParams();
   const navigation = useNavigation();
   const [amount, setAmount] = useState(0); 
@@ -56,17 +56,15 @@ const TransactionsForm = ({}) => {
     let timeTemp = selectedTime.getHours() + ":" + (selectedTime.getMinutes() < 10 ? '0' : '') + selectedTime.getMinutes()
     setTime(timeTemp);
   }
+
   const selectCategory = (category) => {
     setCategory(category);
     setCategoryModalVisible(false);
   } 
+
   const showDatepicker = () => {
     let parts = date.split("-");
-    let dateTemp = new Date(
-      parseInt(parts[0]), // Year
-      parseInt(parts[1]) - 1, // Month (months are 0-indexed)
-      parseInt(parts[2]) // Day
-    )
+    let dateTemp = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
     DateTimePickerAndroid.open({
       value: new Date(dateTemp),
       onChange: onChangeDate,
@@ -100,14 +98,14 @@ const TransactionsForm = ({}) => {
       Toast.show({
         type: 'success',
         position: 'top',
-        text1: 'Transaction created successfully',
+        text1: t('general.transaction_success'), // ✅
       });
     } catch (error) {
       console.error('Error creating transaction:', error);
       Toast.show({
         type: 'error',
         position: 'top',
-        text1: 'Failed to create transaction',
+        text1: t('general.transaction_failed'), // ✅
         text2: error.message,
       });
     }
@@ -116,17 +114,14 @@ const TransactionsForm = ({}) => {
   const updateTransaction = async (newTransaction) => {
     try {
       const transactionIndex = transactions.findIndex(transaction => transaction.id === transactionId);
-      if (transactionIndex === -1) {
-        throw new Error('Transaction not found');
-      }
+      if (transactionIndex === -1) throw new Error('Transaction not found');
       const arrayTemp = [...transactions];
       arrayTemp[transactionIndex] = newTransaction;
-      // await storeData('transactions', JSON.stringify(arrayTemp));
       setTransactions(arrayTemp);
       Toast.show({
         type: 'success',
         position: 'top',
-        text1: 'Transaction updated',
+        text1: t('general.transaction_success'), // ✅ reuse for now
       });
       router.back();
     } catch (error) {
@@ -134,7 +129,7 @@ const TransactionsForm = ({}) => {
       Toast.show({
         type: 'error',
         position: 'top',
-        text1: 'Failed to update transaction',
+        text1: t('general.transaction_failed'), // ✅
         text2: error.message,
       });
     }
@@ -147,28 +142,28 @@ const TransactionsForm = ({}) => {
     setTime(currentDate.getHours() + ":" + (currentDate.getMinutes() < 10 ? '0' : '') + currentDate.getMinutes());
   }
 
-const sendData = async () => {
-  try {
-    let newTransaction = {
-      id: uuid.v4(),
-      amount,
-      notes,
-      date,
-      time,
-      categoryId: category?.id,
-      accountId: account?.id,
-      budgetId: activeBudget?.id,
-      transactionType: selection,
-    };
+  const sendData = async () => {
+    try {
+      let newTransaction = {
+        id: uuid.v4(),
+        amount,
+        notes,
+        date,
+        time,
+        categoryId: category?.id,
+        accountId: account?.id,
+        budgetId: activeBudget?.id,
+        transactionType: selection,
+      };
 
-    if (editMode) await updateTransaction(newTransaction);
-    else await createTransaction(newTransaction);
+      if (editMode) await updateTransaction(newTransaction);
+      else await createTransaction(newTransaction);
 
-    emptyForm();
-  } catch (e) {
-    alert('Error: ' + e.message);
-  }
-};
+      emptyForm();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+  };
 
   const focusValue = () => {
     if(valueRef.current){
@@ -187,9 +182,9 @@ const sendData = async () => {
     }
     if(editMode){
       let transactionTemp = transactions.find(transaction => transaction.id === transactionId)
-      if(typeof transactionTemp !== 'undefined'){
+      if(transactionTemp){
         setAmount(transactionTemp.amount);
-        setNotes(transactionTemp.notes)
+        setNotes(transactionTemp.notes);
         setDate(transactionTemp.date);
         setTime(transactionTemp.time);
         setTransactionType(transactionTemp.transactionType);
@@ -204,28 +199,23 @@ const sendData = async () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: editMode ? "Edit transaction" : "New transaction",
+      headerTitle: t('screens.newTransaction'), // ✅ same title for now
       headerRight: () => (
-        <TouchableOpacity
-          style={{ margin: 15 }}
-          onPress={sendData}
-          disabled={amount <= 0 }
-        >
+        <TouchableOpacity style={{ margin: 15 }} onPress={sendData} disabled={amount <= 0 }>
           <AntDesign name="check" size={24} color= {amount <= 0 ? "gray" : "black"}/>
         </TouchableOpacity>
       ),
-
     });
   }, [navigation, amount, notes, date, time, category, transactionType, account, selection]);
 
   return (
     <View style={globalStyles.container}>
       <View style={styles.btnGroup}>
-        <TouchableOpacity style={[styles.btn, selection === -1 ? { backgroundColor: "#DF3B57" } : null]} onPress={() => setSelection(-1)}>
-          <Text style={[styles.btnText, globalStyles.h3, selection === -1 ? { color: "white" } : null]}>Expense</Text>
+        <TouchableOpacity style={[styles.btn, selection === -1 && { backgroundColor: "#DF3B57" }]} onPress={() => setSelection(-1)}>
+          <Text style={[styles.btnText, globalStyles.h3, selection === -1 && { color: "white" }]}>{t('general.expense')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.btn, selection === 1 ? { backgroundColor: "#5FB49C" } : null]} onPress={() => setSelection(1)}>
-          <Text style={[styles.btnText, globalStyles.h3, selection === 1 ? { color: "white" } : null]}>Income</Text>
+        <TouchableOpacity style={[styles.btn, selection === 1 && { backgroundColor: "#5FB49C" }]} onPress={() => setSelection(1)}>
+          <Text style={[styles.btnText, globalStyles.h3, selection === 1 && { color: "white" }]}>{t('general.income')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -248,46 +238,34 @@ const sendData = async () => {
       </View>
 
       <View style={globalStyles.block}>
-        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setCategoryModalVisible(true) }}>
+        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => setCategoryModalVisible(true)}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
-            {category && Object.keys(category).length > 0 ? (
+            {category?.id ? (
               <View style={[styles.categoryIcon, {backgroundColor: category.color}]}>
                 <FontAwesome6 name={category.icon} size={15} color={getContrastColor(category.color)} />
               </View>
             ) : (
               <FontAwesome6 name="shapes" size={16} color="gray" />
             )}
-
           </View>
-          <TextInput 
-            style={[ globalStyles.inputField, {flex: 9} ]}
-            pointerEvents="none"
-            editable={false}
-          >
-            {category && Object.keys(category).length > 0 ? (
-              <Text style={[ globalStyles.centered, {color: 'black'} ]}>{category.name}</Text>
-            ) : (
-              <Text style={{color: 'gray'}}>No category</Text>
-            )}
-
+          <TextInput style={[ globalStyles.inputField, {flex: 9} ]} pointerEvents="none" editable={false}>
+            <Text style={{color: category?.id ? 'black' : 'gray'}}>
+              {category?.id ? category.name : t('general.no_category')}
+            </Text>
           </TextInput>
         </TouchableOpacity>
-        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { setAccountModalVisible(true) }}>
+
+        <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => setAccountModalVisible(true)}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
             <FontAwesome6 name="wallet" size={16} color="gray" />
           </View>
-          <TextInput 
-            style={[ globalStyles.inputField, {flex: 9} ]}
-            pointerEvents="none"
-            editable={false}
-          >
-            {account && Object.keys(account).length > 0 ? (
-              <Text style={[ globalStyles.centered, {color: 'black'} ]}>{account.name}</Text>
-            ) : (
-              <Text style={{color: 'gray'}}>No account</Text>
-            )}
+          <TextInput style={[ globalStyles.inputField, {flex: 9} ]} pointerEvents="none" editable={false}>
+            <Text style={{color: account?.id ? 'black' : 'gray'}}>
+              {account?.id ? account.name : t('general.no_account')}
+            </Text>
           </TextInput>
         </TouchableOpacity>
+
         <View style={[ globalStyles.inputFieldContainer, globalStyles.row, {marginBottom: 15}]}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
             <MaterialCommunityIcons name="text" size={16} color="black" />
@@ -295,48 +273,39 @@ const sendData = async () => {
           <TextInput
             style={[ globalStyles.inputField, {flex: 9} ]}
             value={notes}
-            placeholder='Description'
-            onChangeText={(text) => setNotes(text)}
+            placeholder={t('general.description')}
+            onChangeText={setNotes}
             maxLength={24}
           />
         </View>
+
         <View style={globalStyles.row}>
           <View style={{flex:1, marginRight: 5}}>
-            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showDatepicker() }}>
+            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={showDatepicker}>
               <View style={[ globalStyles.centered, {flex:1} ]}>
                 <AntDesign name="calendar" size={16} color="black" />
               </View>
-              <TextInput 
-                style={[ globalStyles.inputField, {flex: 7} ]}
-                pointerEvents="none"
-                editable={false}
-              >
+              <TextInput style={[ globalStyles.inputField, {flex: 7} ]} pointerEvents="none" editable={false}>
                 <Text style={{marginLeft: 30}}>{date}</Text>
               </TextInput>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, marginLeft: 5}}>
-            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => { showTimepicker() }}>
+            <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={showTimepicker}>
               <View style={[ globalStyles.centered, {flex:1} ]}>
                 <AntDesign name="clockcircle" size={16} color="black" />
               </View>
-              <TextInput 
-                style={[ globalStyles.inputField, {flex: 7} ]}
-                pointerEvents="none"
-                editable={false}
-              >
+              <TextInput style={[ globalStyles.inputField, {flex: 7} ]} pointerEvents="none" editable={false}>
                 <Text style={{marginLeft: 30}}>{time}</Text>
               </TextInput>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-      <Modal
-        isVisible={isAccountModalVisible}
-        onBackdropPress={() => setAccountModalVisible(false)}
-        onClose={() => setAccountModalVisible(false)}>
+
+      <Modal isVisible={isAccountModalVisible} onBackdropPress={() => setAccountModalVisible(false)}>
         <View style={globalStyles.modal}>
-          <Text style={globalStyles.h2}>Select an account</Text>
+          <Text style={globalStyles.h2}>{t('general.accounts')}</Text>
           <View style={globalStyles.block}>
             {accounts.length > 0 ? (
               accounts.map(account => (
@@ -351,7 +320,7 @@ const sendData = async () => {
               ))
             ) : (
               <View style={styles.noAccountsMessage}>
-                <Text style={globalStyles.h3}>No accounts registered</Text>
+                <Text style={globalStyles.h3}>{t('general.no_account')}</Text>
               </View>
             )}
           </View>
@@ -361,7 +330,7 @@ const sendData = async () => {
       <CategoryModal 
         isVisible={isCategoryModalVisible} 
         onClose={() => setCategoryModalVisible(false)} 
-        setCategory={(category) => selectCategory (category)}
+        setCategory={selectCategory}
         categories={activeBudget.allocatedCategories}
         filterSelected={true}
       />
@@ -370,24 +339,6 @@ const sendData = async () => {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    width: 200,
-    margin: 12,
-    borderWidth: 1,
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    margin: 12,
-  },
-  categoryButton: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-    margin: 12,
-  },
   btnGroup: {
     flexDirection: 'row',
     alignItems: "center",
@@ -416,7 +367,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
   },
-
 });
 
 export default TransactionsForm;

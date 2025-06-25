@@ -13,6 +13,8 @@ import { storeData } from "../../utils/storage";
 import Toast from 'react-native-toast-message';
 import SwipeableItem from "../../utils/swipeableItem";
 import { formatMoney } from "../../utils/numberUtils";
+import { showCurrency } from '../../utils/currency';
+
 
 const AccountDetails = () => {
   const { t } = useTranslation();
