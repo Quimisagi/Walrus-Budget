@@ -306,21 +306,33 @@ const TransactionsForm = ({}) => {
       <Modal isVisible={isAccountModalVisible} onBackdropPress={() => setAccountModalVisible(false)}>
         <View style={globalStyles.modal}>
           <Text style={globalStyles.h2}>{t('general.accounts')}</Text>
-          <View style={globalStyles.block}>
+          <View>
             {accounts.length > 0 ? (
-              accounts.map(account => (
+              accounts.map((account) => (
                 <View key={account.id} style={styles.accountButton}>
-                  <Pressable onPress={() => { setAccount(account); setAccountModalVisible(false); }}>
-                    <View style={[globalStyles.row, styles.accountRow]}>
-                      <Text style={[globalStyles.h3, styles.accountName]}>{account.name}</Text>
-                      <Text style={[globalStyles.h3, styles.accountValue]}> - (${account.initialValue})</Text>
+                  <Pressable onPress={() => {
+                    setAccount(account);
+                    setAccountModalVisible(false);
+                  }}>
+                    <View style={[styles.accountRow]}>
+                      <View>
+                        <Text style={[globalStyles.h3, styles.accountName]}>
+                          {account.name}
+                        </Text>
+                        <Text style={[globalStyles.text, styles.accountValue]}>
+                          <Text style={styles.smallText}>{t('general.balance')}: </Text>
+                          {showCurrency(currency)}{formatMoney(account.initialValue.toLocaleString())}
+                        </Text>
+                      </View>
                     </View>
                   </Pressable>
                 </View>
               ))
             ) : (
               <View style={styles.noAccountsMessage}>
-                <Text style={globalStyles.h3}>{t('general.no_account')}</Text>
+                <Text style={globalStyles.h3}>
+                  {t('general.no_account')}
+                </Text>
               </View>
             )}
           </View>
@@ -363,9 +375,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accountButton: {
-    height: 40,
+    height: 50,
     borderRadius: 8,
     padding: 10,
+  },
+  accountRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  accountValue: {
+    color: '#666',
+    fontSize: 12,
   },
 });
 

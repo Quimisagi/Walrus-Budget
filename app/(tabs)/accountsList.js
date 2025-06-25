@@ -86,11 +86,17 @@ const AccountsList = () => {
                 >
                   <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
                     <View style={globalStyles.row}>
-                      <View style={{flex: 4}}>
+                      <View style={{flex: 8}}>
+                        <Text></Text>
                         <Text style={globalStyles.h2}>{account.name}</Text>
+                        <Text></Text>
                       </View>
-                      <View style={{flex: 2}}>
-                        <Text style={globalStyles.amount}>{showCurrency(currency)}{formatMoney(account.balance.toLocaleString())}</Text>
+                      <View style={[ {flex: 6}, globalStyles.centered ]}>
+                        <View style={globalStyles.row}>
+                          <Text style={[ globalStyles.h3, {marginTop: 5} ]}>{t('general.balance')}   </Text>
+                          <Text style={globalStyles.amount}>{showCurrency(currency)}{formatMoney(account.balance.toLocaleString())}</Text>
+                        </View>
+                        <Text style={styles.smallText}>{t('general.initialValue')}: {showCurrency(currency)}{formatMoney(account.initialValue.toLocaleString())}</Text>
                       </View>
                     </View>
                   </View>
@@ -116,6 +122,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30, 
     borderRadius: 8,
+  },
+  smallText: {
+    fontSize: 12,
+    color: '#666',
   },
 });
 
