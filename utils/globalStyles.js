@@ -75,7 +75,7 @@ const globalStyles = StyleSheet.create({
     padding: 5,
   },
   container:{
-    marginTop: 85,
+    marginTop: 65,
     padding: 30,
     flex: 1
   },

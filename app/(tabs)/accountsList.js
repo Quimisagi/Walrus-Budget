@@ -108,7 +108,7 @@ const AccountsList = () => {
 
 const styles = StyleSheet.create({
   container:{
-    marginTop: 45,
+    marginTop: 20,
     padding: 30,
     flex: 1
   },
