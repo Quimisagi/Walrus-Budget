@@ -2,7 +2,8 @@
   "settings": {
     "currency": "通貨",
     "deleteEverything": "すべて削除",
-    "language": "言語"
+    "language": "言語",
+    "title": "設定"
   },
   "tabs": {
     "home": "ホーム",
@@ -47,9 +48,10 @@
     "pick_color": "色を選択",
     "category_name": "カテゴリ名",
     "account_name": "アカウント名",
-    "confrim_button": "確認",
+    "confirm_button": "確認",
     "cancel_button": "キャンセル",
-    "active_budget": "アクティブな予算"
+    "active_budget": "アクティブな予算",
+    "close": "閉じる"
   },
   "months": {
     "january": "1月",

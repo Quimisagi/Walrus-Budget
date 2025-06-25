@@ -87,11 +87,9 @@ const SettingsModal = ({ isVisible, onClose }) => {
             </TouchableOpacity>
           </Modal>
 
-          <TouchableOpacity style={styles.deleteButton} onPress={deleteEverything}>
-            <Text style={styles.deleteButtonText}>{t('settings.deleteEverything')}</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeButtonText}>{t('general.close')}</Text>
           </TouchableOpacity>
-
-          <Button title={t('general.close')} onPress={onClose} />
         </View>
       </View>
     </Modal>
@@ -171,6 +169,19 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: '#00A5E0', // Primary color for close button
+    padding: 10,
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

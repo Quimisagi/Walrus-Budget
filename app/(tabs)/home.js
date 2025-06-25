@@ -8,7 +8,7 @@ import CategoryModal from '../components/categoryModal';
 import { router } from 'expo-router';
 import CategoriesList from '../components/categoriesList';
 import TransactionList from '../components/transactionsList';
-import { Ionicons, Feather, FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons, Feather, FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { displayDateInFormat } from '../../utils/dateUtils';
 import { calculateExpenses, calculateIncome, formatMoney, calculateBudgetedInCategories } from '../../utils/numberUtils';
 import { showCurrency } from '../../utils/currency';
@@ -169,10 +169,10 @@ export default function Home() {
           <View style={{ flex: 1 }}>
             <View style={[ globalStyles.row, globalStyles.centered ]}>
               <TouchableOpacity
-                style={{flex : 1, marginLeft: 5, alignItems: 'center', justifyContent: 'center'}} // Added alignment for icon
+                style={{flex : 1, alignItems: 'center', justifyContent: 'center', width: 25}} // Added alignment for icon
                 onPress={() => setSettingsModalVisible(true)} // Open SettingsModal
               >
-                <FontAwesome6 name="wrench" size={25} color="black" />
+                <MaterialCommunityIcons name="cog" size={25} color="black" />
               </TouchableOpacity>
               <View style={{flex: 5}}>
                 <TouchableOpacity onPress={() => router.push({ pathname: '/budgetsList' })}>
