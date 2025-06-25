@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import globalStyles from '../../utils/globalStyles';
 import { useRouter, useNavigation } from "expo-router";
 import { getData, storeData } from "../../utils/storage"; 
@@ -12,7 +13,7 @@ import { formatMoney } from '../../utils/numberUtils';
 import { showCurrency } from '../../utils/currency';
 
 const AccountsList = () => {
-
+  const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -31,7 +32,7 @@ const AccountsList = () => {
     Toast.show({
       type: 'success',
       position: 'top',
-      text1: 'Account deleted',
+      text1: t('general.account_delete_success'),
     });
   }
 
@@ -58,7 +59,7 @@ const AccountsList = () => {
   return (
     <View style={styles.container}> 
       <View style={globalStyles.row}>
-        <Text style={globalStyles.h2}>Accounts</Text>
+        <Text style={globalStyles.h2}>{t('general.accounts')}</Text>
       </View>
       <ScrollView>
         <TouchableOpacity
@@ -71,12 +72,12 @@ const AccountsList = () => {
             <Ionicons name="add-circle-outline" size={30} color={'#00A5E0'} />
           </View>
           <View style={{flex: 6}}>
-            <Text style={[globalStyles.h3, globalStyles.mainActionButtonText]}>Add new account</Text>
+            <Text style={[globalStyles.h3, globalStyles.mainActionButtonText]}>{t('screens.newAccount')}</Text>
           </View>
           <View style={{flex: 4}}>
           </View>
         </TouchableOpacity>
-        { accounts ? 
+        { accounts && accounts.length > 0 ?
             (
               updatedAccounts.map(account => (
                 <TouchableOpacity 

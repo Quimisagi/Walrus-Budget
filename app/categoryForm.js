@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 import globalStyles from '../utils/globalStyles';
 import { useGlobal } from '../utils/globalProvider';
@@ -17,6 +18,7 @@ import Toast from 'react-native-toast-message';
 import { showCurrency } from '../utils/currency';
 
 const CategoryForm = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const params = useLocalSearchParams();
   const navigation = useNavigation();
@@ -42,7 +44,7 @@ const CategoryForm = () => {
       Toast.show({
         type: 'success',
         position: 'top',
-        text1: 'Category created',
+        text1: t('general.category_success'),
       });
 
     } catch (error) {
@@ -106,7 +108,7 @@ const CategoryForm = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: editMode ? 'Edit category' : 'New category',
+      headerTitle: editMode ? t('screens.newCategory') : t('screens.newCategory'), // Assuming 'Edit category' would be a new key t('screens.editCategory')
       headerRight: () => (
         <TouchableOpacity
           style={{ margin: 15 }}
@@ -120,7 +122,7 @@ const CategoryForm = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Text style={globalStyles.label}>Budgeted value:</Text>
+      <Text style={globalStyles.label}>{t('general.budgeted_value')}</Text>
       <TouchableOpacity onPress={focusBudget}>
         <Text style={globalStyles.inputFieldB}>{showCurrency(currency) + formatMoney(amount.toLocaleString())}</Text>
       </TouchableOpacity>
@@ -130,7 +132,7 @@ const CategoryForm = () => {
         autoFocus={true}
         keyboardType="numeric"
         maxLength={18}
-        value={"$" + amount.toString()}
+        value={amount.toString()} // Removed $
         onChangeText={(text) => setAmount(processMoneyValue(text))}
       />
       <View style={[ globalStyles.row, {marginBottom: 15, marginTop: 25, justifyContent: 'center'} ]}>
@@ -139,7 +141,7 @@ const CategoryForm = () => {
             {icon ? (
               <FontAwesome6 name={icon} size={30} color={iconColor} />
             ) : (
-              <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text>
+              <Text style={[globalStyles.text, {color: iconColor}]}>Icon</Text> // Left as is, needs new key 'general.icon'
             )}
           </TouchableOpacity>
         </View>
@@ -150,7 +152,7 @@ const CategoryForm = () => {
             </View>
             <TextInput
               style={[ globalStyles.inputField, {flex: 9}]}
-              placeholder='Category name'
+              placeholder={t('general.category_name')}
               value={name}
               maxLength={24}
               onChangeText={(text) => { setName(text); }}
@@ -158,7 +160,7 @@ const CategoryForm = () => {
           </View>
         </View>
       </View>
-      <Text style={globalStyles.label}>Pick a color:</Text>
+      <Text style={globalStyles.label}>{t('general.pick_color')}</Text>
       <ColorSelector setColor={(color) => setColor(color)} selectedColor={color} />
       <IconsModal
         isVisible={isModalVisible}

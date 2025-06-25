@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "../../utils/globalProvider";
+import { useTranslation } from 'react-i18next';
 import {View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import globalStyles from "../../utils/globalStyles";
 import defaultCategories from "../../utils/defaultCategories";
@@ -14,12 +15,12 @@ import SwipeableItem from "../../utils/swipeableItem";
 import { formatMoney } from "../../utils/numberUtils";
 
 const AccountDetails = () => {
-  
+  const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
 
-  const { budgets, transactions, setTransactions, activeBudget, setAccounts, accounts } = useGlobal();
+  const { budgets, transactions, setTransactions, activeBudget, setAccounts, accounts, currency } = useGlobal();
 
   const {id} = params;
 
@@ -41,7 +42,7 @@ const AccountDetails = () => {
     setTransactions(transactionsTemp);
     Toast.show({
       type: 'success',
-      text1: 'Transaction deleted',
+      text1: t('general.transaction_delete_success'),
       position: 'top',
     });
   }
@@ -54,7 +55,7 @@ const AccountDetails = () => {
     Toast.show({
       type: 'success',
       position: 'top',
-      text1: 'Account deleted',
+      text1: t('general.account_delete_success'),
     });
   }
 
@@ -73,7 +74,7 @@ const AccountDetails = () => {
     activeBudget.allocatedCategories = allocatedCategoriesTemp;
     Toast.show({
       type: 'success',
-      text1: 'Category deleted',
+      text1: t('general.category_delete_success'),
       position: 'bottom',
     });
     router.back();
@@ -128,18 +129,18 @@ const AccountDetails = () => {
       </View>
       <View style={[globalStyles.row, globalStyles.block]}>
         <View style={[globalStyles.centered, {flex: 1}]}>
-          <Text style={globalStyles.h3}>Balance</Text>
-          <Text style={globalStyles.balance}>${formatMoney((account.initialValue + (expenses * -1) + income).toLocaleString())}</Text>
+          <Text style={globalStyles.h3}>{t('general.balance')}</Text>
+          <Text style={globalStyles.balance}>{showCurrency(currency)}{formatMoney((account.initialValue + (expenses * -1) + income).toLocaleString())}</Text>
         </View>
       </View>
       <View style={[globalStyles.row, globalStyles.block]}>
         <View style={[{flex: 1}, globalStyles.centered]}>
-          <Text style={globalStyles.h3}>Expenses</Text>
-          <Text style={globalStyles.expense}>-${formatMoney(expenses.toLocaleString())}</Text>
+          <Text style={globalStyles.h3}>{t('general.expense')}</Text>
+          <Text style={globalStyles.expense}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
         </View>
         <View style={[{flex: 1}, globalStyles.centered]}>
-          <Text style={globalStyles.h3}>Income</Text>
-          <Text style={globalStyles.income}>${formatMoney(income.toLocaleString())}</Text>
+          <Text style={globalStyles.h3}>{t('general.income')}</Text>
+          <Text style={globalStyles.income}>+{showCurrency(currency)}{formatMoney(income.toLocaleString())}</Text>
         </View>
       </View>
       <ScrollView style={globalStyles.block}>
@@ -166,9 +167,9 @@ const AccountDetails = () => {
                 </View>
                 <View style={[{ flex: 3 }, globalStyles.centered ]}>
                   {transaction.transactionType === -1 ? (   
-                  <Text style={globalStyles.expense}>${formatMoney(transaction.amount.toLocaleString())}</Text>
+                  <Text style={globalStyles.expense}>-{showCurrency(currency)}{formatMoney(transaction.amount.toLocaleString())}</Text>
                   ) : (
-                  <Text style={globalStyles.income}>${formatMoney(transaction.amount.toLocaleString())}</Text>
+                  <Text style={globalStyles.income}>+{showCurrency(currency)}{formatMoney(transaction.amount.toLocaleString())}</Text>
                   )}
                 </View>
               </View>

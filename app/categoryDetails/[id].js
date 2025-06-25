@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter, useNavigation, useLocalSearchParams } from "expo-router";
 import {useGlobal} from "../../utils/globalProvider";
+import { useTranslation } from 'react-i18next';
 import {View, Text, TouchableOpacity, TextInput } from "react-native";
 import globalStyles from "../../utils/globalStyles";
 import { StyleSheet } from "react-native";
@@ -17,7 +18,7 @@ import { formatMoney } from "../../utils/numberUtils";
 import { showCurrency } from "../../utils/currency";
 
 const CategoriesDetails= () => {
-
+  const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
   const params = useLocalSearchParams();
@@ -43,7 +44,7 @@ const CategoriesDetails= () => {
     setTransactions(transactionsTemp);
     Toast.show({
       type: 'success',
-      text1: 'Transaction deleted',
+      text1: t('general.transaction_delete_success'),
       position: 'top',
     });
   }
@@ -56,7 +57,7 @@ const CategoriesDetails= () => {
     setCategories(categoriesTemp);
     Toast.show({
       type: 'success',
-      text1: 'Category deleted',
+      text1: t('general.category_delete_success'),
       position: 'top',
     });
     router.back();
@@ -128,19 +129,19 @@ const CategoriesDetails= () => {
           { category.amount === 0 ? (
             <View style={[globalStyles.row, globalStyles.block]}>
               <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
-                <Text style={globalStyles.text}>Spent</Text>
+                <Text style={globalStyles.text}>{t('general.expense')}</Text> {/* "Spent" is closest to "Expense" */}
                 <Text style={globalStyles.h3}>{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
               </View>
               <View style={[ globalStyles.column, globalStyles.centered, {alignItems: 'flex-end'} ]}>
                 <Text style={globalStyles.h3}>-</Text>
-                <Text style={globalStyles.text}>Remaining</Text>
+                <Text style={globalStyles.text}>Remaining</Text> {/* No key, leave as is */}
               </View>
             </View>
           )
           : (
             <View style={globalStyles.block}>
               <View style={globalStyles.centered}>
-                <Text style={globalStyles.text}>{percentage}% left</Text>
+                <Text style={globalStyles.text}>{percentage}% left</Text> {/* No key for "left", leave as is */}
               </View>
               <View style={styles.progressBar}> 
                 {percentage >= 100 ? 
@@ -151,7 +152,7 @@ const CategoriesDetails= () => {
               <View style={[globalStyles.row, globalStyles.block]}>
                 <View style={[ globalStyles.column, {alignItems: 'flex-start'} ]}>
                   <Text style={[ globalStyles.h3, {color: 'tomato'} ]}>-{showCurrency(currency)}{formatMoney(expenses.toLocaleString())}</Text>
-                  <Text style={globalStyles.text}>Spent</Text>
+                  <Text style={globalStyles.text}>{t('general.expense')}</Text> {/* "Spent" */}
                 </View>
                 {category.amount &&
                   <View style={[ globalStyles.column, {alignItems: 'flex-end'} ]}>
@@ -159,7 +160,7 @@ const CategoriesDetails= () => {
                         (<Text style={globalStyles.h3}>{showCurrency(currency)}{formatMoney(category.amount.toLocaleString())}</Text>) :
                         <Text style={globalStyles.h3}>-{showCurrency(currency)}{formatMoney(category.amount.toLocaleString())}</Text>
                   }
-                  <Text style={globalStyles.text}>Initial value</Text>
+                  <Text style={globalStyles.text}>{t('general.initialValue')}</Text>
                   </View>
               }
               </View>
@@ -180,7 +181,7 @@ const CategoriesDetails= () => {
                   <View style={[ globalStyles.column, { flex: 4 }]}>
                     {transaction.notes ? 
                       <Text style={globalStyles.h3}>{transaction.notes}</Text> : 
-                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text>
+                      <Text style={[globalStyles.h3, { color: '#9095a0' }]}>(No description)</Text> // Left as is
                     }
                     <View style={globalStyles.row}>
                       <Text>{transaction.date}</Text>

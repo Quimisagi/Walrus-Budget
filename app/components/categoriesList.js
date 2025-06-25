@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import globalStyles from '../../utils/globalStyles';
+import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import { useGlobal } from '../../utils/globalProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,6 +10,7 @@ import CircularProgress from '../../utils/circularProgress';
 import { calculatePercentage, calculateCategoryTotalSpent } from '../../utils/numberUtils';
 
 const categoriesList = () => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const { 
     activeBudget,

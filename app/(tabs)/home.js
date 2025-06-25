@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Text, View, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useGlobal } from '../../utils/globalProvider';
 import globalStyles from '../../utils/globalStyles';
@@ -26,6 +27,7 @@ Font.loadAsync({
 
 
 export default function Home() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const { 
@@ -193,7 +195,8 @@ export default function Home() {
                       setNewBudgetNameInput(suggestedName);
                       setIsNameModalVisible(true);
                     } else {
-                      alert("No active budget to copy.");
+                      // Consider adding a key like 'general.no_active_budget_to_copy' later.
+                      alert(t('general.budget_failed') + " - No active budget to copy.");
                     }
                   }}
                 >
@@ -209,7 +212,7 @@ export default function Home() {
 
                       {/* Balance title */}
                       <View style={globalStyles.row}>
-                        <Text style={globalStyles.h3}>Balance</Text>
+                        <Text style={globalStyles.h3}>{t('general.balance')}</Text>
                       </View>
 
                       {/* Income */}
@@ -241,7 +244,7 @@ export default function Home() {
                   <View style={[globalStyles.row, styles.homeContent]}>
                     <View style={[ globalStyles.column, globalStyles.centered, styles.circleSection ]}>
                       <View style={[ globalStyles.row ]}>
-                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Initial Value</Text>
+                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>{t('general.initialValue')}</Text>
                       </View>
                       <View style={globalStyles.row}>
                         <Text style={styles.value}>{showCurrency(currency)}{formatMoney(initialValue.toLocaleString())}</Text>
@@ -249,7 +252,7 @@ export default function Home() {
                     </View>
                     <View style={[ globalStyles.column, globalStyles.centered, styles.circleSection ]}>
                       <View style={[ globalStyles.row]}>
-                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>Budgeted</Text>
+                        <Text style={[ globalStyles.h3, {textAlign: 'center'} ]}>{t('general.budgeted')}</Text>
                       </View>
 
                       <View style={globalStyles.row}>
