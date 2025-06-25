@@ -344,8 +344,11 @@ const TransactionsForm = ({}) => {
                         <Text style={[globalStyles.h3, styles.accountName]}>
                           {account.name}
                         </Text>
+                        <Text style={[globalStyles.text, styles.accountValue]}> 
+                          {t('general.balance')}:{showCurrency(currency)}{formatMoney(account.balance.toLocaleString())}
+                        </Text>
                         <Text style={[globalStyles.text, styles.accountValue]}>
-                          {t('general.balance')}{showCurrency(currency)} : {formatMoney(account.initialValue.toLocaleString())}
+                          {t('general.initialValue')}: {showCurrency(currency)}{formatMoney(account.initialValue.toLocaleString())}
                         </Text>
                       </View>
                     </View>
@@ -400,7 +403,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accountButton: {
-    height: 55,
+    height: 75,
     borderRadius: 8,
     padding: 10,
     borderBottomWidth: 1,

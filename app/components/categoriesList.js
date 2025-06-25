@@ -55,7 +55,9 @@ const categoriesList = () => {
                   <Ionicons name="add-sharp" size={40} color={'#bcc1ca'} />
                 </View>
                 <View style={styles.addCategory}>
-                  <Text style={[globalStyles.centered, globalStyles.h3]}>Add</Text>
+                  <Text style={[globalStyles.centered, globalStyles.h3]}>
+                    {t('general.add')}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
