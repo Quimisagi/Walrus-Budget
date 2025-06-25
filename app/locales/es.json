@@ -2,7 +2,8 @@
   "settings": {
     "currency": "Divisa",
     "deleteEverything": "ELIMINAR TODO",
-    "language": "Idioma"
+    "language": "Idioma",
+    "title": "Configuración"
   },
   "tabs": {
     "home": "Inicio",
@@ -47,9 +48,10 @@
     "pick_color": "Elegir color",
     "category_name": "Nombre de la categoría",
     "account_name": "Nombre de la cuenta",
-    "confrim_button": "Confirmar",
+    "confirm_button": "Confirmar",
     "cancel_button": "Cancelar",
-    "active_budget": "Presupuesto activo"
+    "active_budget": "Presupuesto activo",
+    "close": "Cerrar"
   },
   "months": {
     "january": "Enero",

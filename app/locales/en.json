@@ -2,7 +2,8 @@
   "settings": {
     "currency": "Currency",
     "deleteEverything": "DELETE EVERYTHING",
-    "language": "Language"
+    "language": "Language",
+    "title": "Settings"
   },
   "tabs": {
     "home": "Home",
@@ -47,9 +48,10 @@
     "pick_color": "Pick color",
     "category_name": "Category name",
     "account_name": "Account name",
-    "confrim_button": "Confirm",
+    "confirm_button": "Confirm",
     "cancel_button": "Cancel",
-    "active_budget": "Active budget"
+    "active_budget": "Active budget",
+    "close": "Close"
   },
   "months": {
     "january": "January",

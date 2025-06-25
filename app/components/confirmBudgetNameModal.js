@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import globalStyles from '../../utils/globalStyles'; // Assuming you have global styles
+import { useTranslation } from 'react-i18next';
 
 const ConfirmBudgetNameModal = ({ isVisible, onClose, onConfirm, initialName }) => {
   const [name, setName] = useState(initialName);
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     setName(initialName);
@@ -37,10 +40,10 @@ const ConfirmBudgetNameModal = ({ isVisible, onClose, onConfirm, initialName }) 
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>{t('general.cancel_button')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.confirmButton]} onPress={handleConfirm}>
-              <Text style={styles.buttonText1}>Confirm</Text>
+              <Text style={styles.buttonText1}>{t('general.confirm_button')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonText: {
-    color: 'black',
+    color: '#000',
     fontWeight: 'bold',
   },
 });
