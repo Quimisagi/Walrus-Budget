@@ -7,7 +7,6 @@ import CategoryModal from './components/categoryModal';
 import { useNavigation, router, useLocalSearchParams } from "expo-router";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import uuid from 'react-native-uuid';
-import defaultCategories from '../utils/defaultCategories';
 import globalStyles from '../utils/globalStyles';
 import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { processMoneyValue, formatMoney } from '../utils/numberUtils';
@@ -16,7 +15,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { getContrastColor } from '../utils/iconsList';
 import Toast from 'react-native-toast-message';
 import { showCurrency } from '../utils/currency';
-import { useTranslation } from 'react-i18next'; // ✅ added
+import { useTranslation } from 'react-i18next';
 
 const TransactionType = {
   EXPENSE: -1,
@@ -24,7 +23,7 @@ const TransactionType = {
 };
 
 const TransactionsForm = ({}) => {
-  const { t } = useTranslation(); // ✅ added
+  const { t } = useTranslation();
   const params = useLocalSearchParams();
   const navigation = useNavigation();
   const [amount, setAmount] = useState(0); 
@@ -38,6 +37,8 @@ const TransactionsForm = ({}) => {
   const [selection, setSelection] = useState(-1);
   const [isCategoryModalVisible, setCategoryModalVisible] = useState(false);
   const [isAccountModalVisible, setAccountModalVisible] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const { 
     activeBudget,
     transactions,
@@ -95,19 +96,9 @@ const TransactionsForm = ({}) => {
       transactionsTemp.push(newTransaction);
       await storeData('transactions', JSON.stringify(transactionsTemp));
       setTransactions(transactionsTemp);
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: t('general.transaction_success'), // ✅
-      });
+      Toast.show({ type: 'success', position: 'top', text1: t('general.transaction_success') });
     } catch (error) {
-      console.error('Error creating transaction:', error);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: t('general.transaction_failed'), // ✅
-        text2: error.message,
-      });
+      Toast.show({ type: 'error', position: 'top', text1: t('general.transaction_failed'), text2: error.message });
     }
   };
 
@@ -118,20 +109,10 @@ const TransactionsForm = ({}) => {
       const arrayTemp = [...transactions];
       arrayTemp[transactionIndex] = newTransaction;
       setTransactions(arrayTemp);
-      Toast.show({
-        type: 'success',
-        position: 'top',
-        text1: t('general.transaction_success'), // ✅ reuse for now
-      });
+      Toast.show({ type: 'success', position: 'top', text1: t('general.transaction_success') });
       router.back();
     } catch (error) {
-      console.error('Error updating transaction:', error);
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: t('general.transaction_failed'), // ✅
-        text2: error.message,
-      });
+      Toast.show({ type: 'error', position: 'top', text1: t('general.transaction_failed'), text2: error.message });
     }
   };
 
@@ -197,9 +178,25 @@ const TransactionsForm = ({}) => {
     }
   }, []);
 
+  useEffect(() => {
+    const uniqueNotes = Array.from(new Set(transactions.map(tx => tx.notes).filter(n => n)));
+    setSuggestions(uniqueNotes);
+  }, [transactions]);
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      const filtered = suggestions.filter(note =>
+        note.toLowerCase().startsWith(notes.toLowerCase()) && note.toLowerCase() !== notes.toLowerCase()
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
+  }, [notes]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: t('screens.newTransaction'), // ✅ same title for now
+      headerTitle: t('screens.newTransaction'),
       headerRight: () => (
         <TouchableOpacity style={{ margin: 15 }} onPress={sendData} disabled={amount <= 0 }>
           <AntDesign name="check" size={24} color= {amount <= 0 ? "gray" : "black"}/>
@@ -210,6 +207,7 @@ const TransactionsForm = ({}) => {
 
   return (
     <View style={globalStyles.container}>
+      {/* Transaction Type Buttons */}
       <View style={styles.btnGroup}>
         <TouchableOpacity style={[styles.btn, selection === -1 && { backgroundColor: "#DF3B57" }]} onPress={() => setSelection(-1)}>
           <Text style={[styles.btnText, globalStyles.h3, selection === -1 && { color: "white" }]}>{t('general.expense')}</Text>
@@ -219,6 +217,7 @@ const TransactionsForm = ({}) => {
         </TouchableOpacity>
       </View>
 
+      {/* Amount Input */}
       <View style={globalStyles.block}>
         <TouchableOpacity onPress={focusValue}>
           <Text style={globalStyles.inputFieldB}>
@@ -237,6 +236,7 @@ const TransactionsForm = ({}) => {
         />
       </View>
 
+      {/* Category Selector */}
       <View style={globalStyles.block}>
         <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => setCategoryModalVisible(true)}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
@@ -255,6 +255,7 @@ const TransactionsForm = ({}) => {
           </TextInput>
         </TouchableOpacity>
 
+        {/* Account Selector */}
         <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={() => setAccountModalVisible(true)}>
           <View style={[ globalStyles.centered, {flex:1} ]}>
             <FontAwesome6 name="wallet" size={16} color="gray" />
@@ -266,19 +267,42 @@ const TransactionsForm = ({}) => {
           </TextInput>
         </TouchableOpacity>
 
-        <View style={[ globalStyles.inputFieldContainer, globalStyles.row, {marginBottom: 15}]}>
-          <View style={[ globalStyles.centered, {flex:1} ]}>
-            <MaterialCommunityIcons name="text" size={16} color="black" />
+        {/* Description Input + Suggestions */}
+        <View style={{ marginBottom: 15 }}>
+          <View style={[globalStyles.inputFieldContainer, globalStyles.row]}>
+            <View style={[globalStyles.centered, { flex: 1 }]}>
+              <MaterialCommunityIcons name="text" size={16} color="black" />
+            </View>
+            <TextInput
+              style={[globalStyles.inputField, { flex: 9 }]}
+              value={notes}
+              placeholder={t('general.description')}
+              onChangeText={setNotes}
+              maxLength={24}
+            />
           </View>
-          <TextInput
-            style={[ globalStyles.inputField, {flex: 9} ]}
-            value={notes}
-            placeholder={t('general.description')}
-            onChangeText={setNotes}
-            maxLength={24}
-          />
+
+          {filteredSuggestions.length > 0 && (
+            <View style={{
+              backgroundColor: '#FFF',
+              borderColor: '#ccc',
+              borderWidth: 1,
+              borderRadius: 8,
+              marginTop: 4,
+              maxHeight: 120,
+              paddingHorizontal: 10,
+              justifyContent: 'center',
+            }}>
+              {filteredSuggestions.slice(0, 5).map((suggestion, idx) => (
+                <Pressable key={idx} onPress={() => setNotes(suggestion)}>
+                  <Text style={{ paddingVertical: 8, color: '#333' }}>{suggestion}</Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
         </View>
 
+        {/* Date & Time Pickers */}
         <View style={globalStyles.row}>
           <View style={{flex:1, marginRight: 5}}>
             <TouchableOpacity style={[ globalStyles.inputFieldContainer, globalStyles.row]} onPress={showDatepicker}>
@@ -303,6 +327,7 @@ const TransactionsForm = ({}) => {
         </View>
       </View>
 
+      {/* Account Modal */}
       <Modal isVisible={isAccountModalVisible} onBackdropPress={() => setAccountModalVisible(false)}>
         <View style={globalStyles.modal}>
           <Text style={globalStyles.h2}>{t('general.accounts')}</Text>
@@ -314,14 +339,13 @@ const TransactionsForm = ({}) => {
                     setAccount(account);
                     setAccountModalVisible(false);
                   }}>
-                    <View style={[styles.accountRow]}>
+                    <View style={[globalStyles.row, styles.accountRow]}>
                       <View>
                         <Text style={[globalStyles.h3, styles.accountName]}>
                           {account.name}
                         </Text>
                         <Text style={[globalStyles.text, styles.accountValue]}>
-                          <Text style={styles.smallText}>{t('general.balance')}: </Text>
-                          {showCurrency(currency)}{formatMoney(account.initialValue.toLocaleString())}
+                          {t('general.balance')}{showCurrency(currency)} : {formatMoney(account.initialValue.toLocaleString())}
                         </Text>
                       </View>
                     </View>
@@ -339,6 +363,7 @@ const TransactionsForm = ({}) => {
         </View>
       </Modal>
 
+      {/* Category Modal */}
       <CategoryModal 
         isVisible={isCategoryModalVisible} 
         onClose={() => setCategoryModalVisible(false)} 
@@ -375,20 +400,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accountButton: {
-    height: 50,
+    height: 55,
     borderRadius: 8,
     padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
   accountRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
+    justifyContent: 'space-between',
+  },
+  accountName: {
+    fontWeight: '600',
   },
   accountValue: {
+    fontWeight: '400',
     color: '#666',
-    fontSize: 12,
   },
+  noAccountsMessage: {
+    paddingVertical: 15,
+    alignItems: 'center',
+  }
 });
 
 export default TransactionsForm;
