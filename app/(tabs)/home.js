@@ -127,10 +127,10 @@ export default function Home() {
         date: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}`,
         allocatedCategories: newAllocatedCategories.map(cat => cat.id) // Store only category IDs as per original budgetForm structure (if applicable, or adjust if storing full objects)
       };
-       // It seems budgetForm.js initializes allocatedCategories as an empty array,
-       // but categories are linked via category.budgetId.
-       // For consistency, let's ensure newBudget.allocatedCategories is an array of the new category IDs.
-       // The global state and storage for categories will be updated separately.
+      // It seems budgetForm.js initializes allocatedCategories as an empty array,
+      // but categories are linked via category.budgetId.
+      // For consistency, let's ensure newBudget.allocatedCategories is an array of the new category IDs.
+      // The global state and storage for categories will be updated separately.
 
       // Update global state and storage for budgets
       const updatedBudgets = [...budgets, newBudget];
@@ -173,13 +173,13 @@ export default function Home() {
                 <FontAwesome6 name="wrench" size={25} color="black" />
               </TouchableOpacity>
               <View style={{flex: 5}}>
-                <TouchableOpacity onPress={()=>router.push({ pathname: '/budgetsList' })}>
-                  <View style={[ globalStyles.row, styles.budgetSelectMenu ]}>
-                    <View style={[{flex: 7, marginLeft: 'auto'}, globalStyles.centered ]}>
-                      <Text style={[ globalStyles.h2 ]}>{activeBudget.name ? activeBudget.name : displayDateInFormat(activeBudget.date)}</Text>
-                    </View>
-                    <View style={[{flex: 1}, globalStyles.centered ]}>
-                      <Ionicons name="caret-down" size={18} color="black" />
+                <TouchableOpacity onPress={() => router.push({ pathname: '/budgetsList' })}>
+                  <View style={[globalStyles.row, styles.budgetSelectMenu, globalStyles.centered]}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: -15}}>
+                      <Ionicons name="caret-down" size={18} color="black" style={{marginRight: 5}} />
+                      <Text style={globalStyles.h2}>
+                        {activeBudget.name ? activeBudget.name : displayDateInFormat(activeBudget.date)}
+                      </Text>
                     </View>
                   </View>
                 </TouchableOpacity>
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 25,
     padding: 10,
     justifyContent: 'center'
   },
@@ -334,9 +334,8 @@ const styles = StyleSheet.create({
     fontFamily: 'PlusJakarta',
   },
   budgetSelectMenu: {
-    borderRadius: 5,
+    borderBottomWidth: 1,
     borderColor: 'gray',
-    borderWidth: 1,
     padding: 5,
   },
   homeContent: {
