@@ -86,7 +86,7 @@ const AccountsList = () => {
                 >
                   <View style={[ globalStyles.transactionContainer, {padding: 10, paddingLeft: 20} ]}>
                     <View style={globalStyles.row}>
-                      <View style={{flex: 8}}>
+                      <View style={{flex: 4}}>
                         <Text></Text>
                         <Text style={globalStyles.h2}>{account.name}</Text>
                         <Text></Text>

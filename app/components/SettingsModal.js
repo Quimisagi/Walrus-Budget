@@ -5,6 +5,7 @@ import globalStyles from "../../utils/globalStyles"; // Adjusted path
 import { deleteAllData } from "../../utils/storage"; // storeData removed as it's handled by globalProvider
 import { useGlobal } from "../../utils/globalProvider"; // Adjusted path
 import { useTranslation } from 'react-i18next';
+import { Feather } from '@expo/vector-icons'; // For chevron icon
 
 const SettingsModal = ({ isVisible, onClose }) => {
   const { t } = useTranslation();
@@ -51,14 +52,19 @@ const SettingsModal = ({ isVisible, onClose }) => {
           <View style={[globalStyles.row, styles.settingItem]}>
             <Text style={globalStyles.h3}>{t('settings.currency')}: </Text>
             <TouchableOpacity style={styles.dropdownButton} onPress={() => setCurrencyModalVisible(true)}>
-              <Text style={styles.dropdownButtonText}>{currency} ▼</Text>
+              <View style={globalStyles.row}>
+                <Text style={[ styles.dropdownButtonText, {flex: 8} ]}>{currency} </Text>
+                <View style={{ flex: 2, alignItems: 'flex-end', marginTop: 5 }}>
+                  <Feather name="chevron-down" size={16} color="black" />
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
 
           <Modal transparent={true} visible={currencyModalVisible} animationType="fade" onRequestClose={() => setCurrencyModalVisible(false)}>
             <TouchableOpacity style={styles.pickerModalOverlay} onPress={() => setCurrencyModalVisible(false)}>
               <View style={styles.pickerModalContent}>
-                {['USD', 'YEN', 'EUR'].map((curr) => (
+                {['USD', 'YEN', 'EUR', 'COP'].map((curr) => (
                   <TouchableOpacity key={curr} style={styles.option} onPress={() => changeCurrency(curr)}>
                     <Text style={styles.optionText}>{curr}</Text>
                   </TouchableOpacity>
@@ -71,7 +77,12 @@ const SettingsModal = ({ isVisible, onClose }) => {
           <View style={[globalStyles.row, styles.settingItem]}>
             <Text style={globalStyles.h3}>{t('settings.language')}: </Text>
             <TouchableOpacity style={styles.dropdownButton} onPress={() => setLanguageModalVisible(true)}>
-              <Text style={styles.dropdownButtonText}>{languages.find(l => l.code === language)?.name || language} ▼</Text>
+              <View style={globalStyles.row}>
+                <Text style={[ styles.dropdownButtonText, {flex: 8} ]}>{languages.find(l => l.code === language)?.name || language}</Text>
+                <View style={{ flex: 2, alignItems: 'flex-end', marginTop: 5 }}>
+                  <Feather name="chevron-down" size={16} color="black" />
+                </View>
+              </View>
             </TouchableOpacity>
           </View>
 

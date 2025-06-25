@@ -95,9 +95,7 @@ const BudgetsList = () => {
               </TouchableOpacity>
             </SwipeableItem>
           ))
-        ) : (
-          <Text>{t('general.no_budgets_found') || "No budgets"}</Text>
-        )}
+        ) : null}
       </ScrollView>
       <TouchableOpacity style={globalStyles.addButton} onPress={() => router.push({ pathname: '/budgetForm' })}>
         <Feather name="plus" size={32} color="white" />
